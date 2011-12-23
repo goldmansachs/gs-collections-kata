@@ -1,5 +1,6 @@
 package com.gs.collections.kata;
 
+import com.gs.collections.api.block.function.Function;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.api.map.MutableMap;
 import com.gs.collections.api.multimap.list.MutableListMultimap;
@@ -21,7 +22,7 @@ public class Exercise9Test extends CompanyDomainForKata
     }
 
     /**
-     * Extra credit. Look into the {@link MutableList#asMap(Function, Function)} method.
+     * Extra credit. Look into the {@link MutableList#toMap(Function, Function)} method.
      */
     @Test
     public void ordersByCustomerUsingAsMap()
