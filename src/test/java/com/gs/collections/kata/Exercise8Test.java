@@ -1,12 +1,12 @@
 package com.gs.collections.kata;
 
-import java.util.List;
-
 import com.gs.collections.api.block.procedure.Procedure;
-import com.gs.collections.api.map.MutableMap;
+import com.gs.collections.api.list.MutableList;
+import com.gs.collections.api.multimap.MutableMultimap;
 import com.gs.collections.api.multimap.list.MutableListMultimap;
+import com.gs.collections.impl.list.fixed.ArrayAdapter;
 import com.gs.collections.impl.list.mutable.FastList;
-import com.gs.collections.impl.map.mutable.UnifiedMap;
+import com.gs.collections.impl.multimap.list.FastListMultimap;
 import com.gs.collections.impl.test.Verify;
 import com.gs.collections.impl.utility.ArrayIterate;
 import org.junit.Assert;
@@ -21,7 +21,8 @@ public class Exercise8Test extends CompanyDomainForKata
     public void customersByCity()
     {
         // Notice that the second generic type is Customer, not List<Customer>
-        MutableListMultimap<String, Customer> multimap = null;
+        MutableListMultimap<String, Customer> multimap =
+                this.company.getCustomers().groupBy(Customer.TO_CITY);
 
         Assert.assertEquals(FastList.newListWith(this.company.getCustomerNamed("Mary")), multimap.get("Liphook"));
         Assert.assertEquals(
@@ -37,7 +38,7 @@ public class Exercise8Test extends CompanyDomainForKata
         /**
          * Change itemsToSuppliers to a MutableMultimap<String, Supplier>
          */
-        final MutableMap<String, List<Supplier>> itemsToSuppliers = UnifiedMap.newMap();
+        final MutableMultimap<String, Supplier> itemsToSuppliers = FastListMultimap.newMultimap();
 
         ArrayIterate.forEach(this.company.getSuppliers(), new Procedure<Supplier>()
         {
@@ -49,20 +50,7 @@ public class Exercise8Test extends CompanyDomainForKata
                     @Override
                     public void value(String itemName)
                     {
-                        Assert.fail("Refactor this as part of Exercise 6");
-
-                        List<Supplier> suppliersForItem;
-                        if (itemsToSuppliers.containsKey(itemName))
-                        {
-                            suppliersForItem = itemsToSuppliers.get(itemName);
-                        }
-                        else
-                        {
-                            suppliersForItem = FastList.newList();
-                            itemsToSuppliers.put(itemName, suppliersForItem);
-                        }
-
-                        suppliersForItem.add(supplier);
+                        itemsToSuppliers.put(itemName, supplier);
                     }
                 });
             }
@@ -71,9 +59,14 @@ public class Exercise8Test extends CompanyDomainForKata
     }
 
     @Test
-    public void reminder()
+    public void mapOfItemsToSuppliersRefactored()
     {
-        Assert.fail("Refactor setUpCustomersAndOrders() in the super class to not have so much repetition.");
-        // Delete this whole method when you're done. It's just a reminder.
+        /**
+         * Here is an example of GS Collections, and its JDK equivalent below Change itemsToSuppliers to a
+         * MutableMultimap<String, Supplier>
+         */
+        MutableList<Supplier> suppliersList = ArrayAdapter.adapt(this.company.getSuppliers());
+        MutableListMultimap<String, Supplier> itemsToSuppliers = suppliersList.groupByEach(Supplier.TO_ITEM_NAMES);
+        Verify.assertIterableSize("should be 2 suppliers for sofa", 2, itemsToSuppliers.get("sofa"));
     }
 }

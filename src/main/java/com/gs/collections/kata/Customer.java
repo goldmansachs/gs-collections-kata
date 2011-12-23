@@ -1,16 +1,12 @@
 package com.gs.collections.kata;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.gs.collections.api.block.function.Function;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.block.function.AddFunction;
-import com.gs.collections.impl.utility.ListIterate;
-import org.junit.Assert;
+import com.gs.collections.impl.list.mutable.FastList;
 
 /**
- * Customers have a name, city and a list of {@link Order}s
+ * Customers have a name, city and a list of {@link Order}s.
  */
 public class Customer
 {
@@ -19,12 +15,18 @@ public class Customer
         @Override
         public String valueOf(Customer customer)
         {
-            Assert.fail();
-            return null;
+            return customer.name;
         }
     };
 
-    public static final Function<Customer, String> TO_CITY = null;
+    public static final Function<Customer, String> TO_CITY = new Function<Customer, String>()
+    {
+        @Override
+        public String valueOf(Customer customer)
+        {
+            return customer.city;
+        }
+    };
 
     public static final Function<Customer, Double> TO_TOTAL_ORDER_VALUE =
             new Function<Customer, Double>()
@@ -36,10 +38,18 @@ public class Customer
                 }
             };
 
+    public static final Function<Customer, MutableList<Order>> TO_ORDERS = new Function<Customer, MutableList<Order>>()
+    {
+        @Override
+        public MutableList<Order> valueOf(Customer customer)
+        {
+            return customer.getOrders();
+        }
+    };
+
     private final String name;
     private final String city;
-
-    private final List<Order> orders = new ArrayList<Order>();
+    private final MutableList<Order> orders = FastList.newList();
 
     public Customer(String name, String city)
     {
@@ -57,7 +67,7 @@ public class Customer
         return this.name;
     }
 
-    public List<Order> getOrders()
+    public MutableList<Order> getOrders()
     {
         return this.orders;
     }
@@ -69,7 +79,7 @@ public class Customer
 
     public double getTotalOrderValue()
     {
-        MutableList<Double> orderValues = ListIterate.collect(this.orders, new Function<Order, Double>()
+        MutableList<Double> orderValues = this.orders.collect(new Function<Order, Double>()
         {
             @Override
             public Double valueOf(Order order)
@@ -78,5 +88,11 @@ public class Customer
             }
         });
         return orderValues.injectInto(0.0, AddFunction.DOUBLE_TO_DOUBLE);
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.name;
     }
 }

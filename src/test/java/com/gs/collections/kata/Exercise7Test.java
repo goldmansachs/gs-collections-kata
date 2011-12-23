@@ -3,6 +3,7 @@ package com.gs.collections.kata;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.block.factory.Predicates;
 import com.gs.collections.impl.test.Verify;
+import com.gs.collections.impl.utility.ArrayIterate;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,7 +16,8 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void sortedTotalOrderValue()
     {
-        MutableList<Double> sortedTotalValues = null;
+        MutableList<Double> sortedTotalValues =
+                this.company.getCustomers().collect(Customer.TO_TOTAL_ORDER_VALUE).toSortedList();
 
         // Don't forget the handy utility methods getFirst() and getLast()...
         Assert.assertEquals("Highest total order value", Double.valueOf(857.0), sortedTotalValues.getLast());
@@ -28,7 +30,8 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void maximumTotalOrderValue()
     {
-        Double maximumTotalOrderValue = null;
+        Double maximumTotalOrderValue =
+                this.company.getCustomers().collect(Customer.TO_TOTAL_ORDER_VALUE).max();
         Assert.assertEquals("max value", Double.valueOf(857.0), maximumTotalOrderValue);
     }
 
@@ -38,7 +41,8 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void customerWithMaxTotalOrderValue()
     {
-        Customer customerWithMaxTotalOrderValue = null;
+        Customer customerWithMaxTotalOrderValue =
+                this.company.getCustomers().maxBy(Customer.TO_TOTAL_ORDER_VALUE);
         Assert.assertEquals(this.company.getCustomerNamed("Mary"), customerWithMaxTotalOrderValue);
     }
 
@@ -48,7 +52,8 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void supplierNamesAsTildeDelimitedString()
     {
-        String tildeSeparatedNames = null;
+        String tildeSeparatedNames =
+                ArrayIterate.collect(this.company.getSuppliers(), Supplier.TO_NAME).makeString("~");
         Assert.assertEquals(
                 "tilde separated names",
                 "Shedtastic~Splendid Crocks~Annoying Pets~Gnomes 'R' Us~Furniture Hamlet~SFD~Doxins",
@@ -63,6 +68,11 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void deliverOrdersToLondon()
     {
+        this.company.getCustomers()
+                .select(Predicates.attributeEqual(Customer.TO_CITY, "London"))
+                .flatCollect(Customer.TO_ORDERS)
+                .forEach(Order.DELIVER);
+
         Verify.assertAllSatisfy(this.company.getCustomerNamed("Fred").getOrders(), Order.IS_DELIVERED);
         Verify.assertAllSatisfy(this.company.getCustomerNamed("Mary").getOrders(), Predicates.not(Order.IS_DELIVERED));
         Verify.assertAllSatisfy(this.company.getCustomerNamed("Bill").getOrders(), Order.IS_DELIVERED);

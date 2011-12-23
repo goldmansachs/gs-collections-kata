@@ -2,9 +2,10 @@ package com.gs.collections.kata;
 
 import com.gs.collections.api.block.procedure.ObjectIntProcedure;
 import com.gs.collections.api.list.MutableList;
+import com.gs.collections.impl.block.factory.Predicates;
 import com.gs.collections.impl.list.mutable.FastList;
 import com.gs.collections.impl.utility.ArrayIterate;
-import org.junit.Assert;
+import com.gs.collections.impl.utility.Iterate;
 
 /**
  * A company has a {@link MutableList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
@@ -39,13 +40,7 @@ public class Company
 
     public MutableList<Order> getOrders()
     {
-        Assert.fail("Refactor this code to use GS Collections as part of Exercise 4");
-        MutableList<Order> orders = FastList.newList();
-        for (Customer customer : this.customers)
-        {
-            orders.addAll(customer.getOrders());
-        }
-        return orders;
+        return this.customers.flatCollect(Customer.TO_ORDERS);
     }
 
     public Customer getMostRecentCustomer()
@@ -80,10 +75,6 @@ public class Company
 
     public Customer getCustomerNamed(String name)
     {
-        /**
-         * Use a {@link Discriminator} to find a {@link Customer} with the name given.
-         */
-        Assert.fail("Implement this method as part of Exercise 3");
-        return null;
+        return this.customers.detect(Predicates.attributeEqual(Customer.TO_NAME, name));
     }
 }

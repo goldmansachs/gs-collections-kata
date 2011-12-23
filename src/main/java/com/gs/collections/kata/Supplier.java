@@ -1,6 +1,8 @@
 package com.gs.collections.kata;
 
 import com.gs.collections.api.block.function.Function;
+import com.gs.collections.impl.list.mutable.FastList;
+import com.gs.collections.impl.utility.ArrayIterate;
 
 /**
  * Suppliers have a name and an array of itemNames. Suppliers don't like lists - they prefer arrays....
@@ -27,6 +29,15 @@ public class Supplier
                 }
             };
 
+    public static final Function<Supplier, Iterable<String>> TO_ITEM_NAMES = new Function<Supplier, Iterable<String>>()
+    {
+        @Override
+        public Iterable<String> valueOf(Supplier supplier)
+        {
+            return FastList.newListWith(supplier.getItemNames());
+        }
+    };
+
     private final String name;
     private final String[] itemNames;
 
@@ -44,5 +55,10 @@ public class Supplier
     public String[] getItemNames()
     {
         return this.itemNames;
+    }
+
+    public boolean supplies(String name)
+    {
+        return ArrayIterate.contains(this.itemNames, name);
     }
 }

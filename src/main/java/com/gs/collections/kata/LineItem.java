@@ -15,6 +15,14 @@ public class LineItem
             return lineItem.name;
         }
     };
+    public static final Function<LineItem, Double> TO_VALUE = new Function<LineItem, Double>()
+    {
+        @Override
+        public Double valueOf(LineItem lineItem)
+        {
+            return lineItem.value;
+        }
+    };
 
     private String name;
     private final double value;
@@ -43,6 +51,6 @@ public class LineItem
     @Override
     public String toString()
     {
-        return this.name + " $ " + this.getValue();
+        return this.name + " $ " + this.value;
     }
 }

@@ -1,18 +1,16 @@
 package com.gs.collections.kata;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import com.gs.collections.api.bag.Bag;
+import com.gs.collections.api.bag.MutableBag;
 import com.gs.collections.api.block.function.Function;
 import com.gs.collections.api.block.predicate.Predicate;
+import com.gs.collections.api.block.procedure.Procedure;
+import com.gs.collections.impl.bag.mutable.HashBag;
 import com.gs.collections.impl.block.function.AddFunction;
-import com.gs.collections.impl.collection.mutable.CollectionAdapter;
-import com.gs.collections.impl.utility.Iterate;
 
 /**
- * Has a number, a {@link Customer}, a {@link List} of {@link LineItem}s, and a boolean that states whether or not the order
- * has been delivered.  There is a class variable that contains the next order number.
+ * Has a number, a {@link Customer}, a {@link Bag} of {@link LineItem}s, and a boolean that states whether or not the order
+ * has been delivered. There is a class variable that contains the next order number.
  */
 public class Order
 {
@@ -35,6 +33,15 @@ public class Order
         }
     };
 
+    public static final Procedure<Order> DELIVER = new Procedure<Order>()
+    {
+        @Override
+        public void value(Order order)
+        {
+            order.deliver();
+        }
+    };
+
     public static final Function<Order, Iterable<LineItem>> TO_LINE_ITEMS =
             new Function<Order, Iterable<LineItem>>()
             {
@@ -48,7 +55,7 @@ public class Order
     private static int nextOrderNumber = 1;
 
     private final int orderNumber;
-    private final List<LineItem> lineItems = new ArrayList<LineItem>();
+    private final MutableBag<LineItem> lineItems = HashBag.newBag();
     private boolean isDelivered;
 
     public Order()
@@ -77,7 +84,12 @@ public class Order
         this.lineItems.add(aLineItem);
     }
 
-    public List<LineItem> getLineItems()
+    public void addLineItems(LineItem aLineItem, int occurrences)
+    {
+        this.lineItems.addOccurrences(aLineItem, occurrences);
+    }
+
+    public Bag<LineItem> getLineItems()
     {
         return this.lineItems;
     }
@@ -90,15 +102,15 @@ public class Order
 
     public double getValue()
     {
-        Collection<Double> itemValues = Iterate.collect(this.lineItems, new Function<LineItem, Double>()
+        MutableBag<Double> itemValues = this.lineItems.collect(new Function<LineItem, Double>()
         {
             @Override
-            public Double valueOf(LineItem lineItem)
+            public Double valueOf(LineItem item)
             {
-                return lineItem.getValue();
+                return item.getValue();
             }
         });
 
-        return CollectionAdapter.adapt(itemValues).injectInto(0.0, AddFunction.DOUBLE_TO_DOUBLE);
+        return itemValues.injectInto(0.0, AddFunction.DOUBLE_TO_DOUBLE);
     }
 }

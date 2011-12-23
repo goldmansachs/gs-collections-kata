@@ -1,7 +1,5 @@
 package com.gs.collections.kata;
 
-import java.util.List;
-
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.block.factory.Predicates;
 import com.gs.collections.impl.list.mutable.FastList;
@@ -14,13 +12,11 @@ public class Exercise6Test extends CompanyDomainForKata
     @Test
     public void filterOrderValues()
     {
-        List<Order> orders = this.company.getMostRecentCustomer().getOrders();
+        MutableList<Order> orders = this.company.getMostRecentCustomer().getOrders();
         /**
-         * Same exercise but don't use static utility - refactor the type of orders and {@link Customer#getOrders()}
-         * instead.
-         * Get the order values that are greater than 1.5.
+         * Same exercise but don't use static utility - refactor the type of orders instead.
          */
-        MutableList<Double> orderValues = null;
+        MutableList<Double> orderValues = orders.collect(Order.TO_VALUE);
         MutableList<Double> filtered = orderValues.select(Predicates.greaterThan(1.5));
         Assert.assertEquals(FastList.newListWith(372.5, 1.75), filtered);
     }
@@ -28,13 +24,11 @@ public class Exercise6Test extends CompanyDomainForKata
     @Test
     public void filterOrders()
     {
-        List<Order> orders = this.company.getMostRecentCustomer().getOrders();
+        MutableList<Order> orders = this.company.getMostRecentCustomer().getOrders();
         /**
-         * Same exercise but don't use static utility - refactor the type of orders and {@link Customer#getOrders()}
-         * instead.
-         * Get the actual orders (not their double values) where those orders have a value greater than 2.0.
+         * Same exercise but don't use static utility - refactor the type of orders instead.
          */
-        MutableList<Order> filtered = null;
+        MutableList<Order> filtered = orders.select(Predicates.attributeGreaterThan(Order.TO_VALUE, 2.0));
         Assert.assertEquals(FastList.newListWith(Iterate.getFirst(this.company.getMostRecentCustomer().getOrders())), filtered);
     }
 }
