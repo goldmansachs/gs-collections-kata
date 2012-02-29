@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2012 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,11 @@ public class Exercise9Test extends CompanyDomainForKata
     @Test
     public void whoOrderedSaucers()
     {
-        MutableList<Customer> customersWithSaucers = null;
+        MutableList<Customer> customersWithSaucers =
+            this.company.getCustomers().select(
+                customer -> customer.getOrders().anySatisfy(
+                    order -> order.getLineItems().anySatisfy(
+                        lineItem -> "saucer".equals(lineItem.getName()))));
         Verify.assertSize("customers with saucers", 2, customersWithSaucers);
     }
 
@@ -44,7 +48,7 @@ public class Exercise9Test extends CompanyDomainForKata
     public void ordersByCustomerUsingAsMap()
     {
         MutableMap<String, MutableList<Order>> customerNameToOrders =
-                this.company.getCustomers().toMap(null, null);
+            this.company.getCustomers().toMap(Customer::getName, Customer::getOrders);
 
         Assert.assertNotNull("customer name to orders", customerNameToOrders);
         Verify.assertSize("customer names", 3, customerNameToOrders);
@@ -59,13 +63,15 @@ public class Exercise9Test extends CompanyDomainForKata
     @Test
     public void mostExpensiveItem()
     {
-        MutableListMultimap<Double, Customer> multimap = null;
+        MutableListMultimap<Double, Customer> multimap =
+            this.company.getCustomers().groupBy(customer ->
+                customer.getOrders().asLazy().flatCollect(Order::getLineItems).collect(LineItem::getValue).max());
         Assert.assertEquals(3, multimap.size());
         Assert.assertEquals(2, multimap.keysView().size());
         Assert.assertEquals(
-                FastList.newListWith(
-                        this.company.getCustomerNamed("Fred"),
-                        this.company.getCustomerNamed("Bill")),
-                multimap.get(50.0));
+            FastList.newListWith(
+                this.company.getCustomerNamed("Fred"),
+                this.company.getCustomerNamed("Bill")),
+            multimap.get(50.0));
     }
 }

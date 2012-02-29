@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2012 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,8 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.block.procedure.ObjectIntProcedure;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.list.mutable.FastList;
-import com.gs.collections.impl.utility.ArrayIterate;
-import org.junit.Assert;
 
 /**
  * A company has a {@link MutableList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
@@ -55,13 +52,7 @@ public class Company
 
     public MutableList<Order> getOrders()
     {
-        Assert.fail("Refactor this code to use GS Collections as part of Exercise 4");
-        MutableList<Order> orders = FastList.newList();
-        for (Customer customer : this.customers)
-        {
-            orders.addAll(customer.getOrders());
-        }
-        return orders;
+        return this.customers.flatCollect(Customer::getOrders);
     }
 
     public Customer getMostRecentCustomer()
@@ -75,17 +66,7 @@ public class Company
         // Of course, normally one would not use an array.
         final Supplier[] currentSuppliers = this.suppliers;
         this.suppliers = new Supplier[currentSuppliers.length + 1];
-        ArrayIterate.forEachWithIndex(
-                currentSuppliers,
-                new ObjectIntProcedure<Supplier>()
-                {
-                    @Override
-                    public void value(Supplier eachSupplier, int index)
-                    {
-                        Company.this.suppliers[index] = currentSuppliers[index];
-                    }
-                }
-        );
+        System.arraycopy(currentSuppliers, 0, this.suppliers, 0, currentSuppliers.length);
         this.suppliers[this.suppliers.length - 1] = supplier;
     }
 
@@ -94,12 +75,11 @@ public class Company
         return this.suppliers;
     }
 
-    public Customer getCustomerNamed(String name)
+    public Customer getCustomerNamed(final String name)
     {
         /**
-         * Use a {@link Discriminator} to find a {@link Customer} with the name given.
+         * Use a {@link Predicate} to find a {@link Customer} with the name given.
          */
-        Assert.fail("Implement this method as part of Exercise 3");
-        return null;
+        return this.getCustomers().detect(customer -> name.equals(customer.getName()));
     }
 }

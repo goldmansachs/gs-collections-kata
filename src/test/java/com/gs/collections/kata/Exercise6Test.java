@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2012 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,7 @@
 
 package com.gs.collections.kata;
 
-import java.util.List;
-
 import com.gs.collections.api.list.MutableList;
-import com.gs.collections.impl.block.factory.Predicates;
 import com.gs.collections.impl.list.mutable.FastList;
 import com.gs.collections.impl.utility.Iterate;
 import org.junit.Assert;
@@ -30,27 +27,27 @@ public class Exercise6Test extends CompanyDomainForKata
     @Test
     public void filterOrderValues()
     {
-        List<Order> orders = this.company.getMostRecentCustomer().getOrders();
+        MutableList<Order> orders = this.company.getMostRecentCustomer().getOrders();
         /**
          * Same exercise but don't use static utility - refactor the type of orders and {@link Customer#getOrders()}
          * instead.
          * Get the order values that are greater than 1.5.
          */
-        MutableList<Double> orderValues = null;
-        MutableList<Double> filtered = orderValues.select(Predicates.greaterThan(1.5));
+        MutableList<Double> orderValues = orders.collect(Order::getValue);
+        MutableList<Double> filtered = orderValues.select(orderValue -> orderValue > 1.5);
         Assert.assertEquals(FastList.newListWith(372.5, 1.75), filtered);
     }
 
     @Test
     public void filterOrders()
     {
-        List<Order> orders = this.company.getMostRecentCustomer().getOrders();
+        MutableList<Order> orders = this.company.getMostRecentCustomer().getOrders();
         /**
          * Same exercise but don't use static utility - refactor the type of orders and {@link Customer#getOrders()}
          * instead.
          * Get the actual orders (not their double values) where those orders have a value greater than 2.0.
          */
-        MutableList<Order> filtered = null;
-        Assert.assertEquals(FastList.newListWith(Iterate.getFirst(this.company.getMostRecentCustomer().getOrders())), filtered);
+        MutableList<Order> filtered = orders.select(order -> order.getValue() > 2.0);
+        Assert.assertEquals(FastList.newListWith(this.company.getMostRecentCustomer().getOrders().getFirst()), filtered);
     }
 }

@@ -16,15 +16,11 @@
 
 package com.gs.collections.kata;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import com.gs.collections.api.block.function.Function;
-import com.gs.collections.api.block.predicate.Predicate;
-import com.gs.collections.impl.block.function.AddFunction;
-import com.gs.collections.impl.collection.mutable.CollectionAdapter;
-import com.gs.collections.impl.utility.Iterate;
+import com.gs.collections.api.bag.Bag;
+import com.gs.collections.api.bag.MutableBag;
+import com.gs.collections.impl.bag.mutable.HashBag;
 
 /**
  * Has a number, a {@link Customer}, a {@link List} of {@link LineItem}s, and a boolean that states whether or not the order
@@ -32,40 +28,11 @@ import com.gs.collections.impl.utility.Iterate;
  */
 public class Order
 {
-    public static final Function<Order, Double> TO_VALUE =
-            new Function<Order, Double>()
-            {
-                @Override
-                public Double valueOf(Order order)
-                {
-                    return order.getValue();
-                }
-            };
-
-    public static final Predicate<Order> IS_DELIVERED = new Predicate<Order>()
-    {
-        @Override
-        public boolean accept(Order order)
-        {
-            return order.isDelivered;
-        }
-    };
-
-    public static final Function<Order, Iterable<LineItem>> TO_LINE_ITEMS =
-            new Function<Order, Iterable<LineItem>>()
-            {
-                @Override
-                public Iterable<LineItem> valueOf(Order order)
-                {
-                    return order.lineItems;
-                }
-            };
-
     private static int nextOrderNumber = 1;
 
     private final int orderNumber;
-    private final List<LineItem> lineItems = new ArrayList<LineItem>();
     private boolean isDelivered;
+    private final MutableBag<LineItem> lineItems = HashBag.newBag();
 
     public Order()
     {
@@ -93,7 +60,7 @@ public class Order
         this.lineItems.add(aLineItem);
     }
 
-    public List<LineItem> getLineItems()
+    public Bag<LineItem> getLineItems()
     {
         return this.lineItems;
     }
@@ -106,15 +73,11 @@ public class Order
 
     public double getValue()
     {
-        Collection<Double> itemValues = Iterate.collect(this.lineItems, new Function<LineItem, Double>()
-        {
-            @Override
-            public Double valueOf(LineItem lineItem)
-            {
-                return lineItem.getValue();
-            }
-        });
+        return this.lineItems.injectInto(0.0, (accumulator, lineItem) -> accumulator + lineItem.getValue());
+    }
 
-        return CollectionAdapter.adapt(itemValues).injectInto(0.0, AddFunction.DOUBLE_TO_DOUBLE);
+    public void addLineItems(LineItem item, int count)
+    {
+        this.lineItems.addOccurrences(item, count);
     }
 }
