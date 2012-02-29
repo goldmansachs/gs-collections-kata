@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A company has a {@link ArrayList} of {@link com.gs.java.kata.Customer}s.  It has an array of {@link Supplier}s, and a name.
+ * A company has a {@link ArrayList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
  */
 public class Company
 {
@@ -78,7 +78,7 @@ public class Company
     public Customer getCustomerNamed(final String name)
     {
         /**
-         * Use a {@link Predicate} to find a {@link com.gs.java.kata.Customer} with the name given.
+         * Use a {@link Predicate} to find a {@link Customer} with the name given.
          */
         return this.getCustomers().filter(customer -> name.equals(customer.getName())).getFirst();
     }
