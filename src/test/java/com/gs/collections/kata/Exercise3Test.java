@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2012 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,20 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.block.predicate.Predicate;
-import com.gs.collections.api.list.MutableList;
-import com.gs.collections.impl.test.Verify;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.functions.Predicate;
+import java.util.functions.Predicates;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 public class Exercise3Test extends CompanyDomainForKata
 {
     /**
-     * Set up a {@link Predicate} that tests to see if a {@link Customer}'s city is "London"
+     * Set up a {@link com.gs.collections.api.block.predicate.Predicate} that tests to see if a {@link com.gs.collections.kata.Customer}'s city is "London"
      */
-    private static final Predicate<Customer> CUSTOMER_FROM_LONDON = null;
+    private static final Predicate<Customer> CUSTOMER_FROM_LONDON = customer -> "London".equals(customer.getCity());
 
     /**
      * Do any customers come from London? Use the Predicate {@link #CUSTOMER_FROM_LONDON}.
@@ -35,7 +37,7 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void doAnyCustomersLiveInLondon()
     {
-        boolean anyCustomersFromLondon = false;
+        boolean anyCustomersFromLondon = this.company.getCustomers().anyMatch(CUSTOMER_FROM_LONDON);
         Assert.assertTrue(anyCustomersFromLondon);
     }
 
@@ -45,7 +47,7 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void doAllCustomersLiveInLondon()
     {
-        boolean allCustomersFromLondon = true;
+        boolean allCustomersFromLondon = this.company.getCustomers().allMatch(CUSTOMER_FROM_LONDON);
         Assert.assertFalse(allCustomersFromLondon);
     }
 
@@ -55,7 +57,7 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void howManyCustomersLiveInLondon()
     {
-        int numberOfCustomerFromLondon = 0;
+        int numberOfCustomerFromLondon = this.company.getCustomers().filter(CUSTOMER_FROM_LONDON).into(new ArrayList<Customer>()).size();
         Assert.assertEquals("Should be 2 London customers", 2, numberOfCustomerFromLondon);
     }
 
@@ -66,8 +68,8 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void getLondonCustomers()
     {
-        MutableList<Customer> customersFromLondon = null;
-        Verify.assertSize("Should be 2 London customers", 2, customersFromLondon);
+        List<Customer> customersFromLondon = this.company.getCustomers().filter(CUSTOMER_FROM_LONDON).into(new ArrayList<Customer>());
+        Assert.assertEquals("Should be 2 London customers", 2, customersFromLondon.size());
     }
 
     /**
@@ -77,12 +79,12 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void getCustomersWhoDontLiveInLondon()
     {
-        MutableList<Customer> customersNotFromLondon = null;
-        Verify.assertSize("customers not from London", 1, customersNotFromLondon);
+        List<Customer> customersNotFromLondon = this.company.getCustomers().filter(Predicates.negate(CUSTOMER_FROM_LONDON)).into(new ArrayList<Customer>());
+        Assert.assertEquals("customers not from London", 1, customersNotFromLondon.size());
     }
 
     /**
-     * Implement {@link Company#getCustomerNamed(String)} and get this test to pass.
+     * Implement {@link com.gs.collections.kata.Company#getCustomerNamed(String)} and get this test to pass.
      */
     @Test
     public void findMary()
@@ -92,14 +94,14 @@ public class Exercise3Test extends CompanyDomainForKata
     }
 
     /**
-     * Implement {@link Company#getCustomerNamed(String)} and get this test to pass.
+     * Implement {@link com.gs.collections.kata.Company#getCustomerNamed(String)} and get this test to pass.
      */
     @Test
     public void findPete()
     {
         Customer pete = this.company.getCustomerNamed("Pete");
         Assert.assertNull(
-                "Should be null as there is no customer called Pete",
-                pete);
+            "Should be null as there is no customer called Pete",
+            pete);
     }
 }

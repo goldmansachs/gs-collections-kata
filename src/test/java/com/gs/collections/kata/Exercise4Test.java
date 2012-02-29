@@ -16,25 +16,25 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.list.MutableList;
-import com.gs.collections.api.set.MutableSet;
-import com.gs.collections.impl.list.mutable.FastList;
-import com.gs.collections.impl.set.mutable.UnifiedSet;
-import com.gs.collections.impl.test.Verify;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 public class Exercise4Test extends CompanyDomainForKata
 {
     /**
-     * Improve {@link Company#getOrders()} without breaking this test.
+     * Improve {@link com.gs.collections.kata.Company#getOrders()} without breaking this test.
      */
     @Test
     public void improveGetOrders()
     {
         // Delete this line - it's a reminder
-        Assert.fail("Improve getOrders() without breaking this test");
-        Verify.assertSize(5, this.company.getOrders());
+        Assert.assertEquals(5, this.company.getOrders().size());
     }
 
     /**
@@ -43,24 +43,25 @@ public class Exercise4Test extends CompanyDomainForKata
     @Test
     public void findItemNames()
     {
-        MutableList<LineItem> allOrderedLineItems = null;
-        MutableSet<String> actualItemNames = null;
+        List<LineItem> allOrderedLineItems =
+            this.company.getCustomers().flatMap(Customer::getOrders).flatMap(Order::getLineItems).into(new ArrayList<LineItem>());
+        Set<String> actualItemNames = allOrderedLineItems.map(LineItem::getName).into(new HashSet<String>());
 
-        Verify.assertInstanceOf(MutableSet.class, actualItemNames);
-        Verify.assertInstanceOf(String.class, actualItemNames.getFirst());
+        Assert.assertTrue(actualItemNames instanceof Set);
+        Assert.assertTrue(actualItemNames.getFirst() instanceof String);
 
-        MutableSet<String> expectedItemNames = UnifiedSet.newSetWith(
+        Set<String> expectedItemNames = new HashSet(Arrays.asList(
                 "Shed", "big shed", "bowl", "cat", "cup", "chair", "dog",
-                "goldfish", "gnome", "saucer", "shed", "sofa", "table");
+                "goldfish", "gnome", "saucer", "shed", "sofa", "table"));
         Assert.assertEquals(expectedItemNames, actualItemNames);
     }
 
     @Test
     public void findCustomerNames()
     {
-        MutableList<String> names = null;
+        List<String> names = this.company.getCustomers().map(Customer::getName).into(new ArrayList<String>());
 
-        MutableList<String> expectedNames = FastList.newListWith("Fred", "Mary", "Bill");
+        List<String> expectedNames = Arrays.asList("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, names);
     }
 }

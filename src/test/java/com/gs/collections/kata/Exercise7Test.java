@@ -16,9 +16,15 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.list.MutableList;
-import com.gs.collections.impl.block.factory.Predicates;
-import com.gs.collections.impl.test.Verify;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Comparators;
+import java.util.List;
+import java.util.functions.Block;
+import java.util.functions.Predicates;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -26,15 +32,16 @@ public class Exercise7Test extends CompanyDomainForKata
 {
     /**
      * Get a list of the customers' total order values, sorted. Check out the implementation of {@link
-     * Customer#getTotalOrderValue()} and {@link Order#getValue()} .
+     * com.gs.collections.kata.Customer#getTotalOrderValue()} and {@link com.gs.collections.kata.Order#getValue()} .
      */
     @Test
     public void sortedTotalOrderValue()
     {
-        MutableList<Double> sortedTotalValues = null;
+        List<Double> totalValues = this.company.getCustomers().map(Customer::getTotalOrderValue).into(new ArrayList<Double>());
+        List<Double> sortedTotalValues = totalValues.sorted(Comparators.<Double>naturalOrder()).into(new ArrayList<Double>());
 
         // Don't forget the handy utility methods getFirst() and getLast()...
-        Assert.assertEquals("Highest total order value", Double.valueOf(857.0), sortedTotalValues.getLast());
+        Assert.assertEquals("Highest total order value", Double.valueOf(857.0), sortedTotalValues.get(sortedTotalValues.size() - 1));
         Assert.assertEquals("Lowest total order value", Double.valueOf(71.0), sortedTotalValues.getFirst());
     }
 
@@ -44,7 +51,7 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void maximumTotalOrderValue()
     {
-        Double maximumTotalOrderValue = null;
+        Double maximumTotalOrderValue = Collections.max(this.company.getCustomers().map(Customer::getTotalOrderValue).into(new ArrayList<Double>()));
         Assert.assertEquals("max value", Double.valueOf(857.0), maximumTotalOrderValue);
     }
 
@@ -54,7 +61,8 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void customerWithMaxTotalOrderValue()
     {
-        Customer customerWithMaxTotalOrderValue = null;
+        Comparator<Customer> comparator = Comparators.<Customer>comparing(Customer::getTotalOrderValue);
+        Customer customerWithMaxTotalOrderValue = Collections.max(this.company.getCustomers(), comparator);
         Assert.assertEquals(this.company.getCustomerNamed("Mary"), customerWithMaxTotalOrderValue);
     }
 
@@ -64,23 +72,32 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void supplierNamesAsTildeDelimitedString()
     {
-        String tildeSeparatedNames = null;
+        List<String> names = Arrays.asList(this.company.getSuppliers()).map(Supplier::getName).into(new ArrayList<String>());
+        final StringBuilder makeString = new StringBuilder();
+        Block<String> block = each -> {makeString.append(each).append("~");};
+        names.forEach(block);
+        String tildeSeparatedNames = makeString.substring(0, makeString.length() - 1);
         Assert.assertEquals(
-                "tilde separated names",
-                "Shedtastic~Splendid Crocks~Annoying Pets~Gnomes 'R' Us~Furniture Hamlet~SFD~Doxins",
-                tildeSeparatedNames);
+            "tilde separated names",
+            "Shedtastic~Splendid Crocks~Annoying Pets~Gnomes 'R' Us~Furniture Hamlet~SFD~Doxins",
+            tildeSeparatedNames);
     }
 
     /**
      * Deliver all orders going to customers from London.
      *
-     * @see Order#deliver()
+     * @see com.gs.collections.kata.Order#deliver()
      */
     @Test
     public void deliverOrdersToLondon()
     {
-        Verify.assertAllSatisfy(this.company.getCustomerNamed("Fred").getOrders(), Order.IS_DELIVERED);
-        Verify.assertAllSatisfy(this.company.getCustomerNamed("Mary").getOrders(), Predicates.not(Order.IS_DELIVERED));
-        Verify.assertAllSatisfy(this.company.getCustomerNamed("Bill").getOrders(), Order.IS_DELIVERED);
+        Block<Order> deliver = Order::deliver;
+        this.company.getCustomers()
+                .filter(customer -> "London".equals(customer.getCity()))
+                .flatMap(Customer::getOrders)
+                .forEach(deliver);
+        Assert.assertTrue(this.company.getCustomerNamed("Fred").getOrders().allMatch(Order::isDelivered));
+        Assert.assertTrue(this.company.getCustomerNamed("Mary").getOrders().allMatch(Predicates.<Order>negate((Order::isDelivered))));
+        Assert.assertTrue(this.company.getCustomerNamed("Bill").getOrders().allMatch(Order::isDelivered));
     }
 }

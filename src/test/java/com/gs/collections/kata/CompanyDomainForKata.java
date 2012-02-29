@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2012 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,12 @@
  */
 
 package com.gs.collections.kata;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.functions.Mapper;
 
 import org.junit.Before;
 
@@ -50,14 +56,10 @@ public abstract class CompanyDomainForKata
          * TODO 8: Refactor Order and its API so this repetition is not necessary.
          */
         // TODO 8: Add 3 cups at 1.5 each to the order
-        fredOrder.addLineItem(new LineItem("cup", 1.5));
-        fredOrder.addLineItem(new LineItem("cup", 1.5));
-        fredOrder.addLineItem(new LineItem("cup", 1.5));
+        fredOrder.addLineItems(new LineItem("cup", 1.5), 3);
 
         // TODO 8: Add 3 saucers at 1.0 each to the order
-        fredOrder.addLineItem(new LineItem("saucer", 1.0));
-        fredOrder.addLineItem(new LineItem("saucer", 1.0));
-        fredOrder.addLineItem(new LineItem("saucer", 1.0));
+        fredOrder.addLineItems(new LineItem("saucer", 1.0), 3);
 
         fredOrder.addLineItem(new LineItem("chair", 12.50));
         fredOrder.addLineItem(new LineItem("table", 1.0));
@@ -71,16 +73,10 @@ public abstract class CompanyDomainForKata
         maryOrder.addLineItem(new LineItem("big shed", 500.0));
 
         // TODO 8: Add 4 cups at 1.50 each to the order
-        maryOrder.addLineItem(new LineItem("cup", 1.5));
-        maryOrder.addLineItem(new LineItem("cup", 1.5));
-        maryOrder.addLineItem(new LineItem("cup", 1.5));
-        maryOrder.addLineItem(new LineItem("cup", 1.5));
+        maryOrder.addLineItems(new LineItem("cup", 1.5), 4);
 
         // TODO 8: Add 4 saucers at 1.50 each to the order
-        maryOrder.addLineItem(new LineItem("saucer", 1.5));
-        maryOrder.addLineItem(new LineItem("saucer", 1.5));
-        maryOrder.addLineItem(new LineItem("saucer", 1.5));
-        maryOrder.addLineItem(new LineItem("saucer", 1.5));
+        maryOrder.addLineItems(new LineItem("saucer", 1.5), 4);
 
         maryOrder.addLineItem(new LineItem("sofa", 120.0));
         maryOrder.addLineItem(new LineItem("dog", 75.0));
@@ -91,12 +87,7 @@ public abstract class CompanyDomainForKata
 
         Order billOrder1 = new Order();
         billOrder1.addLineItem(new LineItem("shed", 50.0));
-
-        // TODO 8: Add 43 gnomes at 7.50 each to the order
-        for (int i = 0; i < 43; i++)
-        {
-            billOrder1.addLineItem(new LineItem("gnome", 7.50));
-        }
+        billOrder1.addLineItems(new LineItem("gnome", 7.50), 43);
 
         Order billOrder2 = new Order();
         billOrder2.addLineItem(new LineItem("bowl", 1.25));
@@ -111,5 +102,22 @@ public abstract class CompanyDomainForKata
         bill.addOrder(billOrder3);
 
         this.company.addCustomer(bill);
+    }
+
+    public <K, V> Map<K, List<V>> groupBy(Iterable<V> values, Mapper<V, K> mapper)
+    {
+        Map<K, List<V>> multimap = new HashMap<>();
+        for (V value : values)
+        {
+            K key = mapper.map(value);
+            List<V> listValue = multimap.get(key);
+            if (listValue == null)
+            {
+                listValue = new ArrayList<>();
+                multimap.put(key, listValue);
+            }
+            listValue.add(value);
+        }
+        return multimap;
     }
 }

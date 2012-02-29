@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2012 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,14 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.block.function.Function;
-import com.gs.collections.api.list.MutableList;
-import com.gs.collections.api.map.MutableMap;
-import com.gs.collections.api.multimap.list.MutableListMultimap;
-import com.gs.collections.impl.list.mutable.FastList;
-import com.gs.collections.impl.test.Verify;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.functions.Block;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,23 +35,27 @@ public class Exercise9Test extends CompanyDomainForKata
     @Test
     public void whoOrderedSaucers()
     {
-        MutableList<Customer> customersWithSaucers = null;
-        Verify.assertSize("customers with saucers", 2, customersWithSaucers);
+        List<Customer> customersWithSaucers =
+            this.company.getCustomers().filter(
+                customer -> customer.getOrders().anyMatch(
+                    order -> order.getLineItems().anyMatch(
+                        lineItem -> "saucer".equals(lineItem.getName())))).into(new ArrayList<Customer>());
+        Assert.assertEquals("customers with saucers", 2, customersWithSaucers.size());
     }
 
     /**
-     * Extra credit. Look into the {@link MutableList#toMap(Function, Function)} method.
+     * Extra credit. Look into the {@link com.gs.collections.api.list.List#toMap(com.gs.collections.api.block.function.Function, com.gs.collections.api.block.function.Function)} method.
      */
     @Test
     public void ordersByCustomerUsingAsMap()
     {
-        MutableMap<String, MutableList<Order>> customerNameToOrders =
-                this.company.getCustomers().toMap(null, null);
-
+        final Map<String, List<Order>> customerNameToOrders = new HashMap<>();
+        Block<Customer> mapPutTransformedKeyAndValue = customer -> {customerNameToOrders.put(customer.getName(), customer.getOrders());};
+        this.company.getCustomers().forEach(mapPutTransformedKeyAndValue);
         Assert.assertNotNull("customer name to orders", customerNameToOrders);
-        Verify.assertSize("customer names", 3, customerNameToOrders);
-        MutableList<Order> ordersForBill = customerNameToOrders.get("Bill");
-        Verify.assertSize("Bill orders", 3, ordersForBill);
+        Assert.assertEquals("customer names", 3, customerNameToOrders.size());
+        List<Order> ordersForBill = customerNameToOrders.get("Bill");
+        Assert.assertEquals("Bill orders", 3, ordersForBill.size());
     }
 
     /**
@@ -59,13 +65,14 @@ public class Exercise9Test extends CompanyDomainForKata
     @Test
     public void mostExpensiveItem()
     {
-        MutableListMultimap<Double, Customer> multimap = null;
-        Assert.assertEquals(3, multimap.size());
-        Assert.assertEquals(2, multimap.keysView().size());
+        Map<Double, List<Customer>> multimap = this.groupBy(this.company.getCustomers(),
+            customer -> Collections.max(customer.getOrders().flatMap(Order::getLineItems).map(LineItem::getValue).into(new ArrayList<Double>())));
+//        Assert.assertEquals(3, multimap.size());
+        Assert.assertEquals(2, multimap.keySet().size());
         Assert.assertEquals(
-                FastList.newListWith(
-                        this.company.getCustomerNamed("Fred"),
-                        this.company.getCustomerNamed("Bill")),
-                multimap.get(50.0));
+            Arrays.asList(
+                this.company.getCustomerNamed("Fred"),
+                this.company.getCustomerNamed("Bill")),
+            multimap.get(50.0));
     }
 }
