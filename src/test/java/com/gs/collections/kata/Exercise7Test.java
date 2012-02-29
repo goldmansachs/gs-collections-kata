@@ -32,7 +32,7 @@ public class Exercise7Test extends CompanyDomainForKata
 {
     /**
      * Get a list of the customers' total order values, sorted. Check out the implementation of {@link
-     * com.gs.collections.kata.Customer#getTotalOrderValue()} and {@link com.gs.collections.kata.Order#getValue()} .
+     * Customer#getTotalOrderValue()} and {@link Order#getValue()} .
      */
     @Test
     public void sortedTotalOrderValue()
@@ -86,7 +86,7 @@ public class Exercise7Test extends CompanyDomainForKata
     /**
      * Deliver all orders going to customers from London.
      *
-     * @see com.gs.collections.kata.Order#deliver()
+     * @see Order#deliver()
      */
     @Test
     public void deliverOrdersToLondon()

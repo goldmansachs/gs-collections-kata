@@ -27,7 +27,7 @@ import org.junit.Test;
 public class Exercise3Test extends CompanyDomainForKata
 {
     /**
-     * Set up a {@link com.gs.collections.api.block.predicate.Predicate} that tests to see if a {@link com.gs.collections.kata.Customer}'s city is "London"
+     * Set up a {@link com.gs.collections.api.block.predicate.Predicate} that tests to see if a {@link Customer}'s city is "London"
      */
     private static final Predicate<Customer> CUSTOMER_FROM_LONDON = customer -> "London".equals(customer.getCity());
 
@@ -84,7 +84,7 @@ public class Exercise3Test extends CompanyDomainForKata
     }
 
     /**
-     * Implement {@link com.gs.collections.kata.Company#getCustomerNamed(String)} and get this test to pass.
+     * Implement {@link Company#getCustomerNamed(String)} and get this test to pass.
      */
     @Test
     public void findMary()
@@ -94,7 +94,7 @@ public class Exercise3Test extends CompanyDomainForKata
     }
 
     /**
-     * Implement {@link com.gs.collections.kata.Company#getCustomerNamed(String)} and get this test to pass.
+     * Implement {@link Company#getCustomerNamed(String)} and get this test to pass.
      */
     @Test
     public void findPete()

@@ -30,7 +30,7 @@ public class Exercise6Test extends CompanyDomainForKata
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
         /**
-         * Same exercise but don't use static utility - refactor the type of orders and {@link com.gs.collections.kata.Customer#getOrders()}
+         * Same exercise but don't use static utility - refactor the type of orders and {@link Customer#getOrders()}
          * instead.
          * Get the order values that are greater than 1.5.
          */
@@ -43,7 +43,7 @@ public class Exercise6Test extends CompanyDomainForKata
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
         /**
-         * Same exercise but don't use static utility - refactor the type of orders and {@link com.gs.collections.kata.Customer#getOrders()}
+         * Same exercise but don't use static utility - refactor the type of orders and {@link Customer#getOrders()}
          * instead.
          * Get the actual orders (not their double values) where those orders have a value greater than 2.0.
          */

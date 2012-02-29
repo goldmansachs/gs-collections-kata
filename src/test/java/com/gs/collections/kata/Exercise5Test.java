@@ -27,7 +27,7 @@ import org.junit.Test;
 public class Exercise5Test extends CompanyDomainForKata
 {
     /**
-     * Solve this without changing the return type of {@link com.gs.collections.kata.Company#getSuppliers()}. Find the appropriate method on
+     * Solve this without changing the return type of {@link Company#getSuppliers()}. Find the appropriate method on
      * {@link com.gs.collections.impl.ArrayIterate}.
      */
     @Test
@@ -59,7 +59,7 @@ public class Exercise5Test extends CompanyDomainForKata
     }
 
     /**
-     * Try to solve this without changing the return type of {@link com.gs.collections.kata.Supplier#getItemNames()}.
+     * Try to solve this without changing the return type of {@link Supplier#getItemNames()}.
      */
     @Test
     public void whoSuppliesSandwichToaster()

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2012 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ public class Exercise2Test extends CompanyDomainForKata
     {
         /**
          * Get the name of each of the company's customers. This time move the {@link Function} to a
-         * constant on {@link com.gs.collections.kata.Customer}.
+         * constant on {@link Customer}.
          */
         List<String> customerNames = this.company.getCustomers().map(Customer::getName).into(new ArrayList<String>());
 
@@ -43,7 +43,7 @@ public class Exercise2Test extends CompanyDomainForKata
     {
         /**
          * Get the city for each of the company's customers. This time move the {@link Function} to a
-         * constant on {@link com.gs.collections.kata.Customer}.
+         * constant on {@link Customer}.
          */
         List<String> customerCities = this.company.getCustomers().map(Customer::getCity).into(new ArrayList<String>());
 

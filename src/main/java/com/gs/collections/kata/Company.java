@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A company has a {@link java.util.ArrayList} of {@link com.gs.java.kata.Customer}s.  It has an array of {@link Supplier}s, and a name.
+ * A company has a {@link ArrayList} of {@link com.gs.java.kata.Customer}s.  It has an array of {@link Supplier}s, and a name.
  */
 public class Company
 {

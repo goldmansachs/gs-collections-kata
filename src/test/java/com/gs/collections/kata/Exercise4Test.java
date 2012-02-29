@@ -28,7 +28,7 @@ import org.junit.Test;
 public class Exercise4Test extends CompanyDomainForKata
 {
     /**
-     * Improve {@link com.gs.collections.kata.Company#getOrders()} without breaking this test.
+     * Improve {@link Company#getOrders()} without breaking this test.
      */
     @Test
     public void improveGetOrders()

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.functions.Block;
 
+import com.gs.collections.api.block.function.Function;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -44,7 +45,7 @@ public class Exercise9Test extends CompanyDomainForKata
     }
 
     /**
-     * Extra credit. Look into the {@link com.gs.collections.api.list.List#toMap(com.gs.collections.api.block.function.Function, com.gs.collections.api.block.function.Function)} method.
+     * Extra credit. Look into the {@link com.gs.collections.api.list.List#toMap(Function, Function)} method.
      */
     @Test
     public void ordersByCustomerUsingAsMap()
