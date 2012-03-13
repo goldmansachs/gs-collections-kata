@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.Comparators;
 import java.util.List;
 import java.util.functions.Block;
+import java.util.functions.Predicate;
 import java.util.functions.Predicates;
 
 import org.junit.Assert;
@@ -51,7 +52,8 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void maximumTotalOrderValue()
     {
-        Double maximumTotalOrderValue = Collections.max(this.company.getCustomers().map(Customer::getTotalOrderValue).into(new ArrayList<Double>()));
+        Iterable<Double> values = this.company.getCustomers().map(Customer::getTotalOrderValue);
+        Double maximumTotalOrderValue = values.reduce(values.getFirst(), (left, right) -> Math.max(left, right));
         Assert.assertEquals("max value", Double.valueOf(857.0), maximumTotalOrderValue);
     }
 
@@ -62,8 +64,15 @@ public class Exercise7Test extends CompanyDomainForKata
     public void customerWithMaxTotalOrderValue()
     {
         Comparator<Customer> comparator = Comparators.<Customer>comparing(Customer::getTotalOrderValue);
-        Customer customerWithMaxTotalOrderValue = Collections.max(this.company.getCustomers(), comparator);
-        Assert.assertEquals(this.company.getCustomerNamed("Mary"), customerWithMaxTotalOrderValue);
+        Customer customerWithMaxTotalOrderValue1 = Collections.max(this.company.getCustomers(), comparator);
+        Customer mary = this.company.getCustomerNamed("Mary");
+        Assert.assertEquals(mary, customerWithMaxTotalOrderValue1);
+        Customer customerWithMaxTotalOrderValue2 =
+            this.company.getCustomers().reduce(
+                null,
+                (left, right) ->
+                    (left != null && left.getTotalOrderValue() >= right.getTotalOrderValue()) ? left : right);
+        Assert.assertEquals(mary, customerWithMaxTotalOrderValue2);
     }
 
     /**
@@ -72,11 +81,10 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void supplierNamesAsTildeDelimitedString()
     {
-        List<String> names = Arrays.asList(this.company.getSuppliers()).map(Supplier::getName).into(new ArrayList<String>());
-        final StringBuilder makeString = new StringBuilder();
-        Block<String> block = each -> {makeString.append(each).append("~");};
-        names.forEach(block);
-        String tildeSeparatedNames = makeString.substring(0, makeString.length() - 1);
+        String tildeSeparatedNames =
+            Arrays.asList(this.company.getSuppliers())
+                .map(Supplier::getName)
+                .reduce(null, (left, right) -> (left == null ? "" : left + "~") + right);
         Assert.assertEquals(
             "tilde separated names",
             "Shedtastic~Splendid Crocks~Annoying Pets~Gnomes 'R' Us~Furniture Hamlet~SFD~Doxins",
@@ -96,8 +104,9 @@ public class Exercise7Test extends CompanyDomainForKata
                 .filter(customer -> "London".equals(customer.getCity()))
                 .flatMap(Customer::getOrders)
                 .forEach(deliver);
-        Assert.assertTrue(this.company.getCustomerNamed("Fred").getOrders().allMatch(Order::isDelivered));
-        Assert.assertTrue(this.company.getCustomerNamed("Mary").getOrders().allMatch(Predicates.<Order>negate((Order::isDelivered))));
-        Assert.assertTrue(this.company.getCustomerNamed("Bill").getOrders().allMatch(Order::isDelivered));
+        Predicate<Order> isDelivered = Order::isDelivered;
+        Assert.assertTrue(this.company.getCustomerNamed("Fred").getOrders().allMatch(isDelivered));
+        Assert.assertTrue(this.company.getCustomerNamed("Mary").getOrders().allMatch(isDelivered.negate()));
+        Assert.assertTrue(this.company.getCustomerNamed("Bill").getOrders().allMatch(isDelivered));
     }
 }
