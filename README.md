@@ -1,0 +1,1 @@
+This branch contains the same solutions to the exercises as the [solutions branch](https://github.com/goldmansachs/gs-collections-kata/tree/solutions-java8) but does not use GS Collections. It uses the same language features in Java 8 and also uses the updated Java Collections Framework. We used an early sandbox version of Java 8 so the syntax is subject to change.
