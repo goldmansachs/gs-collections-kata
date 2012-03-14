@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GSCollectionsKata.iml" filepath="$PROJECT_DIR$/GSCollectionsKata.iml" />
-      <module fileurl="file://$PROJECT_DIR$/src/GSCollectionsKata.iml" filepath="$PROJECT_DIR$/src/GSCollectionsKata.iml" />
     </modules>
   </component>
 </project>
