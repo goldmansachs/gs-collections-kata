@@ -16,13 +16,12 @@
 
 package com.gs.collections.kata;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.gs.collections.api.multimap.Multimap;
-import com.gs.collections.impl.list.fixed.ArrayAdapter;
-import com.gs.collections.impl.test.Verify;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -48,11 +47,26 @@ public class Exercise8Test extends CompanyDomainForKata
     @Test
     public void mapOfItemsToSuppliers()
     {
-        /**
-         * Change itemsToSuppliers to a MutableMultimap<String, Supplier> - Too verbose to write using JDK classes
-         */
-        final Multimap<String, Supplier> itemsToSuppliers =
-            ArrayAdapter.adapt(this.company.getSuppliers()).groupByEach(supplier -> ArrayAdapter.adapt(supplier.getItemNames()));
-        Verify.assertIterableSize("should be 2 suppliers for sofa", 2, itemsToSuppliers.get("sofa"));
+        final Map<String, List<Supplier>> itemsToSuppliers = new HashMap<>();
+
+        Arrays.asList(this.company.getSuppliers()).forEach(supplier ->
+            Arrays.asList(supplier.getItemNames()).forEach( itemName ->
+                {
+                    List<Supplier> suppliersForItem;
+                    if (itemsToSuppliers.containsKey(itemName))
+                    {
+                        suppliersForItem = itemsToSuppliers.get(itemName);
+                    }
+                    else
+                    {
+                        suppliersForItem = new ArrayList<>();
+                        itemsToSuppliers.put(itemName, suppliersForItem);
+                    }
+
+                    suppliersForItem.add(supplier);
+                }
+            )
+        );
+        Assert.assertEquals("should be 2 suppliers for sofa", 2, itemsToSuppliers.get("sofa").size());
     }
 }
