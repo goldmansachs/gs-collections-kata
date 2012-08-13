@@ -21,6 +21,7 @@ import java.util.List;
 import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.list.mutable.FastList;
+import com.gs.collections.impl.utility.ArrayIterate;
 import com.gs.collections.impl.utility.Iterate;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class Exercise5Test extends CompanyDomainForKata
 {
     /**
      * Solve this without changing the return type of {@link Company#getSuppliers()}. Find the appropriate method on
-     * {@link com.gs.collections.impl.ArrayIterate}.
+     * {@link ArrayIterate}.
      */
     @Test
     public void findSupplierNames()

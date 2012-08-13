@@ -35,12 +35,20 @@ public class Customer
         @Override
         public String valueOf(Customer customer)
         {
-            Assert.fail();
-            return null;
+//            Assert.fail("Replace with the implementation of the Function.");
+            return customer.getName();
         }
     };
 
-    public static final Function<Customer, String> TO_CITY = null;
+    public static final Function<Customer, String> TO_CITY = new Function<Customer, String>()
+    {
+      
+      @Override
+      public String valueOf(Customer customer)
+      {
+        return customer.getCity();
+      }
+    };
 
     public static final Function<Customer, Double> TO_TOTAL_ORDER_VALUE =
             new Function<Customer, Double>()
