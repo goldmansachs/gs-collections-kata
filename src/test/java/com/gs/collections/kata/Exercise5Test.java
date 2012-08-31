@@ -16,6 +16,8 @@
 
 package com.gs.collections.kata;
 
+import java.util.List;
+
 import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.block.factory.Predicates;
@@ -83,7 +85,7 @@ public class Exercise5Test extends CompanyDomainForKata
     @Test
     public void filterOrderValues()
     {
-        MutableList<Order> orders = this.company.getMostRecentCustomer().getOrders();
+        List<Order> orders = this.company.getMostRecentCustomer().getOrders();
         /**
          * Get the order values that are greater than 1.5.
          */
@@ -95,7 +97,7 @@ public class Exercise5Test extends CompanyDomainForKata
     @Test
     public void filterOrders()
     {
-        MutableList<Order> orders = this.company.getMostRecentCustomer().getOrders();
+        List<Order> orders = this.company.getMostRecentCustomer().getOrders();
         /**
          * Get the actual orders (not their double values) where those orders have a value greater than 2.0.
          */
