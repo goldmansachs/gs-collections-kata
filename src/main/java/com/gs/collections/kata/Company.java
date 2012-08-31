@@ -17,10 +17,8 @@
 package com.gs.collections.kata;
 
 import com.gs.collections.api.block.predicate.Predicate;
-import com.gs.collections.api.block.procedure.ObjectIntProcedure;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.list.mutable.FastList;
-import com.gs.collections.impl.utility.ArrayIterate;
 import org.junit.Assert;
 
 /**
@@ -74,19 +72,10 @@ public class Company
     {
         // need to replace the current array of suppliers with another, larger array
         // Of course, normally one would not use an array.
+
         final Supplier[] currentSuppliers = this.suppliers;
         this.suppliers = new Supplier[currentSuppliers.length + 1];
-        ArrayIterate.forEachWithIndex(
-                currentSuppliers,
-                new ObjectIntProcedure<Supplier>()
-                {
-                    @Override
-                    public void value(Supplier eachSupplier, int index)
-                    {
-                        Company.this.suppliers[index] = currentSuppliers[index];
-                    }
-                }
-        );
+        System.arraycopy(currentSuppliers, 0, this.suppliers, 0, currentSuppliers.length);
         this.suppliers[this.suppliers.length - 1] = supplier;
     }
 
