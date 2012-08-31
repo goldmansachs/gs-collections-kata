@@ -32,7 +32,7 @@ public class Exercise5Test extends CompanyDomainForKata
 {
     /**
      * Solve this without changing the return type of {@link Company#getSuppliers()}. Find the appropriate method on
-     * {@link com.gs.collections.impl.ArrayIterate}.
+     * {@link ArrayIterate}.
      */
     @Test
     public void findSupplierNames()
