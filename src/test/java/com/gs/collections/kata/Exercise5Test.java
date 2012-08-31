@@ -27,8 +27,7 @@ import org.junit.Test;
 public class Exercise5Test extends CompanyDomainForKata
 {
     /**
-     * Solve this without changing the return type of {@link Company#getSuppliers()}. Find the appropriate method on
-     * {@link com.gs.collections.impl.ArrayIterate}.
+     * Solve this without changing the return type of {@link Company#getSuppliers()}.
      */
     @Test
     public void findSupplierNames()
@@ -47,7 +46,7 @@ public class Exercise5Test extends CompanyDomainForKata
     }
 
     /**
-     * Create a {@link com.gs.collections.api.block.predicate.Predicate} for Suppliers that supply more than 2 items. Find the number of suppliers that
+     * Create a {@link Predicate} for Suppliers that supply more than 2 items. Find the number of suppliers that
      * satisfy that Predicate.
      */
     @Test
