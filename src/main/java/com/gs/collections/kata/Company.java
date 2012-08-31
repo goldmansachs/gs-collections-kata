@@ -64,6 +64,7 @@ public class Company
     {
         // need to replace the current array of suppliers with another, larger array
         // Of course, normally one would not use an array.
+
         final Supplier[] currentSuppliers = this.suppliers;
         this.suppliers = new Supplier[currentSuppliers.length + 1];
         System.arraycopy(currentSuppliers, 0, this.suppliers, 0, currentSuppliers.length);
