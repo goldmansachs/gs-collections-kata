@@ -19,6 +19,7 @@ package com.gs.collections.kata;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.block.factory.Predicates;
 import com.gs.collections.impl.list.mutable.FastList;
+import com.gs.collections.impl.test.Verify;
 import com.gs.collections.impl.utility.Iterate;
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,6 +36,9 @@ public class Exercise6Test extends CompanyDomainForKata
         MutableList<Double> orderValues = orders.collect(Order.TO_VALUE);
         MutableList<Double> filtered = orderValues.select(Predicates.greaterThan(1.5));
         Assert.assertEquals(FastList.newListWith(372.5, 1.75), filtered);
+        Verify.assertInstanceOf(MutableList.class, this.company.getMostRecentCustomer().getOrders());
+        this.company.getMostRecentCustomer().getOrders().add(null);
+        Verify.assertContains("Don't return a copy from Customer.getOrders(). The field should be a MutableList.", null, this.company.getMostRecentCustomer().getOrders());
     }
 
     @Test
@@ -46,5 +50,8 @@ public class Exercise6Test extends CompanyDomainForKata
          */
         MutableList<Order> filtered = orders.select(Predicates.attributeGreaterThan(Order.TO_VALUE, 2.0));
         Assert.assertEquals(FastList.newListWith(Iterate.getFirst(this.company.getMostRecentCustomer().getOrders())), filtered);
+        Verify.assertInstanceOf(MutableList.class, this.company.getMostRecentCustomer().getOrders());
+        this.company.getMostRecentCustomer().getOrders().add(null);
+        Verify.assertContains("Don't return a copy from Customer.getOrders(). The field should be a MutableList.", null, this.company.getMostRecentCustomer().getOrders());
     }
 }
