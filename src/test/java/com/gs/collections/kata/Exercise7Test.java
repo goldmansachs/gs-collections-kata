@@ -16,6 +16,7 @@
 
 package com.gs.collections.kata;
 
+import com.gs.collections.api.DoubleIterable;
 import com.gs.collections.api.block.procedure.Procedure;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.block.factory.Predicates;
@@ -33,11 +34,13 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void sortedTotalOrderValue()
     {
-        MutableList<Double> sortedTotalValues = this.company.getCustomers().collect(Customer::getTotalOrderValue).toSortedList();
+        DoubleIterable totalValues = this.company.getCustomers()
+            .asLazy()
+            .collectDouble(Customer::getTotalOrderValue);
 
         // Don't forget the handy utility methods getFirst() and getLast()...
-        Assert.assertEquals("Highest total order value", Double.valueOf(857.0), sortedTotalValues.getLast());
-        Assert.assertEquals("Lowest total order value", Double.valueOf(71.0), sortedTotalValues.getFirst());
+        Assert.assertEquals("Highest total order value", 857.0d, totalValues.max(), 0.0d);
+        Assert.assertEquals("Lowest total order value", 71.0d, totalValues.min(), 0.0d);
     }
 
     /**
@@ -46,8 +49,8 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void maximumTotalOrderValue()
     {
-        Double maximumTotalOrderValue = this.company.getCustomers().collect(Customer::getTotalOrderValue).max();
-        Assert.assertEquals("max value", Double.valueOf(857.0), maximumTotalOrderValue);
+        double maximumTotalOrderValue = this.company.getCustomers().asLazy().collectDouble(Customer::getTotalOrderValue).max();
+        Assert.assertEquals("max value", 857.0d, maximumTotalOrderValue, 0.0d);
     }
 
     /**
@@ -83,6 +86,7 @@ public class Exercise7Test extends CompanyDomainForKata
     {
         Procedure<Order> deliver = Order::deliver;
         this.company.getCustomers()
+                .asLazy()
                 .select(customer -> "London".equals(customer.getCity()))
                 .flatCollect(Customer::getOrders)
                 .forEach(deliver);

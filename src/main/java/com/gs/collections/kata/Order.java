@@ -73,7 +73,7 @@ public class Order
 
     public double getValue()
     {
-        return this.lineItems.injectInto(0.0, (accumulator, lineItem) -> accumulator + lineItem.getValue());
+        return this.lineItems.sumOfDouble(LineItem::getValue);
     }
 
     public void addLineItems(LineItem item, int count)

@@ -80,13 +80,17 @@ public class Exercise5Test extends CompanyDomainForKata
     @Test
     public void filterOrderValues()
     {
-        List<Order> orders = this.company.getMostRecentCustomer().getOrders();
         /**
          * Get the order values that are greater than 1.5.
          */
-        MutableList<Double> orderValues = ListIterate.collect(orders, Order::getValue);
-        MutableList<Double> filtered = orderValues.select(orderValue -> orderValue > 1.5);
-        Assert.assertEquals(FastList.newListWith(372.5, 1.75), filtered);
+        double[] orderValues = this.company
+                .getMostRecentCustomer()
+                .getOrders()
+                .asLazy()
+                .select(order -> order.getValue() > 1.5)
+                .collectDouble(Order::getValue)
+                .toSortedArray();
+        Assert.assertArrayEquals(new double[]{1.75d, 372.5}, orderValues, 0.0d);
     }
 
     @Test

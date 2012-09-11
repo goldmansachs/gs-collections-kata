@@ -56,6 +56,6 @@ public class Customer
 
     public double getTotalOrderValue()
     {
-        return this.orders.injectInto(0.0, (accumulator, order) -> accumulator + order.getValue());
+        return this.orders.sumOfDouble(Order::getValue);
     }
 }
