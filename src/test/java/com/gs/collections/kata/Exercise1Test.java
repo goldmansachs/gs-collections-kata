@@ -35,9 +35,9 @@ public class Exercise1Test extends CompanyDomainForKata
          * Get the name of each of the company's customers.
          */
         List<Customer> customers = this.company.getCustomers();
-        List<String> customerNames1 = customers.map(nameFunction).into(new ArrayList<String>());
-        List<String> customerNames2 = customers.map(customer -> customer.getName()).into(new ArrayList<String>());
-        List<String> customerNames3 = customers.map(Customer::getName).into(new ArrayList<String>());
+        List<String> customerNames1 = customers.stream().map(nameFunction).into(new ArrayList<String>());
+        List<String> customerNames2 = customers.stream().map(customer -> customer.getName()).into(new ArrayList<String>());
+        List<String> customerNames3 = customers.stream().map(Customer::getName).into(new ArrayList<String>());
 
         List<String> expectedNames = Arrays.asList("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, customerNames1);
@@ -53,7 +53,7 @@ public class Exercise1Test extends CompanyDomainForKata
          * much as possible. Ctrl+space will help you implement an anonymous inner class. Implementing an interface is
          * ctrl+i in IntelliJ. Eclipse's ctrl+1 is auto-fix and works to implement interfaces.
          */
-        List<String> customerCities = this.company.getCustomers().map(Customer::getCity).into(new ArrayList<String>());
+        List<String> customerCities = this.company.getCustomers().stream().map(Customer::getCity).into(new ArrayList<String>());
 
         List<String> expectedCities = Arrays.asList("London", "Liphook", "London");
         Assert.assertEquals(expectedCities, customerCities);
@@ -65,7 +65,7 @@ public class Exercise1Test extends CompanyDomainForKata
         /**
          * Which customers come from London? Get a collection of those which do. Use an anonymous inner class.
          */
-        List<Customer> customersFromLondon = this.company.getCustomers().filter(customer -> "London".equals(customer.getCity())).into(new ArrayList<Customer>());
+        List<Customer> customersFromLondon = this.company.getCustomers().stream().filter(customer -> "London".equals(customer.getCity())).into(new ArrayList<Customer>());
         Assert.assertEquals("Should be 2 London customers", 2, customersFromLondon.size());
     }
 }

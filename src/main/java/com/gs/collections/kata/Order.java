@@ -71,7 +71,7 @@ public class Order
 
     public double getValue()
     {
-        return this.lineItems.mapReduce(LineItem::getValue,  0.0, (x, y) -> x + y);
+        return this.lineItems.stream().map(LineItem::getValue).reduce(0.0, (x, y) -> x + y);
     }
 
     public void addLineItems(LineItem item, int count)

@@ -18,6 +18,9 @@ package com.gs.collections.kata;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.functions.Block;
+import java.util.functions.FlatMapper;
 
 /**
  * A company has a {@link ArrayList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
@@ -52,7 +55,12 @@ public class Company
 
     public List<Order> getOrders()
     {
-        return this.customers.flatMap(Customer::getOrders).into(new ArrayList<Order>());
+        return this.customers
+            .stream()
+            .flatMap((Block<? super Order> sink, Customer element) -> {
+                element.getOrders().forEach(sink);
+            })
+            .into(new ArrayList<Order>());
     }
 
     public Customer getMostRecentCustomer()
@@ -81,6 +89,10 @@ public class Company
         /**
          * Use a {@link Predicate} to find a {@link Customer} with the name given.
          */
-        return this.getCustomers().filter(customer -> name.equals(customer.getName())).getFirst();
+        return this.getCustomers()
+            .stream()
+            .filter(customer -> name.equals(customer.getName()))
+            .findFirst()
+            .orElse((Customer) null);
     }
 }

@@ -16,11 +16,7 @@
 
 package com.gs.collections.kata;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,7 +30,7 @@ public class Exercise8Test extends CompanyDomainForKata
     public void customersByCity()
     {
         // Implemented groupBy using a Map on the super class for all tests.
-        Map<String, List<Customer>> multimap = this.groupBy(this.company.getCustomers(), Customer::getCity);
+        Map<String, Collection<Customer>> multimap = this.company.getCustomers().stream().groupBy(Customer::getCity);
 
         Assert.assertEquals(Arrays.asList(this.company.getCustomerNamed("Mary")), multimap.get("Liphook"));
         Assert.assertEquals(
@@ -49,8 +45,8 @@ public class Exercise8Test extends CompanyDomainForKata
     {
         final Map<String, List<Supplier>> itemsToSuppliers = new HashMap<>();
 
-        Arrays.asList(this.company.getSuppliers()).forEach(supplier ->
-            Arrays.asList(supplier.getItemNames()).forEach( itemName ->
+        Arrays.asList(this.company.getSuppliers()).forEach(supplier -> {
+            Arrays.asList(supplier.getItemNames()).forEach(itemName ->
                 {
                     List<Supplier> suppliersForItem;
                     if (itemsToSuppliers.containsKey(itemName))
@@ -65,7 +61,7 @@ public class Exercise8Test extends CompanyDomainForKata
 
                     suppliersForItem.add(supplier);
                 }
-            )
+            );}
         );
         Assert.assertEquals("should be 2 suppliers for sofa", 2, itemsToSuppliers.get("sofa").size());
     }

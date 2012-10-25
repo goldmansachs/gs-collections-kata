@@ -16,15 +16,10 @@
 
 package com.gs.collections.kata;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.functions.Block;
+import java.util.functions.FlatMapper;
 
-import com.gs.collections.api.block.function.Function;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -37,9 +32,9 @@ public class Exercise9Test extends CompanyDomainForKata
     public void whoOrderedSaucers()
     {
         List<Customer> customersWithSaucers =
-            this.company.getCustomers().filter(
-                customer -> customer.getOrders().anyMatch(
-                    order -> order.getLineItems().anyMatch(
+            this.company.getCustomers().stream().filter(
+                customer -> customer.getOrders().stream().anyMatch(
+                    order -> order.getLineItems().stream().anyMatch(
                         lineItem -> "saucer".equals(lineItem.getName())))).into(new ArrayList<Customer>());
         Assert.assertEquals("customers with saucers", 2, customersWithSaucers.size());
     }
@@ -66,9 +61,14 @@ public class Exercise9Test extends CompanyDomainForKata
     @Test
     public void mostExpensiveItem()
     {
-        Map<Double, List<Customer>> multimap = this.groupBy(this.company.getCustomers(),
-            customer -> Collections.max(customer.getOrders().flatMap(Order::getLineItems).map(LineItem::getValue).into(new ArrayList<Double>())));
-//        Assert.assertEquals(3, multimap.size());
+        Map<Double, Collection<Customer>> multimap = this.company.getCustomers()
+            .stream()
+            .groupBy(customer ->
+                customer.getOrders()
+                    .stream()
+                    .flatMap((Block<? super LineItem> sink, Order element) -> {element.getLineItems().forEach(sink);})
+                    .map(LineItem::getValue)
+                    .reduce(0.0, (x, y) -> Math.max(x,y)));
         Assert.assertEquals(2, multimap.keySet().size());
         Assert.assertEquals(
             Arrays.asList(

@@ -34,7 +34,7 @@ public class Exercise6Test extends CompanyDomainForKata
          * instead.
          * Get the order values that are greater than 1.5.
          */
-        List<Double> filteredValues = orders.map(Order::getValue).filter(x -> x > 1.5).into(new ArrayList<Double>());
+        List<Double> filteredValues = orders.stream().map(Order::getValue).filter(x -> x > 1.5).into(new ArrayList<Double>());
         Assert.assertEquals(Arrays.asList(372.5, 1.75), filteredValues);
     }
 
@@ -47,7 +47,7 @@ public class Exercise6Test extends CompanyDomainForKata
          * instead.
          * Get the actual orders (not their double values) where those orders have a value greater than 2.0.
          */
-        List<Order> filtered = orders.filter(order -> order.getValue() > 2.0).into(new ArrayList<Order>());
-        Assert.assertEquals(Arrays.asList(this.company.getMostRecentCustomer().getOrders().getFirst()), filtered);
+        List<Order> filtered = orders.stream().filter(order -> order.getValue() > 2.0).into(new ArrayList<Order>());
+        Assert.assertEquals(Arrays.asList(this.company.getMostRecentCustomer().getOrders().stream().findFirst().get()), filtered);
     }
 }

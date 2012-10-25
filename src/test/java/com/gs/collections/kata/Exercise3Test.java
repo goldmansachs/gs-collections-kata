@@ -37,7 +37,7 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void doAnyCustomersLiveInLondon()
     {
-        boolean anyCustomersFromLondon = this.company.getCustomers().anyMatch(CUSTOMER_FROM_LONDON);
+        boolean anyCustomersFromLondon = this.company.getCustomers().stream().anyMatch(CUSTOMER_FROM_LONDON);
         Assert.assertTrue(anyCustomersFromLondon);
     }
 
@@ -47,7 +47,7 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void doAllCustomersLiveInLondon()
     {
-        boolean allCustomersFromLondon = this.company.getCustomers().allMatch(CUSTOMER_FROM_LONDON);
+        boolean allCustomersFromLondon = this.company.getCustomers().stream().allMatch(CUSTOMER_FROM_LONDON);
         Assert.assertFalse(allCustomersFromLondon);
     }
 
@@ -57,7 +57,7 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void howManyCustomersLiveInLondon()
     {
-        int numberOfCustomerFromLondon = this.company.getCustomers().filter(CUSTOMER_FROM_LONDON).into(new ArrayList<Customer>()).size();
+        int numberOfCustomerFromLondon = this.company.getCustomers().stream().filter(CUSTOMER_FROM_LONDON).into(new ArrayList<Customer>()).size();
         Assert.assertEquals("Should be 2 London customers", 2, numberOfCustomerFromLondon);
     }
 
@@ -68,7 +68,7 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void getLondonCustomers()
     {
-        List<Customer> customersFromLondon = this.company.getCustomers().filter(CUSTOMER_FROM_LONDON).into(new ArrayList<Customer>());
+        List<Customer> customersFromLondon = this.company.getCustomers().stream().filter(CUSTOMER_FROM_LONDON).into(new ArrayList<Customer>());
         Assert.assertEquals("Should be 2 London customers", 2, customersFromLondon.size());
     }
 
@@ -79,7 +79,10 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void getCustomersWhoDontLiveInLondon()
     {
-        List<Customer> customersNotFromLondon = this.company.getCustomers().filter(Predicates.negate(CUSTOMER_FROM_LONDON)).into(new ArrayList<Customer>());
+        List<Customer> customersNotFromLondon = this.company.getCustomers()
+            .stream()
+            .filter(Predicates.negate(CUSTOMER_FROM_LONDON))
+            .into(new ArrayList<Customer>());
         Assert.assertEquals("customers not from London", 1, customersNotFromLondon.size());
     }
 

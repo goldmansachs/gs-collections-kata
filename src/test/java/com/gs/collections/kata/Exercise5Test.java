@@ -32,7 +32,7 @@ public class Exercise5Test extends CompanyDomainForKata
     @Test
     public void findSupplierNames()
     {
-        List<String> supplierNames = Arrays.asList(this.company.getSuppliers()).map(Supplier::getName).into(new ArrayList<String>());
+        List<String> supplierNames = Arrays.asList(this.company.getSuppliers()).stream().map(Supplier::getName).into(new ArrayList<String>());
 
         List<String> expectedSupplierNames = Arrays.asList(
             "Shedtastic",
@@ -53,7 +53,7 @@ public class Exercise5Test extends CompanyDomainForKata
     public void countSuppliersWithMoreThanTwoItems()
     {
         Predicate<Supplier> moreThanTwoItems = supplier -> supplier.getItemNames().length > 2;
-        int suppliersWithMoreThanTwoItems = Arrays.asList(this.company.getSuppliers()).filter(moreThanTwoItems).into(new ArrayList<Supplier>()).size();
+        int suppliersWithMoreThanTwoItems = Arrays.asList(this.company.getSuppliers()).stream().filter(moreThanTwoItems).into(new ArrayList<Supplier>()).size();
         Assert.assertEquals("suppliers with more than 2 items", 5, suppliersWithMoreThanTwoItems);
     }
 
@@ -67,7 +67,7 @@ public class Exercise5Test extends CompanyDomainForKata
         Predicate<Supplier> suppliesToaster = supplier -> supplier.supplies("sandwich toaster");
 
         // Find one supplier that supplies toasters.
-        Supplier toasterSupplier = Arrays.asList(this.company.getSuppliers()).filter(suppliesToaster).getFirst();
+        Supplier toasterSupplier = Arrays.asList(this.company.getSuppliers()).stream().filter(suppliesToaster).findFirst().get();
         Assert.assertNotNull("toaster supplier", toasterSupplier);
         Assert.assertEquals("Doxins", toasterSupplier.getName());
     }
@@ -79,7 +79,7 @@ public class Exercise5Test extends CompanyDomainForKata
         /**
          * Get the order values that are greater than 1.5.
          */
-        List<Double> filtered = orders.map(Order::getValue).filter(orderValue -> orderValue > 1.5).into(new ArrayList<Double>());
+        List<Double> filtered = orders.stream().map(Order::getValue).filter(orderValue -> orderValue > 1.5).into(new ArrayList<Double>());
         Assert.assertEquals(Arrays.asList(372.5, 1.75), filtered);
     }
 
@@ -90,7 +90,7 @@ public class Exercise5Test extends CompanyDomainForKata
         /**
          * Get the actual orders (not their double values) where those orders have a value greater than 2.0.
          */
-        List<Order> filtered = orders.filter(order -> order.getValue() > 2.0).into(new ArrayList<Order>());
-        Assert.assertEquals(Arrays.asList(this.company.getMostRecentCustomer().getOrders().getFirst()), filtered);
+        List<Order> filtered = orders.stream().filter(order -> order.getValue() > 2.0).into(new ArrayList<Order>());
+        Assert.assertEquals(Arrays.asList(this.company.getMostRecentCustomer().getOrders().stream().findFirst().get()), filtered);
     }
 }

@@ -56,6 +56,6 @@ public class Customer
 
     public double getTotalOrderValue()
     {
-        return this.orders.mapReduce(Order::getValue, 0.0, (x, y) -> x + y);
+        return this.orders.stream().map(Order::getValue).reduce(0.0, (x, y) -> x + y);
     }
 }

@@ -103,21 +103,4 @@ public abstract class CompanyDomainForKata
 
         this.company.addCustomer(bill);
     }
-
-    public <K, V> Map<K, List<V>> groupBy(Iterable<V> values, Mapper<V, K> mapper)
-    {
-        Map<K, List<V>> multimap = new HashMap<>();
-        for (V value : values)
-        {
-            K key = mapper.map(value);
-            List<V> listValue = multimap.get(key);
-            if (listValue == null)
-            {
-                listValue = new ArrayList<>();
-                multimap.put(key, listValue);
-            }
-            listValue.add(value);
-        }
-        return multimap;
-    }
 }

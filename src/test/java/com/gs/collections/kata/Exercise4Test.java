@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.functions.Block;
+import java.util.functions.FlatMapper;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,11 +46,15 @@ public class Exercise4Test extends CompanyDomainForKata
     public void findItemNames()
     {
         List<LineItem> allOrderedLineItems =
-            this.company.getCustomers().flatMap(Customer::getOrders).flatMap(Order::getLineItems).into(new ArrayList<LineItem>());
-        Set<String> actualItemNames = allOrderedLineItems.map(LineItem::getName).into(new HashSet<String>());
+            this.company.getCustomers()
+                .stream()
+                .flatMap((Block<? super Order> sink, Customer element) -> {element.getOrders().forEach(sink);})
+                .flatMap((Block<? super LineItem> sink, Order element) -> {element.getLineItems().forEach(sink);})
+                .into(new ArrayList<LineItem>());
+        Set<String> actualItemNames = allOrderedLineItems.stream().map(LineItem::getName).into(new HashSet<String>());
 
         Assert.assertTrue(actualItemNames instanceof Set);
-        Assert.assertTrue(actualItemNames.getFirst() instanceof String);
+        Assert.assertTrue(actualItemNames.stream().findFirst().get() instanceof String);
 
         Set<String> expectedItemNames = new HashSet(Arrays.asList(
                 "Shed", "big shed", "bowl", "cat", "cup", "chair", "dog",
@@ -59,7 +65,7 @@ public class Exercise4Test extends CompanyDomainForKata
     @Test
     public void findCustomerNames()
     {
-        List<String> names = this.company.getCustomers().map(Customer::getName).into(new ArrayList<String>());
+        List<String> names = this.company.getCustomers().stream().map(Customer::getName).into(new ArrayList<String>());
 
         List<String> expectedNames = Arrays.asList("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, names);
