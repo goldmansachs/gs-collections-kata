@@ -2,9 +2,7 @@ package blocks;
 
 public interface Procedure
 {
-    void apply();
-
-    interface T<T>
+    interface T1<T>
     {
         void apply(T each);
     }
@@ -19,22 +17,22 @@ public interface Procedure
         void apply(T1 one, T2 two, T3 three);
     }
 
-    interface TInt<T>
+    interface ObjectInt<T>
     {
         void apply(T one, int two);
     }
 
-    interface TFloat<T>
+    interface ObjectFloat<T>
     {
         void apply(T one, float two);
     }
 
-    interface TDouble<T>
+    interface ObjectDouble<T>
     {
         void apply(T one, double two);
     }
 
-    interface TLong<T>
+    interface ObjectLong<T>
     {
         void apply(T one, long two);
     }
@@ -44,12 +42,12 @@ public interface Procedure
         void apply(int each);
     }
 
-    interface Int2
+    interface IntInt
     {
         void apply(int one, int two);
     }
 
-    interface IntT<T>
+    interface IntObject<T>
     {
         void apply(int one, T two);
     }
@@ -59,12 +57,12 @@ public interface Procedure
         void apply(float each);
     }
 
-    interface Float2
+    interface FloatFloat
     {
         void apply(float one, float two);
     }
 
-    interface FloatT<T>
+    interface FloatObject<T>
     {
         void apply(float one, T two);
     }
@@ -74,12 +72,12 @@ public interface Procedure
         void apply(double each);
     }
 
-    interface Double2
+    interface DoubleDouble
     {
         void apply(double one, double two);
     }
 
-    interface DoubleT<T>
+    interface DoubleObject<T>
     {
         void apply(double one, T two);
     }
@@ -89,12 +87,12 @@ public interface Procedure
         void apply(long each);
     }
 
-    interface Long2
+    interface LongLong
     {
         void apply(long one, long two);
     }
 
-    interface LongT<T>
+    interface LongObject<T>
     {
         void apply(long one, T two);
     }

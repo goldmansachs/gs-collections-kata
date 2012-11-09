@@ -2,7 +2,7 @@ package blocks;
 
 public interface Predicate
 {
-    interface T<T>
+    interface T1<T>
     {
         boolean apply(T each);
     }
@@ -17,22 +17,22 @@ public interface Predicate
         boolean apply(T1 one, T2 two, T3 three);
     }
 
-    interface TInt<T>
+    interface ObjectInt<T>
     {
         boolean apply(T one, int two);
     }
 
-    interface TDouble<T>
+    interface ObjectDouble<T>
     {
         boolean apply(T one, double two);
     }
 
-    interface TLong<T>
+    interface ObjectLong<T>
     {
         boolean apply(T one, long two);
     }
 
-    interface TFloat<T>
+    interface ObjectFloat<T>
     {
         boolean apply(T one, float two);
     }
@@ -42,12 +42,12 @@ public interface Predicate
         boolean apply(int each);
     }
 
-    interface Int2
+    interface IntInt
     {
         boolean apply(int one, int two);
     }
 
-    interface IntT<T>
+    interface IntObject<T>
     {
         boolean apply(int one, T two);
     }
@@ -57,12 +57,12 @@ public interface Predicate
         boolean apply(float each);
     }
 
-    interface Float2
+    interface FloatFloat
     {
         boolean apply(float one, float two);
     }
 
-    interface FloatT<T>
+    interface FloatObject<T>
     {
         boolean apply(float one, T two);
     }
@@ -72,12 +72,12 @@ public interface Predicate
         boolean apply(double each);
     }
 
-    interface Double2
+    interface DoubleDouble
     {
         boolean apply(double one, double two);
     }
 
-    interface DoubleT<T>
+    interface DoubleObject<T>
     {
         boolean apply(double one, T two);
     }
@@ -87,12 +87,12 @@ public interface Predicate
         boolean apply(long each);
     }
 
-    interface Long2
+    interface LongLong
     {
         boolean apply(long one, long two);
     }
 
-    interface LongT<T>
+    interface LongObject<T>
     {
         boolean apply(Long one, T two);
     }
