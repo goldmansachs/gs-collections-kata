@@ -27,9 +27,12 @@ public interface Function<R>
         double apply();
     }
 
-    interface T1<T, R>
+    interface Object
     {
-        R apply(T each);
+        interface ToObject<T, R>
+        {
+            R apply(T each);
+        }
 
         interface ToInt<T>
         {
@@ -52,9 +55,12 @@ public interface Function<R>
         }
     }
 
-    interface T2<T1, T2, R>
+    interface ObjectObject
     {
-        R apply(T1 one, T2 two);
+        interface ToObject<T1, T2, R>
+        {
+            R apply(T1 one, T2 two);
+        }
 
         interface ToInt<T1, T2>
         {
@@ -77,9 +83,12 @@ public interface Function<R>
         }
     }
 
-    interface T3<T1, T2, T3, R>
+    interface ObjectObjectObject<T1, T2, T3, R>
     {
-        R apply(T1 one, T2 two, T3 three);
+        interface ToObject<T1, T2, T3, R>
+        {
+            R apply(T1 one, T2 two, T3 three);
+        }
 
         interface ToInt<T1, T2, T3>
         {

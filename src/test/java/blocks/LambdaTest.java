@@ -8,9 +8,9 @@ public class LambdaTest
     @Test
     public void procedures()
     {
-        Procedure.T1<String> a = aString -> {System.out.println("apply" + aString);};
-        Procedure.T2<String, String> b = (aString1, aString2) -> {System.out.println("apply" + aString1 + aString2);};
-        Procedure.T3<String, String, String> c = (aString1, aString2, aString3) -> {System.out.println("apply" + aString1 + aString2 + aString3);};
+        Procedure.Object<String> a = aString -> {System.out.println("apply" + aString);};
+        Procedure.ObjectObject<String, String> b = (aString1, aString2) -> {System.out.println("apply" + aString1 + aString2);};
+        Procedure.ObjectObjectObject<String, String, String> c = (aString1, aString2, aString3) -> {System.out.println("apply" + aString1 + aString2 + aString3);};
 
         Procedure.ObjectInt<String> d = (aString, anInt) -> {System.out.println("apply" + aString + anInt);};
         Procedure.ObjectFloat<String> e = (aString, aFloat) -> {System.out.println("apply" + aString + aFloat);};
@@ -37,9 +37,9 @@ public class LambdaTest
     @Test
     public void predicates()
     {
-        Predicate.T1<String> a = aString -> true;
-        Predicate.T2<String, String> b = (aString1, aString2) -> true;
-        Predicate.T3<String, String, String> c = (aString1, aString2, aString3) -> true;
+        Predicate.Object<String> a = aString -> true;
+        Predicate.ObjectObject<String, String> b = (aString1, aString2) -> true;
+        Predicate.ObjectObjectObject<String, String, String> c = (aString1, aString2, aString3) -> true;
 
         Predicate.ObjectInt<String> d = (aString, anInt) -> true;
         Predicate.ObjectFloat<String> e = (aString, aFloat) -> true;
@@ -66,13 +66,13 @@ public class LambdaTest
     @Test
     public void objectFunctions()
     {
-        Function.T1<String, String> a = aString -> "apply" + aString;
+        Function.Object.ToObject<String, String> a = aString -> "apply" + aString;
         Assert.assertEquals("applyA", a.apply("A"));
 
-        Function.T2<String, String, String> b = (aString1, aString2) -> "apply" + aString1 + aString2;
+        Function.ObjectObject.ToObject<String, String, String> b = (aString1, aString2) -> "apply" + aString1 + aString2;
         Assert.assertEquals("applyAB", b.apply("A", "B"));
 
-        Function.T3<String, String, String, String> c = (aString1, aString2, aString3) -> "apply" + aString1 + aString2 + aString3;
+        Function.ObjectObjectObject.ToObject<String, String, String, String> c = (aString1, aString2, aString3) -> "apply" + aString1 + aString2 + aString3;
         Assert.assertEquals("applyABC", c.apply("A", "B", "C"));
 
         Function.ObjectInt.ToObject<String, String> d = (aString, anInt) -> "apply" + aString + anInt;
@@ -132,11 +132,11 @@ public class LambdaTest
         Function.ToFloat<String> emptyFloat = () -> 1.0f;
         Function.ToLong<String> emptyDouble = () -> 1;
 
-        Function.T1.ToInt<String> a = aString -> Integer.parseInt(aString);
+        Function.Object.ToInt<String> a = aString -> Integer.parseInt(aString);
         Assert.assertEquals(1, a.apply("1"));
-        Function.T2.ToInt<String, String> b = (aString1, aString2) -> Integer.parseInt(aString1) + Integer.parseInt(aString2);
+        Function.ObjectObject.ToInt<String, String> b = (aString1, aString2) -> Integer.parseInt(aString1) + Integer.parseInt(aString2);
         Assert.assertEquals(3, b.apply("1", "2"));
-        Function.T3.ToInt<String, String, String> c = (aString1, aString2, aString3) -> Integer.parseInt(aString1) + Integer.parseInt(aString2) + Integer.parseInt(aString3);
+        Function.ObjectObjectObject.ToInt<String, String, String> c = (aString1, aString2, aString3) -> Integer.parseInt(aString1) + Integer.parseInt(aString2) + Integer.parseInt(aString3);
         Assert.assertEquals(6, c.apply("1", "2", "3"));
 
         Function.ObjectInt.ToInt<String> d = (aString, anInt) -> Integer.parseInt(aString) + anInt;

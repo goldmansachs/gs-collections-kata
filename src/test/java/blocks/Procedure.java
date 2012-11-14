@@ -2,17 +2,17 @@ package blocks;
 
 public interface Procedure
 {
-    interface T1<T>
+    interface Object<T>
     {
         void apply(T each);
     }
 
-    interface T2<T1, T2>
+    interface ObjectObject<T1, T2>
     {
         void apply(T1 one, T2 two);
     }
 
-    interface T3<T1, T2, T3>
+    interface ObjectObjectObject<T1, T2, T3>
     {
         void apply(T1 one, T2 two, T3 three);
     }

@@ -2,17 +2,17 @@ package blocks;
 
 public interface Predicate
 {
-    interface T1<T>
+    interface Object<T>
     {
         boolean apply(T each);
     }
 
-    interface T2<T1, T2>
+    interface ObjectObject<T1, T2>
     {
         boolean apply(T1 one, T2 two);
     }
 
-    interface T3<T1, T2, T3>
+    interface ObjectObjectObject<T1, T2, T3>
     {
         boolean apply(T1 one, T2 two, T3 three);
     }
