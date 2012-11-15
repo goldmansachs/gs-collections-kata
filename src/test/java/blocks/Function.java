@@ -1,7 +1,9 @@
 package blocks;
 
-public interface Function<R>
+public interface Function<T, R>
 {
+    R apply(T each);
+
     interface ToObject<R>
     {
         R apply();
@@ -29,9 +31,8 @@ public interface Function<R>
 
     interface Object
     {
-        interface ToObject<T, R>
+        interface ToObject<T, R> extends Function<T, R>
         {
-            R apply(T each);
         }
 
         interface ToInt<T>

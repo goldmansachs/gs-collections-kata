@@ -8,7 +8,8 @@ public class LambdaTest
     @Test
     public void procedures()
     {
-        Procedure.Object<String> a = aString -> {System.out.println("apply" + aString);};
+        Procedure<String> a1 = aString -> {System.out.println("apply" + aString);};
+        Procedure.Object<String> a2 = aString -> {System.out.println("apply" + aString);};
         Procedure.ObjectObject<String, String> b = (aString1, aString2) -> {System.out.println("apply" + aString1 + aString2);};
         Procedure.ObjectObjectObject<String, String, String> c = (aString1, aString2, aString3) -> {System.out.println("apply" + aString1 + aString2 + aString3);};
 
@@ -37,7 +38,8 @@ public class LambdaTest
     @Test
     public void predicates()
     {
-        Predicate.Object<String> a = aString -> true;
+        Predicate<String> a1 = aString -> true;
+        Predicate.Object<String> a2 = aString -> true;
         Predicate.ObjectObject<String, String> b = (aString1, aString2) -> true;
         Predicate.ObjectObjectObject<String, String, String> c = (aString1, aString2, aString3) -> true;
 
@@ -66,8 +68,10 @@ public class LambdaTest
     @Test
     public void objectFunctions()
     {
-        Function.Object.ToObject<String, String> a = aString -> "apply" + aString;
-        Assert.assertEquals("applyA", a.apply("A"));
+        Function<String, String> a1 = aString -> "apply" + aString;
+        Assert.assertEquals("applyA", a1.apply("A"));
+        Function.Object.ToObject<String, String> a2 = aString -> "apply" + aString;
+        Assert.assertEquals("applyA", a2.apply("A"));
 
         Function.ObjectObject.ToObject<String, String, String> b = (aString1, aString2) -> "apply" + aString1 + aString2;
         Assert.assertEquals("applyAB", b.apply("A", "B"));

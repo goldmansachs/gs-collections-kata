@@ -1,10 +1,11 @@
 package blocks;
 
-public interface Procedure
+public interface Procedure<T>
 {
-    interface Object<T>
+    void apply(T each);
+
+    interface Object<T> extends Procedure<T>
     {
-        void apply(T each);
     }
 
     interface ObjectObject<T1, T2>
