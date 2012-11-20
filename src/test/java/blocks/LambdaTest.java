@@ -1,5 +1,10 @@
 package blocks;
 
+import java.util.functions.Block;
+import java.util.functions.FlatMapper;
+
+import com.gs.collections.impl.list.Interval;
+import com.gs.collections.impl.list.mutable.FastList;
 import junit.framework.Assert;
 import org.junit.Test;
 
@@ -8,38 +13,74 @@ public class LambdaTest
     @Test
     public void procedures()
     {
-        Procedure<String> a1 = aString -> {System.out.println("apply" + aString);};
-        Procedure.Object<String> a2 = aString -> {System.out.println("apply" + aString);};
-        Procedure.ObjectObject<String, String> b = (aString1, aString2) -> {System.out.println("apply" + aString1 + aString2);};
-        Procedure.ObjectObjectObject<String, String, String> c = (aString1, aString2, aString3) -> {System.out.println("apply" + aString1 + aString2 + aString3);};
+        Procedure.Object<String> a = aString -> {
+            System.out.println("apply" + aString);
+        };
+        Procedure.ObjectObject<String, String> b = (aString1, aString2) -> {
+            System.out.println("apply" + aString1 + aString2);
+        };
+        Procedure.ObjectObjectObject<String, String, String> c = (aString1, aString2, aString3) -> {
+            System.out.println("apply" + aString1 + aString2 + aString3);
+        };
 
-        Procedure.ObjectInt<String> d = (aString, anInt) -> {System.out.println("apply" + aString + anInt);};
-        Procedure.ObjectFloat<String> e = (aString, aFloat) -> {System.out.println("apply" + aString + aFloat);};
-        Procedure.ObjectLong<String> f = (aString, aLong) -> {System.out.println("apply" + aString + aLong);};
-        Procedure.ObjectDouble<String> g = (aString, aDouble) -> {System.out.println("apply" + aString + aDouble);};
+        Procedure.ObjectInt<String> d = (aString, anInt) -> {
+            System.out.println("apply" + aString + anInt);
+        };
+        Procedure.ObjectFloat<String> e = (aString, aFloat) -> {
+            System.out.println("apply" + aString + aFloat);
+        };
+        Procedure.ObjectLong<String> f = (aString, aLong) -> {
+            System.out.println("apply" + aString + aLong);
+        };
+        Procedure.ObjectDouble<String> g = (aString, aDouble) -> {
+            System.out.println("apply" + aString + aDouble);
+        };
 
-        Procedure.Int h = anInt -> {System.out.println("apply" + anInt);};
-        Procedure.IntInt i = (anInt1, anInt2) -> {System.out.println("apply" + anInt1 + anInt2);};
-        Procedure.IntObject<String> j = (anInt, aString) -> {System.out.println("apply" + anInt + aString);};
+        Procedure.Int h = anInt -> {
+            System.out.println("apply" + anInt);
+        };
+        Procedure.IntInt i = (anInt1, anInt2) -> {
+            System.out.println("apply" + anInt1 + anInt2);
+        };
+        Procedure.IntObject<String> j = (anInt, aString) -> {
+            System.out.println("apply" + anInt + aString);
+        };
 
-        Procedure.Float k = aFloat -> {System.out.println("apply" + aFloat);};
-        Procedure.FloatFloat l = (aFloat1, aFloat2) -> {System.out.println("apply" + aFloat1 + aFloat2);};
-        Procedure.FloatObject<String> m = (aFloat, aString) -> {System.out.println("apply" + aFloat + aString);};
+        Procedure.Float k = aFloat -> {
+            System.out.println("apply" + aFloat);
+        };
+        Procedure.FloatFloat l = (aFloat1, aFloat2) -> {
+            System.out.println("apply" + aFloat1 + aFloat2);
+        };
+        Procedure.FloatObject<String> m = (aFloat, aString) -> {
+            System.out.println("apply" + aFloat + aString);
+        };
 
-        Procedure.Double n = aDouble -> {System.out.println("apply" + aDouble);};
-        Procedure.DoubleDouble o = (aDouble1, aDouble2) -> {System.out.println("apply" + aDouble1 + aDouble2);};
-        Procedure.DoubleObject<String> p = (aDouble, aString) -> {System.out.println("apply" + aDouble + aString);};
+        Procedure.Double n = aDouble -> {
+            System.out.println("apply" + aDouble);
+        };
+        Procedure.DoubleDouble o = (aDouble1, aDouble2) -> {
+            System.out.println("apply" + aDouble1 + aDouble2);
+        };
+        Procedure.DoubleObject<String> p = (aDouble, aString) -> {
+            System.out.println("apply" + aDouble + aString);
+        };
 
-        Procedure.Long q = aLong -> {System.out.println("apply" + aLong);};
-        Procedure.LongLong r = (aLong1, aLong2) -> {System.out.println("apply" + aLong1 + aLong2);};
-        Procedure.LongObject<String> s = (aLong, aString) -> {System.out.println("apply" + aLong + aString);};
+        Procedure.Long q = aLong -> {
+            System.out.println("apply" + aLong);
+        };
+        Procedure.LongLong r = (aLong1, aLong2) -> {
+            System.out.println("apply" + aLong1 + aLong2);
+        };
+        Procedure.LongObject<String> s = (aLong, aString) -> {
+            System.out.println("apply" + aLong + aString);
+        };
     }
 
     @Test
     public void predicates()
     {
-        Predicate<String> a1 = aString -> true;
-        Predicate.Object<String> a2 = aString -> true;
+        Predicate.Object<String> a = aString -> true;
         Predicate.ObjectObject<String, String> b = (aString1, aString2) -> true;
         Predicate.ObjectObjectObject<String, String, String> c = (aString1, aString2, aString3) -> true;
 
@@ -68,10 +109,8 @@ public class LambdaTest
     @Test
     public void objectFunctions()
     {
-        Function<String, String> a1 = aString -> "apply" + aString;
-        Assert.assertEquals("applyA", a1.apply("A"));
-        Function.Object.ToObject<String, String> a2 = aString -> "apply" + aString;
-        Assert.assertEquals("applyA", a2.apply("A"));
+        Function.Object.ToObject<String, String> a = aString -> "apply" + aString;
+        Assert.assertEquals("applyA", a.apply("A"));
 
         Function.ObjectObject.ToObject<String, String, String> b = (aString1, aString2) -> "apply" + aString1 + aString2;
         Assert.assertEquals("applyAB", b.apply("A", "B"));
@@ -124,7 +163,7 @@ public class LambdaTest
         Function.LongLong.ToObject<String> r = (aLong1, aLong2) -> "apply" + aLong1 + aLong2;
         Assert.assertEquals("apply12", r.apply(1L, 2L));
 
-        Function.LongObject.ToObject<String, String> s =(aLong, aString) -> "apply" + aLong + aString;
+        Function.LongObject.ToObject<String, String> s = (aLong, aString) -> "apply" + aLong + aString;
         Assert.assertEquals("apply12", s.apply(1L, "2"));
     }
 
@@ -145,11 +184,11 @@ public class LambdaTest
 
         Function.ObjectInt.ToInt<String> d = (aString, anInt) -> Integer.parseInt(aString) + anInt;
         Assert.assertEquals(3, d.apply("1", 2));
-        Function.ObjectFloat.ToInt<String> e = (aString, aFloat) -> Integer.parseInt(aString) + (int)aFloat;
+        Function.ObjectFloat.ToInt<String> e = (aString, aFloat) -> Integer.parseInt(aString) + (int) aFloat;
         Assert.assertEquals(3, e.apply("1", 2.0f));
-        Function.ObjectLong.ToInt<String> f = (aString, aLong) -> Integer.parseInt(aString) + (int)aLong;
+        Function.ObjectLong.ToInt<String> f = (aString, aLong) -> Integer.parseInt(aString) + (int) aLong;
         Assert.assertEquals(3, f.apply("1", 2L));
-        Function.ObjectDouble.ToInt<String> g = (aString, aDouble) -> Integer.parseInt(aString) + (int)aDouble;
+        Function.ObjectDouble.ToInt<String> g = (aString, aDouble) -> Integer.parseInt(aString) + (int) aDouble;
         Assert.assertEquals(3, g.apply("1", 2.0d));
 
         Function.Int.ToInt h = anInt -> anInt;
@@ -159,25 +198,25 @@ public class LambdaTest
         Function.IntObject.ToInt<String> j = (anInt, aString) -> anInt + Integer.parseInt(aString);
         Assert.assertEquals(3, j.apply(1, "2"));
 
-        Function.Float.ToInt k = aFloat -> (int)aFloat;
+        Function.Float.ToInt k = aFloat -> (int) aFloat;
         Assert.assertEquals(1, k.apply(1.0f));
-        Function.FloatFloat.ToInt l = (aFloat1, aFloat2) -> (int)aFloat1 + (int)aFloat2;
+        Function.FloatFloat.ToInt l = (aFloat1, aFloat2) -> (int) aFloat1 + (int) aFloat2;
         Assert.assertEquals(3, l.apply(1.0f, 2.0f));
-        Function.FloatObject.ToInt<String> m = (aFloat, aString) -> (int)aFloat + Integer.parseInt(aString);
+        Function.FloatObject.ToInt<String> m = (aFloat, aString) -> (int) aFloat + Integer.parseInt(aString);
         Assert.assertEquals(3, m.apply(1.0f, "2"));
 
-        Function.Double.ToInt n = aDouble -> (int)aDouble;
+        Function.Double.ToInt n = aDouble -> (int) aDouble;
         Assert.assertEquals(1, n.apply(1.0d));
-        Function.DoubleDouble.ToInt o = (aDouble1, aDouble2) -> (int)aDouble1 + (int)aDouble2;
+        Function.DoubleDouble.ToInt o = (aDouble1, aDouble2) -> (int) aDouble1 + (int) aDouble2;
         Assert.assertEquals(3, o.apply(1.0d, 2.0d));
-        Function.DoubleObject.ToInt<String> p = (aDouble, aString) -> (int)aDouble + Integer.parseInt(aString);
+        Function.DoubleObject.ToInt<String> p = (aDouble, aString) -> (int) aDouble + Integer.parseInt(aString);
         Assert.assertEquals(3, p.apply(1.0d, "2"));
 
-        Function.Long.ToInt q = aLong -> (int)aLong;
+        Function.Long.ToInt q = aLong -> (int) aLong;
         Assert.assertEquals(1, q.apply(1L));
-        Function.LongLong.ToInt r = (aLong1, aLong2) -> (int)aLong1 + (int)aLong2;
+        Function.LongLong.ToInt r = (aLong1, aLong2) -> (int) aLong1 + (int) aLong2;
         Assert.assertEquals(3, r.apply(1L, 2L));
-        Function.LongObject.ToInt<String> s =(aLong, aString) -> (int)aLong + Integer.parseInt(aString);
+        Function.LongObject.ToInt<String> s = (aLong, aString) -> (int) aLong + Integer.parseInt(aString);
         Assert.assertEquals(3, s.apply(1L, "2"));
     }
 }

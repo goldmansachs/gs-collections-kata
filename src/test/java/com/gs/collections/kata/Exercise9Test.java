@@ -20,6 +20,9 @@ import java.util.*;
 import java.util.functions.Block;
 import java.util.functions.FlatMapper;
 
+import com.gs.collections.api.block.procedure.Procedure;
+import com.gs.collections.impl.list.Interval;
+import com.gs.collections.impl.list.mutable.FastList;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -76,4 +79,15 @@ public class Exercise9Test extends CompanyDomainForKata
                 this.company.getCustomerNamed("Bill")),
             multimap.get(50.0));
     }
+
+    @Test
+    public void flatMapVsForEach()
+    {
+        FastList<Interval> intervals = FastList.newListWith(Interval.oneTo(5), Interval.fromTo(6, 10));
+        intervals.stream().forEach(System.out::println);
+        intervals.stream().<Interval>flatMap((sink, each) -> {sink.apply(each.reverseThis());}).forEach(System.out::println);
+        intervals.asLazy().flatCollect(Interval::reverseThis).forEach((Procedure<? super Integer>) System.out::println);
+        intervals.stream().map(Interval::reverseThis).forEach(System.out::println);
+    }
+
 }

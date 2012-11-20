@@ -2,10 +2,9 @@ package blocks;
 
 public interface Predicate<T>
 {
-    boolean apply(T each);
-
-    interface Object<T> extends Predicate<T>
+    interface Object<T>
     {
+        boolean apply(T each);
     }
 
     interface ObjectObject<T1, T2>
