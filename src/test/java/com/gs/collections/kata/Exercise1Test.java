@@ -19,7 +19,7 @@ package com.gs.collections.kata;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.functions.Mapper;
+import java.util.function.Function;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class Exercise1Test extends CompanyDomainForKata
     @Test
     public void getCustomerNames()
     {
-        Mapper<Customer, String> nameFunction = customer -> customer.getName();
+        Function<Customer, String> nameFunction = customer -> customer.getName();
 
         /**
          * Get the name of each of the company's customers.

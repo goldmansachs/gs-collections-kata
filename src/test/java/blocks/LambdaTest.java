@@ -1,10 +1,5 @@
 package blocks;
 
-import java.util.functions.Block;
-import java.util.functions.FlatMapper;
-
-import com.gs.collections.impl.list.Interval;
-import com.gs.collections.impl.list.mutable.FastList;
 import junit.framework.Assert;
 import org.junit.Test;
 

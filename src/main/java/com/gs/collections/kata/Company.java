@@ -18,9 +18,7 @@ package com.gs.collections.kata;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.functions.Block;
-import java.util.functions.FlatMapper;
+import java.util.function.Block;
 
 /**
  * A company has a {@link ArrayList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.

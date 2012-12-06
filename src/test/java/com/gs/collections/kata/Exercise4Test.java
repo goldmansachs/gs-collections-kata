@@ -21,8 +21,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.functions.Block;
-import java.util.functions.FlatMapper;
+import java.util.function.Block;
 
 import org.junit.Assert;
 import org.junit.Test;

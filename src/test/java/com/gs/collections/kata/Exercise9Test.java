@@ -17,10 +17,10 @@
 package com.gs.collections.kata;
 
 import java.util.*;
-import java.util.functions.Block;
-import java.util.functions.FlatMapper;
+import java.util.function.Block;
 
 import com.gs.collections.api.block.procedure.Procedure;
+import com.gs.collections.impl.bag.mutable.HashBag;
 import com.gs.collections.impl.list.Interval;
 import com.gs.collections.impl.list.mutable.FastList;
 import org.junit.Assert;
@@ -74,10 +74,10 @@ public class Exercise9Test extends CompanyDomainForKata
                     .reduce(0.0, (x, y) -> Math.max(x,y)));
         Assert.assertEquals(2, multimap.keySet().size());
         Assert.assertEquals(
-            Arrays.asList(
-                this.company.getCustomerNamed("Fred"),
-                this.company.getCustomerNamed("Bill")),
-            multimap.get(50.0));
+            HashBag.newBagWith(
+                    this.company.getCustomerNamed("Fred"),
+                    this.company.getCustomerNamed("Bill")),
+            HashBag.newBag(multimap.get(50.0)));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class Exercise9Test extends CompanyDomainForKata
     {
         FastList<Interval> intervals = FastList.newListWith(Interval.oneTo(5), Interval.fromTo(6, 10));
         intervals.stream().forEach(System.out::println);
-        intervals.stream().<Interval>flatMap((sink, each) -> {sink.apply(each.reverseThis());}).forEach(System.out::println);
+        intervals.stream().<Interval>flatMap((sink, each) -> {sink.accept(each.reverseThis());}).forEach(System.out::println);
         intervals.asLazy().flatCollect(Interval::reverseThis).forEach((Procedure<? super Integer>) System.out::println);
         intervals.stream().map(Interval::reverseThis).forEach(System.out::println);
     }

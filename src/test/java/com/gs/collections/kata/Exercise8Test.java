@@ -16,8 +16,14 @@
 
 package com.gs.collections.kata;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import com.gs.collections.impl.bag.mutable.HashBag;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,12 +38,10 @@ public class Exercise8Test extends CompanyDomainForKata
         // Implemented groupBy using a Map on the super class for all tests.
         Map<String, Collection<Customer>> multimap = this.company.getCustomers().stream().groupBy(Customer::getCity);
 
-        Assert.assertEquals(Arrays.asList(this.company.getCustomerNamed("Mary")), multimap.get("Liphook"));
+        Assert.assertEquals(HashBag.newBagWith(this.company.getCustomerNamed("Mary")), HashBag.newBag(multimap.get("Liphook")));
         Assert.assertEquals(
-            Arrays.asList(
-                this.company.getCustomerNamed("Fred"),
-                this.company.getCustomerNamed("Bill")),
-            multimap.get("London"));
+                HashBag.newBagWith(this.company.getCustomerNamed("Fred"),this.company.getCustomerNamed("Bill")),
+                HashBag.newBag(multimap.get("London")));
     }
 
     @Test

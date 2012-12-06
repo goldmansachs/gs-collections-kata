@@ -18,8 +18,8 @@ package com.gs.collections.kata;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.functions.Predicate;
-import java.util.functions.Predicates;
+import java.util.function.Predicate;
+import java.util.function.Predicates;
 
 import org.junit.Assert;
 import org.junit.Test;

@@ -22,11 +22,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Comparators;
 import java.util.List;
-import java.util.functions.Block;
-import java.util.functions.FlatMapper;
-import java.util.functions.Predicate;
-import java.util.functions.Predicates;
-import java.util.streams.Stream;
+import java.util.function.Block;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -58,7 +56,7 @@ public class Exercise7Test extends CompanyDomainForKata
     public void maximumTotalOrderValue()
     {
         Stream<Double> values = this.company.getCustomers().stream().map(Customer::getTotalOrderValue);
-        Double maximumTotalOrderValue = values.reduce(values.findFirst().get(), (left, right) -> Math.max(left, right));
+        Double maximumTotalOrderValue = values.reduce(Double.valueOf(0), (left, right) -> Math.max(left, right));
         Assert.assertEquals("max value", Double.valueOf(857.0), maximumTotalOrderValue);
     }
 
