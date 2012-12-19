@@ -19,6 +19,7 @@ package com.gs.collections.kata;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Block;
+import java.util.function.FlatMapper;
 
 /**
  * A company has a {@link ArrayList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
@@ -55,7 +56,7 @@ public class Company
     {
         return this.customers
             .stream()
-            .flatMap((Block<? super Order> sink, Customer element) -> {
+            .<Order>flatMap((sink, element) -> {
                 element.getOrders().forEach(sink);
             })
             .into(new ArrayList<Order>());
