@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.reduce.Tabulators;
 
 import com.gs.collections.impl.bag.mutable.HashBag;
 import org.junit.Assert;
@@ -36,7 +37,10 @@ public class Exercise8Test extends CompanyDomainForKata
     public void customersByCity()
     {
         // Implemented groupBy using a Map on the super class for all tests.
-        Map<String, Collection<Customer>> multimap = this.company.getCustomers().stream().groupBy(Customer::getCity);
+        Map<String, Collection<Customer>> multimap =
+            this.company.getCustomers()
+                .stream()
+                .tabulate(Tabulators.<Customer, String>groupBy(Customer::getCity));
 
         Assert.assertEquals(HashBag.newBagWith(this.company.getCustomerNamed("Mary")), HashBag.newBag(multimap.get("Liphook")));
         Assert.assertEquals(

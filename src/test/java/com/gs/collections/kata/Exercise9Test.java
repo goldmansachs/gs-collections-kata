@@ -16,8 +16,14 @@
 
 package com.gs.collections.kata;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Block;
+import java.util.function.Function;
+import java.util.stream.reduce.Tabulators;
 
 import com.gs.collections.api.block.procedure.Procedure;
 import com.gs.collections.impl.bag.mutable.HashBag;
@@ -66,12 +72,15 @@ public class Exercise9Test extends CompanyDomainForKata
     {
         Map<Double, Collection<Customer>> multimap = this.company.getCustomers()
             .stream()
-            .groupBy(customer ->
+            .tabulate(Tabulators.<Customer, Double>groupBy((Customer customer) ->
                 customer.getOrders()
                     .stream()
-                    .flatMap((Block<? super LineItem> sink, Order element) -> {element.getLineItems().forEach(sink);})
-                    .map(LineItem::getValue)
-                    .reduce(0.0, (x, y) -> Math.max(x,y)));
+                    .<LineItem>flatMap((Block<? super LineItem> sink, Order element) -> {
+                        element.getLineItems().forEach(sink);
+                    })
+                    .<Double>map(lineItem -> lineItem.getValue())
+                    .reduce(0.0, (x, y) -> Math.max(x, y))));
+
         Assert.assertEquals(2, multimap.keySet().size());
         Assert.assertEquals(
             HashBag.newBagWith(
@@ -79,15 +88,4 @@ public class Exercise9Test extends CompanyDomainForKata
                     this.company.getCustomerNamed("Bill")),
             HashBag.newBag(multimap.get(50.0)));
     }
-
-    @Test
-    public void flatMapVsForEach()
-    {
-        FastList<Interval> intervals = FastList.newListWith(Interval.oneTo(5), Interval.fromTo(6, 10));
-        intervals.stream().forEach(System.out::println);
-        intervals.stream().<Interval>flatMap((sink, each) -> {sink.accept(each.reverseThis());}).forEach(System.out::println);
-        intervals.asLazy().flatCollect(Interval::reverseThis).forEach((Procedure<? super Integer>) System.out::println);
-        intervals.stream().map(Interval::reverseThis).forEach(System.out::println);
-    }
-
 }
