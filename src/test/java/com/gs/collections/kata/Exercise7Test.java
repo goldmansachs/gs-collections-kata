@@ -18,7 +18,6 @@ package com.gs.collections.kata;
 
 import com.gs.collections.api.DoubleIterable;
 import com.gs.collections.api.block.procedure.Procedure;
-import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.block.factory.Predicates;
 import com.gs.collections.impl.test.Verify;
 import com.gs.collections.impl.utility.ArrayIterate;
@@ -35,8 +34,8 @@ public class Exercise7Test extends CompanyDomainForKata
     public void sortedTotalOrderValue()
     {
         DoubleIterable totalValues = this.company.getCustomers()
-            .asLazy()
-            .collectDouble(Customer::getTotalOrderValue);
+                .asLazy()
+                .collectDouble(Customer::getTotalOrderValue);
 
         // Don't forget the handy utility methods getFirst() and getLast()...
         Assert.assertEquals("Highest total order value", 857.0d, totalValues.max(), 0.0d);
@@ -71,9 +70,9 @@ public class Exercise7Test extends CompanyDomainForKata
     {
         String tildeSeparatedNames = ArrayIterate.collect(this.company.getSuppliers(), Supplier::getName).makeString("~");
         Assert.assertEquals(
-            "tilde separated names",
-            "Shedtastic~Splendid Crocks~Annoying Pets~Gnomes 'R' Us~Furniture Hamlet~SFD~Doxins",
-            tildeSeparatedNames);
+                "tilde separated names",
+                "Shedtastic~Splendid Crocks~Annoying Pets~Gnomes 'R' Us~Furniture Hamlet~SFD~Doxins",
+                tildeSeparatedNames);
     }
 
     /**

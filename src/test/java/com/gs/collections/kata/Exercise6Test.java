@@ -16,6 +16,7 @@
 
 package com.gs.collections.kata;
 
+import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.list.mutable.FastList;
 import com.gs.collections.impl.utility.Iterate;

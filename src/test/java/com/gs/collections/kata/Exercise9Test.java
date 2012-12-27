@@ -63,9 +63,12 @@ public class Exercise9Test extends CompanyDomainForKata
     @Test
     public void mostExpensiveItem()
     {
-        MutableListMultimap<Double, Customer> multimap =
-            this.company.getCustomers().groupBy((Function<Customer, Double>)customer ->
-                customer.getOrders().asLazy().flatCollect(Order::getLineItems).collect(LineItem::getValue).max());
+        MutableListMultimap<Double, Customer> multimap = this.company.getCustomers()
+            .groupBy(customer -> customer.getOrders()
+                .asLazy()
+                .flatCollect(Order::getLineItems)
+                .collectDouble(LineItem::getValue)
+                .max());
         Assert.assertEquals(3, multimap.size());
         Assert.assertEquals(2, multimap.keysView().size());
         Assert.assertEquals(

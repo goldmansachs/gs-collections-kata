@@ -16,7 +16,6 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.block.function.Function;
 import com.gs.collections.api.multimap.Multimap;
 import com.gs.collections.api.multimap.list.MutableListMultimap;
 import com.gs.collections.impl.list.fixed.ArrayAdapter;
@@ -34,7 +33,7 @@ public class Exercise8Test extends CompanyDomainForKata
     public void customersByCity()
     {
         // Notice that the second generic type is Customer, not List<Customer>
-        MutableListMultimap<String, Customer> multimap = this.company.getCustomers().groupBy((Function <Customer, String>)Customer::getCity);
+        MutableListMultimap<String, Customer> multimap = this.company.getCustomers().groupBy(Customer::getCity);
 
         Assert.assertEquals(FastList.newListWith(this.company.getCustomerNamed("Mary")), multimap.get("Liphook"));
         Assert.assertEquals(
@@ -51,7 +50,7 @@ public class Exercise8Test extends CompanyDomainForKata
          * Change itemsToSuppliers to a MutableMultimap<String, Supplier>
          */
         final Multimap<String, Supplier> itemsToSuppliers =
-            ArrayAdapter.adapt(this.company.getSuppliers()).groupByEach(supplier -> ArrayAdapter.adapt(supplier.getItemNames()));
+            ArrayAdapter.adapt(this.company.getSuppliers()).groupByEach((Supplier supplier) -> ArrayAdapter.adapt(supplier.getItemNames()));
         Verify.assertIterableSize("should be 2 suppliers for sofa", 2, itemsToSuppliers.get("sofa"));
     }
 }
