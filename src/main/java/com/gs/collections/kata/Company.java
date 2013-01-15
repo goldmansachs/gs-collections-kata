@@ -19,7 +19,7 @@ package com.gs.collections.kata;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Block;
-import java.util.function.FlatMapper;
+import java.util.function.MultiFunction;
 
 /**
  * A company has a {@link ArrayList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
@@ -55,9 +55,8 @@ public class Company
     public List<Order> getOrders()
     {
         return this.customers
-            .stream()
-            .<Order>flatMap((sink, element) -> {
-                element.getOrders().forEach(sink);
+            .stream().mapMulti((MultiFunction<Customer, Order>) (collector, customer) -> {
+                collector.yield(customer.getOrders());
             })
             .into(new ArrayList<Order>());
     }

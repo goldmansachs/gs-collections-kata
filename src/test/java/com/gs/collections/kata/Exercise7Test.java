@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.Comparators;
 import java.util.List;
 import java.util.function.Block;
+import java.util.function.MultiFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -107,7 +108,9 @@ public class Exercise7Test extends CompanyDomainForKata
         this.company.getCustomers()
             .stream()
             .filter(customer -> "London".equals(customer.getCity()))
-            .flatMap((Block<? super Order> sink, Customer element) -> {element.getOrders().forEach(sink);})
+            .mapMulti((MultiFunction<Customer, Order>) (collector, customer) -> {
+                collector.yield(customer.getOrders());
+            })
             .forEach(deliver);
         Predicate<Order> isDelivered = Order::isDelivered;
         Assert.assertTrue(this.company.getCustomerNamed("Fred").getOrders().stream().allMatch(isDelivered));

@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.reduce.Tabulators;
+import java.util.stream.Accumulators;
 
 import com.gs.collections.impl.bag.mutable.HashBag;
 import org.junit.Assert;
@@ -40,7 +40,7 @@ public class Exercise8Test extends CompanyDomainForKata
         Map<String, Collection<Customer>> multimap =
             this.company.getCustomers()
                 .stream()
-                .tabulate(Tabulators.<Customer, String>groupBy(Customer::getCity));
+                .accumulate(Accumulators.<Customer, String>groupBy(Customer::getCity));
 
         Assert.assertEquals(HashBag.newBagWith(this.company.getCustomerNamed("Mary")), HashBag.newBag(multimap.get("Liphook")));
         Assert.assertEquals(

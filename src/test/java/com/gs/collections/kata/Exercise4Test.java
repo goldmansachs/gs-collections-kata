@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Block;
+import java.util.function.MultiFunction;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -47,9 +48,18 @@ public class Exercise4Test extends CompanyDomainForKata
         List<LineItem> allOrderedLineItems =
             this.company.getCustomers()
                 .stream()
-                .flatMap((Block<? super Order> sink, Customer element) -> {element.getOrders().forEach(sink);})
-                .flatMap((Block<? super LineItem> sink, Order element) -> {element.getLineItems().forEach(sink);})
+                .mapMulti((MultiFunction<Customer, Order>) (collector, customer) -> {
+                    collector.yield(customer.getOrders());
+                })
+                .mapMulti((MultiFunction<Order, LineItem>) (collector, order) -> {
+                    collector.yield(order.getLineItems());
+                })
                 .into(new ArrayList<LineItem>());
+//            this.company.getCustomers()
+//                .stream()
+//                .flatMap((Block<? super Order> sink, Customer element) -> {element.getOrders().forEach(sink);})
+//                .flatMap((Block<? super LineItem> sink, Order element) -> {element.getLineItems().forEach(sink);})
+//                .into(new ArrayList<LineItem>());
         Set<String> actualItemNames = allOrderedLineItems.stream().map(LineItem::getName).into(new HashSet<String>());
 
         Assert.assertTrue(actualItemNames instanceof Set);

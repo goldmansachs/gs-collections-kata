@@ -23,7 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Block;
 import java.util.function.Function;
-import java.util.stream.reduce.Tabulators;
+import java.util.function.MultiFunction;
+import java.util.stream.Accumulators;
 
 import com.gs.collections.api.block.procedure.Procedure;
 import com.gs.collections.impl.bag.mutable.HashBag;
@@ -72,11 +73,11 @@ public class Exercise9Test extends CompanyDomainForKata
     {
         Map<Double, Collection<Customer>> multimap = this.company.getCustomers()
             .stream()
-            .tabulate(Tabulators.<Customer, Double>groupBy((Customer customer) ->
+            .accumulate(Accumulators.<Customer, Double>groupBy((Customer customer) ->
                 customer.getOrders()
                     .stream()
-                    .<LineItem>flatMap((Block<? super LineItem> sink, Order element) -> {
-                        element.getLineItems().forEach(sink);
+                    .mapMulti((MultiFunction<Order, LineItem>) (collector, order) -> {
+                        collector.yield(order.getLineItems());
                     })
                     .<Double>map(lineItem -> lineItem.getValue())
                     .reduce(0.0, (x, y) -> Math.max(x, y))));
