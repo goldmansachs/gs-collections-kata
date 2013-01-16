@@ -16,10 +16,10 @@
 
 package com.gs.collections.kata;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Predicates;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -57,7 +57,9 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void howManyCustomersLiveInLondon()
     {
-        int numberOfCustomerFromLondon = this.company.getCustomers().stream().filter(CUSTOMER_FROM_LONDON).into(new ArrayList<Customer>()).size();
+        int numberOfCustomerFromLondon = this.company.getCustomers().stream()
+            .filter(CUSTOMER_FROM_LONDON)
+            .collect(Collectors.<Customer>toList()).size();
         Assert.assertEquals("Should be 2 London customers", 2, numberOfCustomerFromLondon);
     }
 
@@ -68,7 +70,9 @@ public class Exercise3Test extends CompanyDomainForKata
     @Test
     public void getLondonCustomers()
     {
-        List<Customer> customersFromLondon = this.company.getCustomers().stream().filter(CUSTOMER_FROM_LONDON).into(new ArrayList<Customer>());
+        List<Customer> customersFromLondon = this.company.getCustomers().stream()
+            .filter(CUSTOMER_FROM_LONDON)
+            .collect(Collectors.<Customer>toList());
         Assert.assertEquals("Should be 2 London customers", 2, customersFromLondon.size());
     }
 
@@ -82,7 +86,7 @@ public class Exercise3Test extends CompanyDomainForKata
         List<Customer> customersNotFromLondon = this.company.getCustomers()
             .stream()
             .filter(Predicates.negate(CUSTOMER_FROM_LONDON))
-            .into(new ArrayList<Customer>());
+            .collect(Collectors.<Customer>toList());
         Assert.assertEquals("customers not from London", 1, customersNotFromLondon.size());
     }
 

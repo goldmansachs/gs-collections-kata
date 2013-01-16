@@ -16,15 +16,14 @@
 
 package com.gs.collections.kata;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Comparators;
 import java.util.List;
 import java.util.function.Block;
-import java.util.function.MultiFunction;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Assert;
@@ -43,7 +42,7 @@ public class Exercise7Test extends CompanyDomainForKata
             .stream()
             .map(Customer::getTotalOrderValue)
             .sorted(Comparators.<Double>naturalOrder())
-            .into(new ArrayList<Double>());
+            .collect(Collectors.<Double>toList());
 
         // Don't forget the handy utility methods getFirst() and getLast()...
         Assert.assertEquals("Highest total order value", Double.valueOf(857.0), sortedTotalValues.get(sortedTotalValues.size() - 1));
@@ -108,8 +107,8 @@ public class Exercise7Test extends CompanyDomainForKata
         this.company.getCustomers()
             .stream()
             .filter(customer -> "London".equals(customer.getCity()))
-            .mapMulti((MultiFunction<Customer, Order>) (collector, customer) -> {
-                collector.yield(customer.getOrders());
+            .explode((Stream.Downstream<Order> downstream, Customer customer) -> {
+                downstream.send(customer.getOrders());
             })
             .forEach(deliver);
         Predicate<Order> isDelivered = Order::isDelivered;

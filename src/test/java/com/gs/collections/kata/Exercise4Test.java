@@ -16,13 +16,12 @@
 
 package com.gs.collections.kata;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Block;
-import java.util.function.MultiFunction;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -48,33 +47,32 @@ public class Exercise4Test extends CompanyDomainForKata
         List<LineItem> allOrderedLineItems =
             this.company.getCustomers()
                 .stream()
-                .mapMulti((MultiFunction<Customer, Order>) (collector, customer) -> {
-                    collector.yield(customer.getOrders());
+                .explode((Stream.Downstream<Order> downstream, Customer customer) -> {
+                    downstream.send(customer.getOrders());
                 })
-                .mapMulti((MultiFunction<Order, LineItem>) (collector, order) -> {
-                    collector.yield(order.getLineItems());
+                .explode((Stream.Downstream<LineItem> downstream, Order order) -> {
+                    downstream.send(order.getLineItems());
                 })
-                .into(new ArrayList<LineItem>());
-//            this.company.getCustomers()
-//                .stream()
-//                .flatMap((Block<? super Order> sink, Customer element) -> {element.getOrders().forEach(sink);})
-//                .flatMap((Block<? super LineItem> sink, Order element) -> {element.getLineItems().forEach(sink);})
-//                .into(new ArrayList<LineItem>());
-        Set<String> actualItemNames = allOrderedLineItems.stream().map(LineItem::getName).into(new HashSet<String>());
+                .collect(Collectors.<LineItem>toList());
+        Set<String> actualItemNames = allOrderedLineItems.stream()
+            .map(LineItem::getName)
+            .collect(Collectors.<String>toSet());
 
         Assert.assertTrue(actualItemNames instanceof Set);
         Assert.assertTrue(actualItemNames.stream().findFirst().get() instanceof String);
 
         Set<String> expectedItemNames = new HashSet(Arrays.asList(
-                "Shed", "big shed", "bowl", "cat", "cup", "chair", "dog",
-                "goldfish", "gnome", "saucer", "shed", "sofa", "table"));
+            "Shed", "big shed", "bowl", "cat", "cup", "chair", "dog",
+            "goldfish", "gnome", "saucer", "shed", "sofa", "table"));
         Assert.assertEquals(expectedItemNames, actualItemNames);
     }
 
     @Test
     public void findCustomerNames()
     {
-        List<String> names = this.company.getCustomers().stream().map(Customer::getName).into(new ArrayList<String>());
+        List<String> names = this.company.getCustomers().stream()
+            .map(Customer::getName)
+            .collect(Collectors.<String>toList());
 
         List<String> expectedNames = Arrays.asList("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, names);

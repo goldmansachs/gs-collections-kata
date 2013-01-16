@@ -16,9 +16,9 @@
 
 package com.gs.collections.kata;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,7 +32,9 @@ public class Exercise2Test extends CompanyDomainForKata
          * Get the name of each of the company's customers. This time move the {@link Function} to a
          * constant on {@link Customer}.
          */
-        List<String> customerNames = this.company.getCustomers().stream().map(Customer::getName).into(new ArrayList<String>());
+        List<String> customerNames = this.company.getCustomers().stream()
+            .map(Customer::getName)
+            .collect(Collectors.<String>toList());
 
         List<String> expectedNames = Arrays.asList("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, customerNames);
@@ -45,7 +47,9 @@ public class Exercise2Test extends CompanyDomainForKata
          * Get the city for each of the company's customers. This time move the {@link Function} to a
          * constant on {@link Customer}.
          */
-        List<String> customerCities = this.company.getCustomers().stream().map(Customer::getCity).into(new ArrayList<String>());
+        List<String> customerCities = this.company.getCustomers().stream()
+            .map(Customer::getCity)
+            .collect(Collectors.<String>toList());
 
         List<String> expectedCities = Arrays.asList("London", "Liphook", "London");
         Assert.assertEquals(expectedCities, customerCities);
@@ -54,7 +58,9 @@ public class Exercise2Test extends CompanyDomainForKata
     @Test
     public void getLondonCustomers()
     {
-        List<Customer> customersFromLondon = this.company.getCustomers().stream().filter(customer -> "London".equals(customer.getCity())).into(new ArrayList<Customer>());
+        List<Customer> customersFromLondon = this.company.getCustomers().stream()
+            .filter(customer -> "London".equals(customer.getCity()))
+            .collect(Collectors.<Customer>toList());
         Assert.assertEquals("Should be 2 London customers", 2, customersFromLondon.size());
     }
 }

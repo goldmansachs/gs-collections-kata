@@ -18,8 +18,8 @@ package com.gs.collections.kata;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Block;
-import java.util.function.MultiFunction;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A company has a {@link ArrayList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
@@ -55,10 +55,10 @@ public class Company
     public List<Order> getOrders()
     {
         return this.customers
-            .stream().mapMulti((MultiFunction<Customer, Order>) (collector, customer) -> {
-                collector.yield(customer.getOrders());
+            .stream().explode((Stream.Downstream<Order> downstream, Customer customer) -> {
+                downstream.send(customer.getOrders());
             })
-            .into(new ArrayList<Order>());
+            .collect(Collectors.<Order>toList());
     }
 
     public Customer getMostRecentCustomer()

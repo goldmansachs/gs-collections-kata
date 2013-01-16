@@ -16,10 +16,10 @@
 
 package com.gs.collections.kata;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,7 +32,10 @@ public class Exercise5Test extends CompanyDomainForKata
     @Test
     public void findSupplierNames()
     {
-        List<String> supplierNames = Arrays.asList(this.company.getSuppliers()).stream().map(Supplier::getName).into(new ArrayList<String>());
+        List<String> supplierNames = Arrays.asList(this.company.getSuppliers())
+            .stream()
+            .map(Supplier::getName)
+            .collect(Collectors.<String>toList());
 
         List<String> expectedSupplierNames = Arrays.asList(
             "Shedtastic",
@@ -53,7 +56,10 @@ public class Exercise5Test extends CompanyDomainForKata
     public void countSuppliersWithMoreThanTwoItems()
     {
         Predicate<Supplier> moreThanTwoItems = supplier -> supplier.getItemNames().length > 2;
-        int suppliersWithMoreThanTwoItems = Arrays.asList(this.company.getSuppliers()).stream().filter(moreThanTwoItems).into(new ArrayList<Supplier>()).size();
+        int suppliersWithMoreThanTwoItems = Arrays.asList(this.company.getSuppliers())
+            .stream()
+            .filter(moreThanTwoItems)
+            .collect(Collectors.<Supplier>toList()).size();
         Assert.assertEquals("suppliers with more than 2 items", 5, suppliersWithMoreThanTwoItems);
     }
 
@@ -79,7 +85,10 @@ public class Exercise5Test extends CompanyDomainForKata
         /**
          * Get the order values that are greater than 1.5.
          */
-        List<Double> filtered = orders.stream().map(Order::getValue).filter(orderValue -> orderValue > 1.5).into(new ArrayList<Double>());
+        List<Double> filtered = orders.stream()
+            .map(Order::getValue)
+            .filter(orderValue -> orderValue > 1.5)
+            .collect(Collectors.<Double>toList());
         Assert.assertEquals(Arrays.asList(372.5, 1.75), filtered);
     }
 
@@ -90,7 +99,9 @@ public class Exercise5Test extends CompanyDomainForKata
         /**
          * Get the actual orders (not their double values) where those orders have a value greater than 2.0.
          */
-        List<Order> filtered = orders.stream().filter(order -> order.getValue() > 2.0).into(new ArrayList<Order>());
+        List<Order> filtered = orders.stream()
+            .filter(order -> order.getValue() > 2.0)
+            .collect(Collectors.<Order>toList());
         Assert.assertEquals(Arrays.asList(this.company.getMostRecentCustomer().getOrders().stream().findFirst().get()), filtered);
     }
 }

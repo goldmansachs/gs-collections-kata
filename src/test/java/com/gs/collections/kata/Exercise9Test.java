@@ -16,20 +16,16 @@
 
 package com.gs.collections.kata;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Block;
 import java.util.function.Function;
-import java.util.function.MultiFunction;
-import java.util.stream.Accumulators;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import com.gs.collections.api.block.procedure.Procedure;
 import com.gs.collections.impl.bag.mutable.HashBag;
-import com.gs.collections.impl.list.Interval;
-import com.gs.collections.impl.list.mutable.FastList;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -45,7 +41,8 @@ public class Exercise9Test extends CompanyDomainForKata
             this.company.getCustomers().stream().filter(
                 customer -> customer.getOrders().stream().anyMatch(
                     order -> order.getLineItems().stream().anyMatch(
-                        lineItem -> "saucer".equals(lineItem.getName())))).into(new ArrayList<Customer>());
+                        lineItem -> "saucer".equals(lineItem.getName()))))
+                .collect(Collectors.<Customer>toList());
         Assert.assertEquals("customers with saucers", 2, customersWithSaucers.size());
     }
 
@@ -56,7 +53,9 @@ public class Exercise9Test extends CompanyDomainForKata
     public void ordersByCustomerUsingAsMap()
     {
         final Map<String, List<Order>> customerNameToOrders = new HashMap<>();
-        Block<Customer> mapPutTransformedKeyAndValue = customer -> {customerNameToOrders.put(customer.getName(), customer.getOrders());};
+        Block<Customer> mapPutTransformedKeyAndValue = customer -> {
+            customerNameToOrders.put(customer.getName(), customer.getOrders());
+        };
         this.company.getCustomers().forEach(mapPutTransformedKeyAndValue);
         Assert.assertNotNull("customer name to orders", customerNameToOrders);
         Assert.assertEquals("customer names", 3, customerNameToOrders.size());
@@ -73,11 +72,11 @@ public class Exercise9Test extends CompanyDomainForKata
     {
         Map<Double, Collection<Customer>> multimap = this.company.getCustomers()
             .stream()
-            .accumulate(Accumulators.<Customer, Double>groupBy((Customer customer) ->
+            .collect(Collectors.<Customer, Double>groupBy((Customer customer) ->
                 customer.getOrders()
                     .stream()
-                    .mapMulti((MultiFunction<Order, LineItem>) (collector, order) -> {
-                        collector.yield(order.getLineItems());
+                    .explode((Stream.Downstream<LineItem> downstream, Order order) -> {
+                        downstream.send(order.getLineItems());
                     })
                     .<Double>map(lineItem -> lineItem.getValue())
                     .reduce(0.0, (x, y) -> Math.max(x, y))));
@@ -85,8 +84,8 @@ public class Exercise9Test extends CompanyDomainForKata
         Assert.assertEquals(2, multimap.keySet().size());
         Assert.assertEquals(
             HashBag.newBagWith(
-                    this.company.getCustomerNamed("Fred"),
-                    this.company.getCustomerNamed("Bill")),
+                this.company.getCustomerNamed("Fred"),
+                this.company.getCustomerNamed("Bill")),
             HashBag.newBag(multimap.get(50.0)));
     }
 }
