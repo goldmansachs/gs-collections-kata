@@ -75,7 +75,7 @@ public class Exercise9Test extends CompanyDomainForKata
             .collect(Collectors.<Customer, Double>groupBy((Customer customer) ->
                 customer.getOrders()
                     .stream()
-                    .explode((Stream.Downstream<LineItem> downstream, Order order) -> {
+                    .<LineItem>explode((Stream.Downstream<LineItem> downstream, Order order) -> {
                         downstream.send(order.getLineItems());
                     })
                     .<Double>map(lineItem -> lineItem.getValue())
