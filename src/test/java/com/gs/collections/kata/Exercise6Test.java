@@ -18,6 +18,7 @@ package com.gs.collections.kata;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,8 +36,11 @@ public class Exercise6Test extends CompanyDomainForKata
          * instead.
          * Get the order values that are greater than 1.5.
          */
-        List<Double> filteredValues = orders.stream().map(Order::getValue).filter(x -> x > 1.5).collect(toList());
-        Assert.assertEquals(Arrays.asList(372.5, 1.75), filteredValues);
+        DoubleStream filteredValues = orders.stream().map(Order::getValue).filter(x -> x > 1.5);
+        Assert.assertTrue(filteredValues.allMatch(value -> {
+            long longValue = Double.doubleToLongBits(value);
+            return longValue == Double.doubleToLongBits(372.5) || longValue == Double.doubleToLongBits(1.75);
+        }));
     }
 
     @Test

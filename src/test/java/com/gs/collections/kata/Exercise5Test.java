@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -87,11 +88,13 @@ public class Exercise5Test extends CompanyDomainForKata
         /**
          * Get the order values that are greater than 1.5.
          */
-        List<Double> filtered = orders.stream()
+        DoubleStream filtered = orders.stream()
             .map(Order::getValue)
-            .filter(orderValue -> orderValue > 1.5)
-            .collect(toList());
-        Assert.assertEquals(Arrays.asList(372.5, 1.75), filtered);
+            .filter(orderValue -> orderValue > 1.5);
+        Assert.assertTrue(filtered.allMatch(value -> {
+            long longValue = Double.doubleToLongBits(value);
+            return longValue == Double.doubleToLongBits(372.5) || longValue == Double.doubleToLongBits(1.75);
+        }));
     }
 
     @Test
