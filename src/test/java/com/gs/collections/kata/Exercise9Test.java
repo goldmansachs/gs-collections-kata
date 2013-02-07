@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Block;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,6 +27,8 @@ import java.util.stream.Stream;
 import com.gs.collections.impl.bag.mutable.HashBag;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public class Exercise9Test extends CompanyDomainForKata
 {
@@ -53,10 +54,9 @@ public class Exercise9Test extends CompanyDomainForKata
     public void ordersByCustomerUsingAsMap()
     {
         final Map<String, List<Order>> customerNameToOrders = new HashMap<>();
-        Block<Customer> mapPutTransformedKeyAndValue = customer -> {
+        this.company.getCustomers().forEach(customer -> {
             customerNameToOrders.put(customer.getName(), customer.getOrders());
-        };
-        this.company.getCustomers().forEach(mapPutTransformedKeyAndValue);
+        });
         Assert.assertNotNull("customer name to orders", customerNameToOrders);
         Assert.assertEquals("customer names", 3, customerNameToOrders.size());
         List<Order> ordersForBill = customerNameToOrders.get("Bill");
@@ -72,13 +72,13 @@ public class Exercise9Test extends CompanyDomainForKata
     {
         Map<Double, Collection<Customer>> multimap = this.company.getCustomers()
             .stream()
-            .collect(Collectors.<Customer, Double>groupBy((Customer customer) ->
+            .collect(groupingBy(customer ->
                 customer.getOrders()
                     .stream()
-                    .<LineItem>explode((Stream.Downstream<LineItem> downstream, Order order) -> {
+                    .explode((Stream.Downstream<LineItem> downstream, Order order) -> {
                         downstream.send(order.getLineItems());
                     })
-                    .<Double>map(lineItem -> lineItem.getValue())
+                    .map(LineItem::getValue)
                     .reduce(0.0, (x, y) -> Math.max(x, y))));
 
         Assert.assertEquals(2, multimap.keySet().size());

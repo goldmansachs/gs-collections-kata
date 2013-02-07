@@ -22,11 +22,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import com.gs.collections.impl.bag.mutable.HashBag;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public class Exercise8Test extends CompanyDomainForKata
 {
@@ -40,7 +41,7 @@ public class Exercise8Test extends CompanyDomainForKata
         Map<String, Collection<Customer>> multimap =
             this.company.getCustomers()
                 .stream()
-                .collect(Collectors.<Customer, String>groupBy(Customer::getCity));
+                .collect(groupingBy(Customer::getCity));
 
         Assert.assertEquals(HashBag.newBagWith(this.company.getCustomerNamed("Mary")), HashBag.newBag(multimap.get("Liphook")));
         Assert.assertEquals(

@@ -20,11 +20,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 public class Exercise4Test extends CompanyDomainForKata
 {
@@ -53,10 +55,10 @@ public class Exercise4Test extends CompanyDomainForKata
                 .explode((Stream.Downstream<LineItem> downstream, Order order) -> {
                     downstream.send(order.getLineItems());
                 })
-                .collect(Collectors.<LineItem>toList());
+                .collect(toList());
         Set<String> actualItemNames = allOrderedLineItems.stream()
             .map(LineItem::getName)
-            .collect(Collectors.<String>toSet());
+            .collect(toSet());
 
         Assert.assertTrue(actualItemNames instanceof Set);
         Assert.assertTrue(actualItemNames.stream().findFirst().get() instanceof String);
@@ -72,7 +74,7 @@ public class Exercise4Test extends CompanyDomainForKata
     {
         List<String> names = this.company.getCustomers().stream()
             .map(Customer::getName)
-            .collect(Collectors.<String>toList());
+            .collect(toList());
 
         List<String> expectedNames = Arrays.asList("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, names);

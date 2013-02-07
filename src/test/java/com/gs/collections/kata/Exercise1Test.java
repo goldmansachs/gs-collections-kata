@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static java.util.stream.Collectors.toList;
+
 public class Exercise1Test extends CompanyDomainForKata
 {
     @Test
@@ -35,9 +37,9 @@ public class Exercise1Test extends CompanyDomainForKata
          * Get the name of each of the company's customers.
          */
         List<Customer> customers = this.company.getCustomers();
-        List<String> customerNames1 = customers.stream().map(nameFunction).collect(Collectors.<String>toList());
-        List<String> customerNames2 = customers.stream().map(customer -> customer.getName()).collect(Collectors.<String>toList());
-        List<String> customerNames3 = customers.stream().map(Customer::getName).collect(Collectors.<String>toList());
+        List<String> customerNames1 = customers.stream().map(nameFunction).collect(toList());
+        List<String> customerNames2 = customers.stream().map(customer -> customer.getName()).collect(toList());
+        List<String> customerNames3 = customers.stream().map(Customer::getName).collect(toList());
 
         List<String> expectedNames = Arrays.asList("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, customerNames1);
@@ -69,7 +71,7 @@ public class Exercise1Test extends CompanyDomainForKata
          */
         List<Customer> customersFromLondon = this.company.getCustomers().stream()
             .filter(customer -> "London".equals(customer.getCity()))
-            .collect(Collectors.<Customer>toList());
+            .collect(toList());
         Assert.assertEquals("Should be 2 London customers", 2, customersFromLondon.size());
     }
 }

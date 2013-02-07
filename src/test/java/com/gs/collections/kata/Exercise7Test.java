@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Comparators;
 import java.util.List;
-import java.util.function.Block;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -103,17 +102,15 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void deliverOrdersToLondon()
     {
-        Block<Order> deliver = Order::deliver;
         this.company.getCustomers()
             .stream()
             .filter(customer -> "London".equals(customer.getCity()))
             .explode((Stream.Downstream<Order> downstream, Customer customer) -> {
                 downstream.send(customer.getOrders());
             })
-            .forEach(deliver);
-        Predicate<Order> isDelivered = Order::isDelivered;
-        Assert.assertTrue(this.company.getCustomerNamed("Fred").getOrders().stream().allMatch(isDelivered));
-        Assert.assertTrue(this.company.getCustomerNamed("Mary").getOrders().stream().allMatch(isDelivered.negate()));
-        Assert.assertTrue(this.company.getCustomerNamed("Bill").getOrders().stream().allMatch(isDelivered));
+            .forEach(Order::deliver);
+        Assert.assertTrue(this.company.getCustomerNamed("Fred").getOrders().stream().allMatch(Order::isDelivered));
+        Assert.assertTrue(this.company.getCustomerNamed("Mary").getOrders().stream().allMatch(((Predicate<Order>) Order::isDelivered).negate()));
+        Assert.assertTrue(this.company.getCustomerNamed("Bill").getOrders().stream().allMatch(Order::isDelivered));
     }
 }

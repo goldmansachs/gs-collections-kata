@@ -19,10 +19,11 @@ package com.gs.collections.kata;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Predicates;
-import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import static java.util.stream.Collectors.toList;
 
 public class Exercise3Test extends CompanyDomainForKata
 {
@@ -59,7 +60,7 @@ public class Exercise3Test extends CompanyDomainForKata
     {
         int numberOfCustomerFromLondon = this.company.getCustomers().stream()
             .filter(CUSTOMER_FROM_LONDON)
-            .collect(Collectors.<Customer>toList()).size();
+            .collect(toList()).size();
         Assert.assertEquals("Should be 2 London customers", 2, numberOfCustomerFromLondon);
     }
 
@@ -72,7 +73,7 @@ public class Exercise3Test extends CompanyDomainForKata
     {
         List<Customer> customersFromLondon = this.company.getCustomers().stream()
             .filter(CUSTOMER_FROM_LONDON)
-            .collect(Collectors.<Customer>toList());
+            .collect(toList());
         Assert.assertEquals("Should be 2 London customers", 2, customersFromLondon.size());
     }
 
@@ -86,7 +87,7 @@ public class Exercise3Test extends CompanyDomainForKata
         List<Customer> customersNotFromLondon = this.company.getCustomers()
             .stream()
             .filter(Predicates.negate(CUSTOMER_FROM_LONDON))
-            .collect(Collectors.<Customer>toList());
+            .collect(toList());
         Assert.assertEquals("customers not from London", 1, customersNotFromLondon.size());
     }
 

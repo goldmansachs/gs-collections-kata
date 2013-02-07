@@ -18,10 +18,11 @@ package com.gs.collections.kata;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import static java.util.stream.Collectors.toList;
 
 public class Exercise2Test extends CompanyDomainForKata
 {
@@ -34,7 +35,7 @@ public class Exercise2Test extends CompanyDomainForKata
          */
         List<String> customerNames = this.company.getCustomers().stream()
             .map(Customer::getName)
-            .collect(Collectors.<String>toList());
+            .collect(toList());
 
         List<String> expectedNames = Arrays.asList("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, customerNames);
@@ -49,7 +50,7 @@ public class Exercise2Test extends CompanyDomainForKata
          */
         List<String> customerCities = this.company.getCustomers().stream()
             .map(Customer::getCity)
-            .collect(Collectors.<String>toList());
+            .collect(toList());
 
         List<String> expectedCities = Arrays.asList("London", "Liphook", "London");
         Assert.assertEquals(expectedCities, customerCities);
@@ -60,7 +61,7 @@ public class Exercise2Test extends CompanyDomainForKata
     {
         List<Customer> customersFromLondon = this.company.getCustomers().stream()
             .filter(customer -> "London".equals(customer.getCity()))
-            .collect(Collectors.<Customer>toList());
+            .collect(toList());
         Assert.assertEquals("Should be 2 London customers", 2, customersFromLondon.size());
     }
 }

@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static java.util.stream.Collectors.toList;
+
 public class Exercise5Test extends CompanyDomainForKata
 {
     /**
@@ -59,7 +61,7 @@ public class Exercise5Test extends CompanyDomainForKata
         int suppliersWithMoreThanTwoItems = Arrays.asList(this.company.getSuppliers())
             .stream()
             .filter(moreThanTwoItems)
-            .collect(Collectors.<Supplier>toList()).size();
+            .collect(toList()).size();
         Assert.assertEquals("suppliers with more than 2 items", 5, suppliersWithMoreThanTwoItems);
     }
 
@@ -88,7 +90,7 @@ public class Exercise5Test extends CompanyDomainForKata
         List<Double> filtered = orders.stream()
             .map(Order::getValue)
             .filter(orderValue -> orderValue > 1.5)
-            .collect(Collectors.<Double>toList());
+            .collect(toList());
         Assert.assertEquals(Arrays.asList(372.5, 1.75), filtered);
     }
 
@@ -101,7 +103,7 @@ public class Exercise5Test extends CompanyDomainForKata
          */
         List<Order> filtered = orders.stream()
             .filter(order -> order.getValue() > 2.0)
-            .collect(Collectors.<Order>toList());
+            .collect(toList());
         Assert.assertEquals(Arrays.asList(this.company.getMostRecentCustomer().getOrders().stream().findFirst().get()), filtered);
     }
 }
