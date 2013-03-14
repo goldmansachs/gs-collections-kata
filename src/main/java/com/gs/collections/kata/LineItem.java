@@ -17,6 +17,7 @@
 package com.gs.collections.kata;
 
 import com.gs.collections.api.block.function.Function;
+import com.gs.collections.api.block.function.primitive.DoubleFunction;
 
 /**
  * An Item has a name and a value.
@@ -31,10 +32,9 @@ public class LineItem
             return lineItem.name;
         }
     };
-    public static final Function<LineItem, Double> TO_VALUE = new Function<LineItem, Double>()
+    public static final DoubleFunction<LineItem> TO_VALUE = new DoubleFunction<LineItem>()
     {
-        @Override
-        public Double valueOf(LineItem lineItem)
+        public double doubleValueOf(LineItem lineItem)
         {
             return lineItem.value;
         }

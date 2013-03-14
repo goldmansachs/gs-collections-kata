@@ -17,6 +17,8 @@
 package com.gs.collections.kata;
 
 import com.gs.collections.api.list.MutableList;
+import com.gs.collections.api.list.primitive.DoubleList;
+import com.gs.collections.impl.block.factory.Functions;
 import com.gs.collections.impl.block.factory.Predicates;
 import com.gs.collections.impl.test.Verify;
 import com.gs.collections.impl.utility.ArrayIterate;
@@ -32,12 +34,12 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void sortedTotalOrderValue()
     {
-        MutableList<Double> sortedTotalValues =
-                this.company.getCustomers().collect(Customer.TO_TOTAL_ORDER_VALUE).toSortedList();
+        DoubleList sortedTotalValues =
+                this.company.getCustomers().asLazy().collectDouble(Customer.TO_TOTAL_ORDER_VALUE).toSortedList();
 
         // Don't forget the handy utility methods getFirst() and getLast()...
-        Assert.assertEquals("Highest total order value", Double.valueOf(857.0), sortedTotalValues.getLast());
-        Assert.assertEquals("Lowest total order value", Double.valueOf(71.0), sortedTotalValues.getFirst());
+        Assert.assertEquals("Highest total order value", 857.0, sortedTotalValues.getLast(), 0.0);
+        Assert.assertEquals("Lowest total order value", 71.0, sortedTotalValues.getFirst(), 0.0);
     }
 
     /**
@@ -46,9 +48,9 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void maximumTotalOrderValue()
     {
-        Double maximumTotalOrderValue =
-                this.company.getCustomers().collect(Customer.TO_TOTAL_ORDER_VALUE).max();
-        Assert.assertEquals("max value", Double.valueOf(857.0), maximumTotalOrderValue);
+        double maximumTotalOrderValue =
+                this.company.getCustomers().asLazy().collectDouble(Customer.TO_TOTAL_ORDER_VALUE).max();
+        Assert.assertEquals("max value", 857.0, maximumTotalOrderValue, 0.0);
     }
 
     /**
@@ -58,7 +60,7 @@ public class Exercise7Test extends CompanyDomainForKata
     public void customerWithMaxTotalOrderValue()
     {
         Customer customerWithMaxTotalOrderValue =
-                this.company.getCustomers().maxBy(Customer.TO_TOTAL_ORDER_VALUE);
+                this.company.getCustomers().asLazy().max(Functions.toDoubleComparator(Customer.TO_TOTAL_ORDER_VALUE));
         Assert.assertEquals(this.company.getCustomerNamed("Mary"), customerWithMaxTotalOrderValue);
     }
 

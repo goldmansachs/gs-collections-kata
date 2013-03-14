@@ -18,12 +18,17 @@ package com.gs.collections.kata;
 
 import java.util.List;
 
+import com.gs.collections.api.DoubleIterable;
 import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.list.MutableList;
+import com.gs.collections.api.list.primitive.DoubleList;
 import com.gs.collections.impl.block.factory.Predicates;
+import com.gs.collections.impl.block.factory.primitive.DoublePredicates;
 import com.gs.collections.impl.list.mutable.FastList;
+import com.gs.collections.impl.list.mutable.primitive.DoubleArrayList;
 import com.gs.collections.impl.utility.ArrayIterate;
 import com.gs.collections.impl.utility.Iterate;
+import com.gs.collections.impl.utility.LazyIterate;
 import com.gs.collections.impl.utility.ListIterate;
 import org.junit.Assert;
 import org.junit.Test;
@@ -89,9 +94,9 @@ public class Exercise5Test extends CompanyDomainForKata
         /**
          * Get the order values that are greater than 1.5.
          */
-        MutableList<Double> orderValues = ListIterate.collect(orders, Order.TO_VALUE);
-        MutableList<Double> filtered = orderValues.select(Predicates.greaterThan(1.5));
-        Assert.assertEquals(FastList.newListWith(372.5, 1.75), filtered);
+        DoubleIterable orderValues = LazyIterate.adapt(orders).collectDouble(Order.TO_VALUE);
+        DoubleList filtered = orderValues.select(DoublePredicates.greaterThan(1.5)).toList();
+        Assert.assertEquals(DoubleArrayList.newListWith(372.5, 1.75), filtered);
     }
 
     @Test
@@ -101,7 +106,13 @@ public class Exercise5Test extends CompanyDomainForKata
         /**
          * Get the actual orders (not their double values) where those orders have a value greater than 2.0.
          */
-        MutableList<Order> filtered = ListIterate.select(orders, Predicates.attributeGreaterThan(Order.TO_VALUE, 2.0));
+        MutableList<Order> filtered = ListIterate.select(orders, new Predicate<Order>()
+        {
+            public boolean accept(Order order)
+            {
+                return order.getValue() > 2.0;
+            }
+        });
         Assert.assertEquals(FastList.newListWith(Iterate.getFirst(this.company.getMostRecentCustomer().getOrders())), filtered);
     }
 }

@@ -70,7 +70,7 @@ public class Exercise9Test extends CompanyDomainForKata
                     @Override
                     public Double valueOf(Customer customer)
                     {
-                        return customer.getOrders().asLazy().flatCollect(Order.TO_LINE_ITEMS).collect(LineItem.TO_VALUE).max();
+                        return customer.getOrders().asLazy().flatCollect(Order.TO_LINE_ITEMS).collectDouble(LineItem.TO_VALUE).max();
                     }
                 });
         Assert.assertEquals(3, multimap.size());

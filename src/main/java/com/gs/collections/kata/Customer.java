@@ -17,8 +17,8 @@
 package com.gs.collections.kata;
 
 import com.gs.collections.api.block.function.Function;
+import com.gs.collections.api.block.function.primitive.DoubleFunction;
 import com.gs.collections.api.list.MutableList;
-import com.gs.collections.impl.block.function.AddFunction;
 import com.gs.collections.impl.list.mutable.FastList;
 
 /**
@@ -44,11 +44,10 @@ public class Customer
         }
     };
 
-    public static final Function<Customer, Double> TO_TOTAL_ORDER_VALUE =
-            new Function<Customer, Double>()
+    public static final DoubleFunction<Customer> TO_TOTAL_ORDER_VALUE =
+            new DoubleFunction<Customer>()
             {
-                @Override
-                public Double valueOf(Customer customer)
+                public double doubleValueOf(Customer customer)
                 {
                     return customer.getTotalOrderValue();
                 }
@@ -95,15 +94,7 @@ public class Customer
 
     public double getTotalOrderValue()
     {
-        MutableList<Double> orderValues = this.orders.collect(new Function<Order, Double>()
-        {
-            @Override
-            public Double valueOf(Order order)
-            {
-                return order.getValue();
-            }
-        });
-        return orderValues.injectInto(0.0, AddFunction.DOUBLE_TO_DOUBLE);
+        return this.orders.sumOfDouble(Order.TO_VALUE);
     }
 
     @Override

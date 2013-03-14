@@ -19,6 +19,7 @@ package com.gs.collections.kata;
 import com.gs.collections.api.bag.Bag;
 import com.gs.collections.api.bag.MutableBag;
 import com.gs.collections.api.block.function.Function;
+import com.gs.collections.api.block.function.primitive.DoubleFunction;
 import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.block.procedure.Procedure;
 import com.gs.collections.impl.bag.mutable.HashBag;
@@ -30,11 +31,10 @@ import com.gs.collections.impl.block.function.AddFunction;
  */
 public class Order
 {
-    public static final Function<Order, Double> TO_VALUE =
-            new Function<Order, Double>()
+    public static final DoubleFunction<Order> TO_VALUE =
+            new DoubleFunction<Order>()
             {
-                @Override
-                public Double valueOf(Order order)
+                public double doubleValueOf(Order order)
                 {
                     return order.getValue();
                 }
@@ -118,15 +118,6 @@ public class Order
 
     public double getValue()
     {
-        MutableBag<Double> itemValues = this.lineItems.collect(new Function<LineItem, Double>()
-        {
-            @Override
-            public Double valueOf(LineItem item)
-            {
-                return item.getValue();
-            }
-        });
-
-        return itemValues.injectInto(0.0, AddFunction.DOUBLE_TO_DOUBLE);
+        return this.lineItems.sumOfDouble(LineItem.TO_VALUE);
     }
 }
