@@ -20,8 +20,11 @@ import java.util.List;
 
 import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.list.MutableList;
+import com.gs.collections.api.list.primitive.DoubleList;
+import com.gs.collections.impl.block.factory.primitive.DoublePredicates;
 import com.gs.collections.impl.list.fixed.ArrayAdapter;
 import com.gs.collections.impl.list.mutable.FastList;
+import com.gs.collections.impl.list.mutable.primitive.DoubleArrayList;
 import com.gs.collections.impl.utility.ArrayIterate;
 import com.gs.collections.impl.utility.Iterate;
 import com.gs.collections.impl.utility.ListIterate;
@@ -83,14 +86,14 @@ public class Exercise5Test extends CompanyDomainForKata
         /**
          * Get the order values that are greater than 1.5.
          */
-        double[] orderValues = this.company
+        DoubleList orderValues = this.company
                 .getMostRecentCustomer()
                 .getOrders()
                 .asLazy()
-                .select(order -> order.getValue() > 1.5)
                 .collectDouble(Order::getValue)
-                .toSortedArray();
-        Assert.assertArrayEquals(new double[]{1.75d, 372.5}, orderValues, 0.0d);
+                .select(DoublePredicates.greaterThan(1.5))
+                .toSortedList();
+        Assert.assertEquals(DoubleArrayList.newListWith(1.75d, 372.5), orderValues);
     }
 
     @Test

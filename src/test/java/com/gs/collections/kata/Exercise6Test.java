@@ -18,7 +18,10 @@ package com.gs.collections.kata;
 
 import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.list.MutableList;
+import com.gs.collections.api.list.primitive.DoubleList;
+import com.gs.collections.impl.block.factory.primitive.DoublePredicates;
 import com.gs.collections.impl.list.mutable.FastList;
+import com.gs.collections.impl.list.mutable.primitive.DoubleArrayList;
 import com.gs.collections.impl.utility.Iterate;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,13 +36,13 @@ public class Exercise6Test extends CompanyDomainForKata
          * instead.
          * Get the order values that are greater than 1.5.
          */
-        double[] filtered = this.company.getMostRecentCustomer()
+        DoubleList filtered = this.company.getMostRecentCustomer()
                 .getOrders()
                 .asLazy()
-                .select(order -> order.getValue() > 1.5)
                 .collectDouble(Order::getValue)
-                .toSortedArray();
-        Assert.assertArrayEquals(new double[]{1.75, 372.5}, filtered, 0.0d);
+                .select(DoublePredicates.greaterThan(1.5))
+                .toSortedList();
+        Assert.assertEquals(DoubleArrayList.newListWith(1.75, 372.5), filtered);
     }
 
     @Test

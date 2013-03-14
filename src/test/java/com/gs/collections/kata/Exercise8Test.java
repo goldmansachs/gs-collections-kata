@@ -50,7 +50,8 @@ public class Exercise8Test extends CompanyDomainForKata
          * Change itemsToSuppliers to a MutableMultimap<String, Supplier>
          */
         final Multimap<String, Supplier> itemsToSuppliers =
-            ArrayAdapter.adapt(this.company.getSuppliers()).groupByEach((Supplier supplier) -> ArrayAdapter.adapt(supplier.getItemNames()));
+            ArrayAdapter.adapt(this.company.getSuppliers())
+                    .groupByEach((Supplier supplier) -> ArrayAdapter.adapt(supplier.getItemNames()));
         Verify.assertIterableSize("should be 2 suppliers for sofa", 2, itemsToSuppliers.get("sofa"));
     }
 }
