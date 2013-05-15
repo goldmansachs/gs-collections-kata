@@ -8,5 +8,6 @@
       <root url="file://$PROJECT_DIR$/lib/source" />
     </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/source" recursive="false" type="SOURCES" />
   </library>
 </component>
