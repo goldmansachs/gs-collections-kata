@@ -17,6 +17,8 @@
 package com.gs.collections.kata;
 
 import com.gs.collections.api.block.function.Function;
+import com.gs.collections.api.block.function.Function0;
+import com.gs.collections.api.block.function.Function2;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.api.map.MutableMap;
 import com.gs.collections.api.multimap.list.MutableListMultimap;
@@ -27,6 +29,38 @@ import org.junit.Test;
 
 public class Exercise9Test extends CompanyDomainForKata
 {
+    /**
+     * Extra credit. Aggregate the total order values by city.  Hint: Look at RichIterable.aggregateBy.
+     */
+    @Test
+    public void totalOrderValuesByCity()
+    {
+        MutableMap<String, Double> map =
+                this.company
+                    .getCustomers()
+                    .aggregateBy(Customer::getCity, () -> 0.0, (result, customer) -> result + customer.getTotalOrderValue());
+        Assert.assertEquals(2, map.size());
+        Assert.assertEquals(446.25, map.get("London"), 0.0);
+        Assert.assertEquals(857.0, map.get("Liphook"), 0.0);
+    }
+
+    /**
+     * Extra credit. Aggregate the total order values by item.  Hint: Look at RichIterable.aggregateBy and remember
+     * how to use flatCollect to get an iterable of all items.
+     */
+    @Test
+    public void totalOrderValuesByItem()
+    {
+        MutableMap<String, Double> map =
+                this.company
+                    .getOrders()
+                    .flatCollect(Order::getLineItems)
+                    .aggregateBy(LineItem::getName, () -> 0.0, (result, lineItem) -> result + lineItem.getValue());
+        Verify.assertSize(12, map);
+        Assert.assertEquals(100.0, map.get("shed"), 0.0);
+        Assert.assertEquals(10.5, map.get("cup"), 0.0);
+    }
+
     /**
      * Extra credit. Figure out which customers ordered saucers (in any of their orders).
      */

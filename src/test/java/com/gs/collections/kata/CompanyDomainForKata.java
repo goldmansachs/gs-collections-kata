@@ -44,15 +44,8 @@ public abstract class CompanyDomainForKata
     private void setUpCustomersAndOrders()
     {
         Order fredOrder = new Order();
-        fredOrder.addLineItem(new LineItem("Shed", 50.0));
-
-        /**
-         * TODO 8: Refactor Order and its API so this repetition is not necessary.
-         */
-        // TODO 8: Add 3 cups at 1.5 each to the order
+        fredOrder.addLineItem(new LineItem("shed", 50.0));
         fredOrder.addLineItems(new LineItem("cup", 1.5), 3);
-
-        // TODO 8: Add 3 saucers at 1.0 each to the order
         fredOrder.addLineItems(new LineItem("saucer", 1.0), 3);
 
         fredOrder.addLineItem(new LineItem("chair", 12.50));
@@ -66,10 +59,8 @@ public abstract class CompanyDomainForKata
         maryOrder.addLineItem(new LineItem("cat", 150.0));
         maryOrder.addLineItem(new LineItem("big shed", 500.0));
 
-        // TODO 8: Add 4 cups at 1.50 each to the order
         maryOrder.addLineItems(new LineItem("cup", 1.5), 4);
 
-        // TODO 8: Add 4 saucers at 1.50 each to the order
         maryOrder.addLineItems(new LineItem("saucer", 1.5), 4);
 
         maryOrder.addLineItem(new LineItem("sofa", 120.0));
