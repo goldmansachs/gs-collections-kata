@@ -17,6 +17,8 @@
 package com.gs.collections.kata;
 
 import com.gs.collections.api.block.function.Function;
+import com.gs.collections.api.block.function.Function0;
+import com.gs.collections.api.block.function.Function2;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.api.map.MutableMap;
 import com.gs.collections.api.multimap.list.MutableListMultimap;
@@ -28,6 +30,66 @@ import org.junit.Test;
 
 public class Exercise9Test extends CompanyDomainForKata
 {
+    /**
+     * Extra credit. Aggregate the total order values by city.  Hint: Look at RichIterable.aggregateBy.
+     */
+    @Test
+    public void totalOrderValuesByCity()
+    {
+        Function0<Double> zeroValueFactory = new Function0<Double>()
+        {
+            public Double value()
+            {
+                return Double.valueOf(0.0);
+            }
+        };
+
+        Function2<Double, Customer, Double> aggregator = new Function2<Double, Customer, Double>()
+        {
+            public Double value(Double result, Customer customer)
+            {
+                return result + customer.getTotalOrderValue();
+            }
+        };
+        MutableMap<String, Double> map =
+                this.company.getCustomers().aggregateBy(Customer.TO_CITY, zeroValueFactory, aggregator);
+        Assert.assertEquals(2, map.size());
+        Assert.assertEquals(446.25, map.get("London"), 0.0);
+        Assert.assertEquals(857.0, map.get("Liphook"), 0.0);
+    }
+
+    /**
+     * Extra credit. Aggregate the total order values by item.  Hint: Look at RichIterable.aggregateBy and remember
+     * how to use flatCollect to get an iterable of all items.
+     */
+    @Test
+    public void totalOrderValuesByItem()
+    {
+        Function0<Double> zeroValueFactory = new Function0<Double>()
+        {
+            public Double value()
+            {
+                return Double.valueOf(0.0);
+            }
+        };
+
+        Function2<Double, LineItem, Double> aggregator = new Function2<Double, LineItem, Double>()
+        {
+            public Double value(Double result, LineItem lineItem)
+            {
+                return result + lineItem.getValue();
+            }
+        };
+        MutableMap<String, Double> map =
+                this.company
+                        .getOrders()
+                        .flatCollect(Order.TO_LINE_ITEMS)
+                        .aggregateBy(LineItem.TO_NAME, zeroValueFactory, aggregator);
+        Verify.assertSize(12, map);
+        Assert.assertEquals(100.0, map.get("shed"), 0.0);
+        Assert.assertEquals(10.5, map.get("cup"), 0.0);
+    }
+
     /**
      * Extra credit. Figure out which customers ordered saucers (in any of their orders).
      */

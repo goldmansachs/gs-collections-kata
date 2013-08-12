@@ -49,8 +49,8 @@ public class Exercise4Test extends CompanyDomainForKata
         Verify.assertInstanceOf(String.class, actualItemNames.getFirst());
 
         MutableSet<String> expectedItemNames = UnifiedSet.newSetWith(
-                "Shed", "big shed", "bowl", "cat", "cup", "chair", "dog",
-                "goldfish", "gnome", "saucer", "shed", "sofa", "table");
+                "shed", "big shed", "bowl", "cat", "cup", "chair", "dog",
+                "goldfish", "gnome", "saucer", "sofa", "table");
         Assert.assertEquals(expectedItemNames, actualItemNames);
     }
 
