@@ -86,7 +86,7 @@ public class Exercise3Test extends CompanyDomainForKata
     {
         List<Customer> customersNotFromLondon = this.company.getCustomers()
             .stream()
-            .filter(Predicates.negate(CUSTOMER_FROM_LONDON))
+            .filter(CUSTOMER_FROM_LONDON.negate())
             .collect(toList());
         Assert.assertEquals("customers not from London", 1, customersNotFromLondon.size());
     }

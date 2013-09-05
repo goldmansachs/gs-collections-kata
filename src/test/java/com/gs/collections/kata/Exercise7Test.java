@@ -105,9 +105,7 @@ public class Exercise7Test extends CompanyDomainForKata
         this.company.getCustomers()
             .stream()
             .filter(customer -> "London".equals(customer.getCity()))
-            .explode((Stream.Downstream<Order> downstream, Customer customer) -> {
-                downstream.send(customer.getOrders());
-            })
+            .flatMap(customer -> customer.getOrders().stream())
             .forEach(Order::deliver);
         Assert.assertTrue(this.company.getCustomerNamed("Fred").getOrders().stream().allMatch(Order::isDelivered));
         Assert.assertTrue(this.company.getCustomerNamed("Mary").getOrders().stream().allMatch(((Predicate<Order>) Order::isDelivered).negate()));

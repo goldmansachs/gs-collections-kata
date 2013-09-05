@@ -70,15 +70,13 @@ public class Exercise9Test extends CompanyDomainForKata
     @Test
     public void mostExpensiveItem()
     {
-        Map<Double, Collection<Customer>> multimap = this.company.getCustomers()
+        Map<Double, List<Customer>> multimap = this.company.getCustomers()
             .stream()
-            .collect(groupingBy(customer ->
+            .collect(groupingBy((Customer customer) ->
                 customer.getOrders()
                     .stream()
-                    .explode((Stream.Downstream<LineItem> downstream, Order order) -> {
-                        downstream.send(order.getLineItems());
-                    })
-                    .map(LineItem::getValue)
+                    .flatMap((Order order) -> order.getLineItems().stream())
+                    .mapToDouble(LineItem::getValue)
                     .reduce(0.0, (x, y) -> Math.max(x, y))));
 
         Assert.assertEquals(2, multimap.keySet().size());

@@ -54,10 +54,8 @@ public class Company
 
     public List<Order> getOrders()
     {
-        return this.customers
-            .stream().explode((Stream.Downstream<Order> downstream, Customer customer) -> {
-                downstream.send(customer.getOrders());
-            })
+        return this.customers.stream()
+            .flatMap(customer -> customer.getOrders().stream())
             .collect(Collectors.<Order>toList());
     }
 

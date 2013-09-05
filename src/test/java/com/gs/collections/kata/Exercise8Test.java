@@ -38,7 +38,7 @@ public class Exercise8Test extends CompanyDomainForKata
     public void customersByCity()
     {
         // Implemented groupBy using a Map on the super class for all tests.
-        Map<String, Collection<Customer>> multimap =
+        Map<String, List<Customer>> multimap =
             this.company.getCustomers()
                 .stream()
                 .collect(groupingBy(Customer::getCity));
