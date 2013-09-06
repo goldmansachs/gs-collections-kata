@@ -25,59 +25,52 @@ import org.junit.Test;
 public class Exercise3Test extends CompanyDomainForKata
 {
     /**
-     * Set up a {@link Predicate} that tests to see if a {@link Customer}'s city is "London"
-     */
-    private static final Predicate<Customer> CUSTOMER_FROM_LONDON = customer -> "London".equals(customer.getCity());
-
-    /**
-     * Do any customers come from London? Use the Predicate {@link #CUSTOMER_FROM_LONDON}.
+     * Do any customers come from London?
      */
     @Test
     public void doAnyCustomersLiveInLondon()
     {
-        boolean anyCustomersFromLondon = this.company.getCustomers().anySatisfy(CUSTOMER_FROM_LONDON);
+        boolean anyCustomersFromLondon = this.company.getCustomers().anySatisfyWith(Customer::livesIn, "London");
         Assert.assertTrue(anyCustomersFromLondon);
     }
 
     /**
-     * Do all customers come from London? Use the Predicate {@link #CUSTOMER_FROM_LONDON}.
+     * Do all customers come from London?
      */
     @Test
     public void doAllCustomersLiveInLondon()
     {
-        boolean allCustomersFromLondon = this.company.getCustomers().allSatisfy(CUSTOMER_FROM_LONDON);
+        boolean allCustomersFromLondon = this.company.getCustomers().allSatisfyWith(Customer::livesIn, "London");
         Assert.assertFalse(allCustomersFromLondon);
     }
 
     /**
-     * How many customers come from London? Use the Predicate {@link #CUSTOMER_FROM_LONDON}.
+     * How many customers come from London?
      */
     @Test
     public void howManyCustomersLiveInLondon()
     {
-        int numberOfCustomerFromLondon = this.company.getCustomers().count(CUSTOMER_FROM_LONDON);
+        int numberOfCustomerFromLondon = this.company.getCustomers().countWith(Customer::livesIn, "London");
         Assert.assertEquals("Should be 2 London customers", 2, numberOfCustomerFromLondon);
     }
 
     /**
-     * Which customers come from London? Get a collection of those which do. Use the Predicate {@link
-     * #CUSTOMER_FROM_LONDON}.
+     * Which customers come from London? Get a collection of those which do.
      */
     @Test
     public void getLondonCustomers()
     {
-        MutableList<Customer> customersFromLondon = this.company.getCustomers().select(CUSTOMER_FROM_LONDON);
+        MutableList<Customer> customersFromLondon = this.company.getCustomers().selectWith(Customer::livesIn, "London");
         Verify.assertSize("Should be 2 London customers", 2, customersFromLondon);
     }
 
     /**
-     * Which customers do not come from London? Get a collection of those which don't. Use the Predicate {@link
-     * #CUSTOMER_FROM_LONDON}.
+     * Which customers do not come from London? Get a collection of those which don't.
      */
     @Test
     public void getCustomersWhoDontLiveInLondon()
     {
-        MutableList<Customer> customersNotFromLondon = this.company.getCustomers().reject(CUSTOMER_FROM_LONDON);
+        MutableList<Customer> customersNotFromLondon = this.company.getCustomers().rejectWith(Customer::livesIn, "London");
         Verify.assertSize("customers not from London", 1, customersNotFromLondon);
     }
 

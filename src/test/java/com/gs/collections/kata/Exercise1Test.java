@@ -66,7 +66,7 @@ public class Exercise1Test extends CompanyDomainForKata
          * Which customers come from London? Get a collection of those which do. Use an anonymous inner class.
          */
         MutableList<Customer> customers = this.company.getCustomers();
-        MutableList<Customer> customersFromLondon = customers.select(customer -> "London".equals(customer.getCity()));
+        MutableList<Customer> customersFromLondon = customers.selectWith(Customer::livesIn, "London");
         Verify.assertSize("Should be 2 London customers", 2, customersFromLondon);
     }
 }

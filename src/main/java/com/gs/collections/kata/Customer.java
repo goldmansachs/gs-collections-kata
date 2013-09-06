@@ -58,4 +58,9 @@ public class Customer
     {
         return this.orders.sumOfDouble(Order::getValue);
     }
+
+    public boolean livesIn(String city)
+    {
+        return city.equals(this.city);
+    }
 }

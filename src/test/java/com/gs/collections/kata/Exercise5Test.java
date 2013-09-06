@@ -71,11 +71,8 @@ public class Exercise5Test extends CompanyDomainForKata
     @Test
     public void whoSuppliesSandwichToaster()
     {
-        // Create a Predicate that will check to see if a Supplier supplies a "sandwich toaster".
-        Predicate<Supplier> suppliesToaster = supplier -> supplier.supplies("sandwich toaster");
-
         // Find one supplier that supplies toasters.
-        Supplier toasterSupplier = ArrayIterate.detect(this.company.getSuppliers(), suppliesToaster);
+        Supplier toasterSupplier = ArrayIterate.detectWith(this.company.getSuppliers(), Supplier::supplies, "sandwich toaster");
         Assert.assertNotNull("toaster supplier", toasterSupplier);
         Assert.assertEquals("Doxins", toasterSupplier.getName());
     }
