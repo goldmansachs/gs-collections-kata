@@ -35,7 +35,7 @@ public class Exercise7Test extends CompanyDomainForKata
     public void sortedTotalOrderValue()
     {
         DoubleList sortedTotalValues =
-                this.company.getCustomers().asLazy().collectDouble(Customer.TO_TOTAL_ORDER_VALUE).toSortedList();
+                this.company.getCustomers().collectDouble(Customer.TO_TOTAL_ORDER_VALUE).sortThis();
 
         // Don't forget the handy utility methods getFirst() and getLast()...
         Assert.assertEquals("Highest total order value", 857.0, sortedTotalValues.getLast(), 0.0);

@@ -37,12 +37,13 @@ public class Exercise6Test extends CompanyDomainForKata
         /**
          * Same exercise but don't use static utility - refactor the type of orders instead.
          */
-        DoubleList orderValues = orders.asLazy().collectDouble(Order.TO_VALUE).toList();
-        DoubleList filtered = orderValues.select(DoublePredicates.greaterThan(1.5));
-        Assert.assertEquals(DoubleArrayList.newListWith(372.5, 1.75), filtered);
-        Verify.assertInstanceOf(MutableList.class, this.company.getMostRecentCustomer().getOrders());
-        this.company.getMostRecentCustomer().getOrders().add(null);
-        Verify.assertContains("Don't return a copy from Customer.getOrders(). The field should be a MutableList.", null, this.company.getMostRecentCustomer().getOrders());
+        DoubleList filtered = this.company.getMostRecentCustomer()
+                .getOrders()
+                .asLazy()
+                .collectDouble(Order.TO_VALUE)
+                .select(DoublePredicates.greaterThan(1.5))
+                .toSortedList();
+        Assert.assertEquals(DoubleArrayList.newListWith(1.75, 372.5), filtered);
     }
 
     @Test
