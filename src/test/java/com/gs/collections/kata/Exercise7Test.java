@@ -18,6 +18,7 @@ package com.gs.collections.kata;
 
 import com.gs.collections.api.DoubleIterable;
 import com.gs.collections.api.block.procedure.Procedure;
+import com.gs.collections.api.list.primitive.DoubleList;
 import com.gs.collections.impl.block.factory.Predicates;
 import com.gs.collections.impl.test.Verify;
 import com.gs.collections.impl.utility.ArrayIterate;
@@ -33,13 +34,12 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void sortedTotalOrderValue()
     {
-        DoubleIterable totalValues = this.company.getCustomers()
-                .asLazy()
-                .collectDouble(Customer::getTotalOrderValue);
+        DoubleList sortedTotalValues =
+                this.company.getCustomers().collectDouble(Customer::getTotalOrderValue).sortThis();
 
         // Don't forget the handy utility methods getFirst() and getLast()...
-        Assert.assertEquals("Highest total order value", 857.0d, totalValues.max(), 0.0d);
-        Assert.assertEquals("Lowest total order value", 71.0d, totalValues.min(), 0.0d);
+        Assert.assertEquals("Highest total order value", 857.0, sortedTotalValues.getLast(), 0.0);
+        Assert.assertEquals("Lowest total order value", 71.0, sortedTotalValues.getFirst(), 0.0);
     }
 
     /**
