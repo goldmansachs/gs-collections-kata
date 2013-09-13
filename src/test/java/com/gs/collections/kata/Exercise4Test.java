@@ -61,7 +61,7 @@ public class Exercise4Test extends CompanyDomainForKata
         Assert.assertTrue(actualItemNames.stream().findFirst().get() instanceof String);
 
         Set<String> expectedItemNames = new HashSet(Arrays.asList(
-            "Shed", "big shed", "bowl", "cat", "cup", "chair", "dog",
+            "big shed", "bowl", "cat", "cup", "chair", "dog",
             "goldfish", "gnome", "saucer", "shed", "sofa", "table"));
         Assert.assertEquals(expectedItemNames, actualItemNames);
     }
