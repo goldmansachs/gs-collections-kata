@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Goldman Sachs.
+ * Copyright 2013 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ public abstract class CompanyDomainForKata
     private void setUpCustomersAndOrders()
     {
         Order fredOrder = new Order();
-        fredOrder.addLineItem(new LineItem("Shed", 50.0));
+        fredOrder.addLineItem(new LineItem("shed", 50.0));
 
         /**
          * TODO 8: Refactor Order and its API so this repetition is not necessary.

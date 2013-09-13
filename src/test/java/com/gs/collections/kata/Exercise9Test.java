@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Goldman Sachs.
+ * Copyright 2013 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,57 @@
 
 package com.gs.collections.kata;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.gs.collections.impl.bag.mutable.HashBag;
+import com.gs.collections.impl.test.Verify;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.reducing;
 
 public class Exercise9Test extends CompanyDomainForKata
 {
+    /**
+     * Extra credit. Aggregate the total order values by city.
+     */
+    @Test
+    public void totalOrderValuesByCity()
+    {
+        Map<String, Double> map =
+                this.company
+                        .getCustomers()
+                        .stream()
+                        .collect(groupingBy(Customer::getCity,
+                                reducing(0.0, Customer::getTotalOrderValue, (x, y) -> x + y)));
+        Assert.assertEquals(2, map.size());
+        Assert.assertEquals(446.25, map.get("London"), 0.0);
+        Assert.assertEquals(857.0, map.get("Liphook"), 0.0);
+    }
+
+    /**
+     * Extra credit. Aggregate the total order values by item.
+     */
+    @Test
+    public void totalOrderValuesByItem()
+    {
+        Map<String, Double> map =
+                this.company
+                        .getOrders()
+                        .stream()
+                        .flatMap(order -> order.getLineItems().stream())
+                        .collect(groupingBy(LineItem::getName,
+                                reducing(0.0, LineItem::getValue, (x, y) -> x + y)));
+        Verify.assertSize(12, map);
+        Assert.assertEquals(100.0, map.get("shed"), 0.0);
+        Assert.assertEquals(10.5, map.get("cup"), 0.0);
+    }
+
+
     /**
      * Extra credit. Figure out which customers ordered saucers (in any of their orders).
      */
@@ -48,7 +83,7 @@ public class Exercise9Test extends CompanyDomainForKata
     }
 
     /**
-     * Extra credit. Look into the {@link com.gs.collections.api.list.List#toMap(Function, Function)} method.
+     * Extra credit.
      */
     @Test
     public void ordersByCustomerUsingAsMap()
