@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.reducing;
+import static java.util.stream.Collectors.summingDouble;
 
 public class Exercise9Test extends CompanyDomainForKata
 {
@@ -39,10 +39,9 @@ public class Exercise9Test extends CompanyDomainForKata
     {
         Map<String, Double> map =
                 this.company
-                        .getCustomers()
-                        .stream()
-                        .collect(groupingBy(Customer::getCity,
-                                reducing(0.0, Customer::getTotalOrderValue, (x, y) -> x + y)));
+                    .getCustomers()
+                    .stream()
+                    .collect(groupingBy(Customer::getCity, summingDouble(Customer::getTotalOrderValue)));
         Assert.assertEquals(2, map.size());
         Assert.assertEquals(446.25, map.get("London"), 0.0);
         Assert.assertEquals(857.0, map.get("Liphook"), 0.0);
@@ -56,11 +55,10 @@ public class Exercise9Test extends CompanyDomainForKata
     {
         Map<String, Double> map =
                 this.company
-                        .getOrders()
-                        .stream()
-                        .flatMap(order -> order.getLineItems().stream())
-                        .collect(groupingBy(LineItem::getName,
-                                reducing(0.0, LineItem::getValue, (x, y) -> x + y)));
+                    .getOrders()
+                    .stream()
+                    .flatMap(order -> order.getLineItems().stream())
+                    .collect(groupingBy(LineItem::getName, summingDouble(LineItem::getValue)));
         Verify.assertSize(12, map);
         Assert.assertEquals(100.0, map.get("shed"), 0.0);
         Assert.assertEquals(10.5, map.get("cup"), 0.0);

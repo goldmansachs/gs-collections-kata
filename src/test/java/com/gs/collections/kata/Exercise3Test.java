@@ -18,7 +18,7 @@ package com.gs.collections.kata;
 
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.function.Predicates;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,66 +27,63 @@ import static java.util.stream.Collectors.toList;
 
 public class Exercise3Test extends CompanyDomainForKata
 {
-    /**
-     * Set up a {@link com.gs.collections.api.block.predicate.Predicate} that tests to see if a {@link Customer}'s city is "London"
-     */
-    private static final Predicate<Customer> CUSTOMER_FROM_LONDON = customer -> "London".equals(customer.getCity());
 
     /**
-     * Do any customers come from London? Use the Predicate {@link #CUSTOMER_FROM_LONDON}.
+     * Do any customers come from London?
      */
     @Test
     public void doAnyCustomersLiveInLondon()
     {
-        boolean anyCustomersFromLondon = this.company.getCustomers().stream().anyMatch(CUSTOMER_FROM_LONDON);
+        boolean anyCustomersFromLondon =
+                this.company.getCustomers().stream().anyMatch(customer -> "London".equals(customer.getCity()));
         Assert.assertTrue(anyCustomersFromLondon);
     }
 
     /**
-     * Do all customers come from London? Use the Predicate {@link #CUSTOMER_FROM_LONDON}.
+     * Do all customers come from London? Use the Predicate.
      */
     @Test
     public void doAllCustomersLiveInLondon()
     {
-        boolean allCustomersFromLondon = this.company.getCustomers().stream().allMatch(CUSTOMER_FROM_LONDON);
+        boolean allCustomersFromLondon =
+                this.company.getCustomers().stream().allMatch(customer -> "London".equals(customer.getCity()));
         Assert.assertFalse(allCustomersFromLondon);
     }
 
     /**
-     * How many customers come from London? Use the Predicate {@link #CUSTOMER_FROM_LONDON}.
+     * How many customers come from London? Use the Predicate.
      */
     @Test
     public void howManyCustomersLiveInLondon()
     {
         int numberOfCustomerFromLondon = this.company.getCustomers().stream()
-            .filter(CUSTOMER_FROM_LONDON)
+            .filter(customer -> "London".equals(customer.getCity()))
             .collect(toList()).size();
         Assert.assertEquals("Should be 2 London customers", 2, numberOfCustomerFromLondon);
     }
 
     /**
-     * Which customers come from London? Get a collection of those which do. Use the Predicate {@link
-     * #CUSTOMER_FROM_LONDON}.
+     * Which customers come from London? Get a collection of those which do.
      */
     @Test
     public void getLondonCustomers()
     {
-        List<Customer> customersFromLondon = this.company.getCustomers().stream()
-            .filter(CUSTOMER_FROM_LONDON)
+        List<Customer> customersFromLondon = this.company.getCustomers()
+            .stream()
+            .filter(customer -> "London".equals(customer.getCity()))
             .collect(toList());
         Assert.assertEquals("Should be 2 London customers", 2, customersFromLondon.size());
     }
 
     /**
-     * Which customers do not come from London? Get a collection of those which don't. Use the Predicate {@link
-     * #CUSTOMER_FROM_LONDON}.
+     * Which customers do not come from London? Get a collection of those which don't.
      */
     @Test
     public void getCustomersWhoDontLiveInLondon()
     {
         List<Customer> customersNotFromLondon = this.company.getCustomers()
             .stream()
-            .filter(CUSTOMER_FROM_LONDON.negate())
+            .filter(customer -> !"London".equals(customer.getCity()))
             .collect(toList());
         Assert.assertEquals("customers not from London", 1, customersNotFromLondon.size());
     }

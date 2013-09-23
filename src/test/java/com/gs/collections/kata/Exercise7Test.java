@@ -19,7 +19,6 @@ package com.gs.collections.kata;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Comparators;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public class Exercise7Test extends CompanyDomainForKata
         List<Double> sortedTotalValues = this.company.getCustomers()
             .stream()
             .map(Customer::getTotalOrderValue)
-            .sorted(Comparators.<Double>naturalOrder())
+            .sorted(Comparator.<Double>naturalOrder())
             .collect(Collectors.<Double>toList());
 
         // Don't forget the handy utility methods getFirst() and getLast()...
@@ -65,7 +64,7 @@ public class Exercise7Test extends CompanyDomainForKata
     @Test
     public void customerWithMaxTotalOrderValue()
     {
-        Comparator<Customer> comparator = Comparators.<Customer>comparing(Customer::getTotalOrderValue);
+        Comparator<Customer> comparator = Comparator.comparing(Customer::getTotalOrderValue);
         Customer customerWithMaxTotalOrderValue1 = Collections.max(this.company.getCustomers(), comparator);
         Customer mary = this.company.getCustomerNamed("Mary");
         Assert.assertEquals(mary, customerWithMaxTotalOrderValue1);
