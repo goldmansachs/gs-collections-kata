@@ -16,16 +16,20 @@
 
 package com.gs.collections.kata;
 
+import com.gs.collections.api.bag.MutableBag;
+import com.gs.collections.api.bag.sorted.MutableSortedBag;
 import com.gs.collections.api.block.function.Function;
-import com.gs.collections.api.block.function.Function0;
-import com.gs.collections.api.block.function.Function2;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.api.map.MutableMap;
 import com.gs.collections.api.multimap.list.MutableListMultimap;
+import com.gs.collections.impl.bag.mutable.HashBag;
+import com.gs.collections.impl.bag.mutable.sorted.TreeBag;
 import com.gs.collections.impl.list.mutable.FastList;
 import com.gs.collections.impl.test.Verify;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Collections;
 
 public class Exercise9Test extends CompanyDomainForKata
 {
@@ -59,6 +63,24 @@ public class Exercise9Test extends CompanyDomainForKata
         Verify.assertSize(12, map);
         Assert.assertEquals(100.0, map.get("shed"), 0.0);
         Assert.assertEquals(10.5, map.get("cup"), 0.0);
+    }
+
+    /**
+     * Extra credit. Find all customers' line item values greater than 7.5 and sort them by highest to lowest price.
+     */
+    @Test
+    public void sortedOrders()
+    {
+        MutableSortedBag<Double> orderedPrices =
+                this.company.getOrders()
+                        .asLazy()
+                        .flatCollect(Order::getLineItems)
+                        .select(lineItem -> lineItem.getValue() > 7.5)
+                        .collect(LineItem::getValue, TreeBag.<Double>newBag(Collections.reverseOrder()));
+
+        MutableSortedBag<Double> expectedPrices = TreeBag.newBagWith(
+                Collections.reverseOrder(), 500.0, 150.0, 120.0, 75.0, 50.0, 50.0, 12.5);
+        Verify.assertSortedBagsEqual(expectedPrices, orderedPrices);
     }
 
     /**
