@@ -19,11 +19,13 @@ package com.gs.collections.kata;
 import com.gs.collections.api.bag.MutableBag;
 import com.gs.collections.api.bag.sorted.MutableSortedBag;
 import com.gs.collections.api.block.function.Function;
+import com.gs.collections.api.block.function.primitive.DoubleToObjectFunction;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.api.map.MutableMap;
 import com.gs.collections.api.multimap.list.MutableListMultimap;
 import com.gs.collections.impl.bag.mutable.HashBag;
 import com.gs.collections.impl.bag.mutable.sorted.TreeBag;
+import com.gs.collections.impl.block.factory.primitive.DoublePredicates;
 import com.gs.collections.impl.list.mutable.FastList;
 import com.gs.collections.impl.test.Verify;
 import org.junit.Assert;
@@ -75,8 +77,10 @@ public class Exercise9Test extends CompanyDomainForKata
                 this.company.getOrders()
                         .asLazy()
                         .flatCollect(Order::getLineItems)
-                        .select(lineItem -> lineItem.getValue() > 7.5)
-                        .collect(LineItem::getValue, TreeBag.<Double>newBag(Collections.reverseOrder()));
+                        .collectDouble(LineItem::getValue)
+                        .select(value -> value > 7.5)
+                        .collect(Double::valueOf)
+                        .into(TreeBag.<Double>newBag(Collections.reverseOrder()));
 
         MutableSortedBag<Double> expectedPrices = TreeBag.newBagWith(
                 Collections.reverseOrder(), 500.0, 150.0, 120.0, 75.0, 50.0, 50.0, 12.5);
