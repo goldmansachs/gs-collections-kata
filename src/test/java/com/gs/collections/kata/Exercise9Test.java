@@ -16,7 +16,6 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.bag.MutableBag;
 import com.gs.collections.api.bag.sorted.MutableSortedBag;
 import com.gs.collections.api.block.function.Function;
 import com.gs.collections.api.block.function.Function0;
@@ -24,8 +23,7 @@ import com.gs.collections.api.block.function.Function2;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.api.map.MutableMap;
 import com.gs.collections.api.multimap.list.MutableListMultimap;
-import com.gs.collections.impl.bag.mutable.HashBag;
-import com.gs.collections.impl.bag.mutable.sorted.TreeBag;
+import com.gs.collections.impl.bag.sorted.mutable.TreeBag;
 import com.gs.collections.impl.list.mutable.FastList;
 import com.gs.collections.impl.test.Verify;
 import org.junit.Assert;
