@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2014 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,34 +24,30 @@ import com.gs.collections.impl.test.Verify;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class Exercise8Test extends CompanyDomainForKata
-{
+public class Exercise8Test extends CompanyDomainForKata {
     /**
      * Create a multimap where the keys are the names of cities and the values are the customers from those cities.
      */
     @Test
-    public void customersByCity()
-    {
+    public void customersByCity() {
         // Notice that the second generic type is Customer, not List<Customer>
         MutableListMultimap<String, Customer> multimap = this.company.getCustomers().groupBy(Customer::getCity);
 
         Assert.assertEquals(FastList.newListWith(this.company.getCustomerNamed("Mary")), multimap.get("Liphook"));
         Assert.assertEquals(
-            FastList.newListWith(
-                this.company.getCustomerNamed("Fred"),
-                this.company.getCustomerNamed("Bill")),
-            multimap.get("London"));
+                FastList.newListWith(
+                        this.company.getCustomerNamed("Fred"),
+                        this.company.getCustomerNamed("Bill")),
+                multimap.get("London"));
     }
 
     @Test
-    public void mapOfItemsToSuppliers()
-    {
+    public void mapOfItemsToSuppliers() {
         /**
          * Change itemsToSuppliers to a MutableMultimap<String, Supplier>
          */
         final Multimap<String, Supplier> itemsToSuppliers =
-            ArrayAdapter.adapt(this.company.getSuppliers())
-                    .groupByEach((Supplier supplier) -> ArrayAdapter.adapt(supplier.getItemNames()));
+                this.company.getSuppliers().groupByEach((Supplier supplier) -> ArrayAdapter.adapt(supplier.getItemNames()));
         Verify.assertIterableSize("should be 2 suppliers for sofa", 2, itemsToSuppliers.get("sofa"));
     }
 }

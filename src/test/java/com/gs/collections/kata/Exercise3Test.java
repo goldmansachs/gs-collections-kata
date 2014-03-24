@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2014 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.test.Verify;
 import org.junit.Assert;
@@ -91,8 +90,6 @@ public class Exercise3Test extends CompanyDomainForKata
     public void findPete()
     {
         Customer pete = this.company.getCustomerNamed("Pete");
-        Assert.assertNull(
-            "Should be null as there is no customer called Pete",
-            pete);
+        Assert.assertNull("Should be null as there is no customer called Pete", pete);
     }
 }

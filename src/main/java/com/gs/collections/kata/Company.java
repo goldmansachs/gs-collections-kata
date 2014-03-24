@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Goldman Sachs.
+ * Copyright 2014 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,52 +16,46 @@
 
 package com.gs.collections.kata;
 
+import com.gs.collections.api.list.ListIterable;
 import com.gs.collections.api.list.MutableList;
+import com.gs.collections.impl.list.fixed.ArrayAdapter;
 import com.gs.collections.impl.list.mutable.FastList;
 
 /**
  * A company has a {@link MutableList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
  */
-public class Company
-{
+public class Company {
     private final String name;
     private final MutableList<Customer> customers = FastList.newList();
 
     // suppliers are array based.
     private Supplier[] suppliers = new Supplier[0];
 
-    public Company(String name)
-    {
+    public Company(String name) {
         this.name = name;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
-    public void addCustomer(Customer aCustomer)
-    {
+    public void addCustomer(Customer aCustomer) {
         this.customers.add(aCustomer);
     }
 
-    public MutableList<Customer> getCustomers()
-    {
+    public MutableList<Customer> getCustomers() {
         return this.customers;
     }
 
-    public MutableList<Order> getOrders()
-    {
+    public MutableList<Order> getOrders() {
         return this.customers.flatCollect(Customer::getOrders);
     }
 
-    public Customer getMostRecentCustomer()
-    {
+    public Customer getMostRecentCustomer() {
         return this.customers.getLast();
     }
 
-    public void addSupplier(Supplier supplier)
-    {
+    public void addSupplier(Supplier supplier) {
         // need to replace the current array of suppliers with another, larger array
         // Of course, normally one would not use an array.
 
@@ -71,13 +65,11 @@ public class Company
         this.suppliers[this.suppliers.length - 1] = supplier;
     }
 
-    public Supplier[] getSuppliers()
-    {
-        return this.suppliers;
+    public ListIterable<Supplier> getSuppliers() {
+        return ArrayAdapter.adapt(this.suppliers).asUnmodifiable();
     }
 
-    public Customer getCustomerNamed(final String name)
-    {
+    public Customer getCustomerNamed(String name) {
         /**
          * Use a {@link Predicate} to find a {@link Customer} with the name given.
          */

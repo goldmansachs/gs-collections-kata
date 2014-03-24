@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2014 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,12 @@
 
 package com.gs.collections.kata;
 
-import java.util.List;
-
 import com.gs.collections.api.bag.Bag;
-import com.gs.collections.api.bag.MutableBag;
-import com.gs.collections.impl.bag.mutable.HashBag;
+import com.gs.collections.api.bag.sorted.MutableSortedBag;
+import com.gs.collections.impl.bag.sorted.mutable.TreeBag;
+import com.gs.collections.impl.block.factory.Comparators;
+
+import java.util.List;
 
 /**
  * Has a number, a {@link Customer}, a {@link List} of {@link LineItem}s, and a boolean that states whether or not the order
@@ -32,7 +33,7 @@ public class Order
 
     private final int orderNumber;
     private boolean isDelivered;
-    private final MutableBag<LineItem> lineItems = HashBag.newBag();
+    private final MutableSortedBag<LineItem> lineItems = TreeBag.newBag(Comparators.byFunction(LineItem::getName));
 
     public Order()
     {

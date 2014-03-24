@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Goldman Sachs.
+ * Copyright 2014 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,40 +16,36 @@
 
 package com.gs.collections.kata;
 
-import java.util.List;
-
 import com.gs.collections.api.block.predicate.Predicate;
+import com.gs.collections.api.list.ListIterable;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.api.list.primitive.DoubleList;
-import com.gs.collections.impl.block.factory.primitive.DoublePredicates;
-import com.gs.collections.impl.list.fixed.ArrayAdapter;
 import com.gs.collections.impl.list.mutable.FastList;
 import com.gs.collections.impl.list.mutable.primitive.DoubleArrayList;
-import com.gs.collections.impl.utility.ArrayIterate;
-import com.gs.collections.impl.utility.Iterate;
 import com.gs.collections.impl.utility.ListIterate;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.List;
+
 public class Exercise5Test extends CompanyDomainForKata
 {
     /**
-     * Solve this without changing the return type of {@link Company#getSuppliers()}. Find the appropriate method on
-     * {@link ArrayIterate}.
+     * Solved this by changing the return type of {@link Company#getSuppliers()}.
      */
     @Test
     public void findSupplierNames()
     {
-        MutableList<String> supplierNames = ArrayAdapter.adapt(this.company.getSuppliers()).collect(Supplier::getName);
+        ListIterable<String> supplierNames = this.company.getSuppliers().collect(Supplier::getName);
 
         MutableList<String> expectedSupplierNames = FastList.newListWith(
-            "Shedtastic",
-            "Splendid Crocks",
-            "Annoying Pets",
-            "Gnomes 'R' Us",
-            "Furniture Hamlet",
-            "SFD",
-            "Doxins");
+                "Shedtastic",
+                "Splendid Crocks",
+                "Annoying Pets",
+                "Gnomes 'R' Us",
+                "Furniture Hamlet",
+                "SFD",
+                "Doxins");
         Assert.assertEquals(expectedSupplierNames, supplierNames);
     }
 
@@ -61,7 +57,7 @@ public class Exercise5Test extends CompanyDomainForKata
     public void countSuppliersWithMoreThanTwoItems()
     {
         Predicate<Supplier> moreThanTwoItems = supplier -> supplier.getItemNames().length > 2;
-        int suppliersWithMoreThanTwoItems = ArrayIterate.count(this.company.getSuppliers(), moreThanTwoItems);
+        int suppliersWithMoreThanTwoItems = this.company.getSuppliers().count(moreThanTwoItems);
         Assert.assertEquals("suppliers with more than 2 items", 5, suppliersWithMoreThanTwoItems);
     }
 
@@ -72,7 +68,7 @@ public class Exercise5Test extends CompanyDomainForKata
     public void whoSuppliesSandwichToaster()
     {
         // Find one supplier that supplies toasters.
-        Supplier toasterSupplier = ArrayIterate.detectWith(this.company.getSuppliers(), Supplier::supplies, "sandwich toaster");
+        Supplier toasterSupplier = this.company.getSuppliers().detectWith(Supplier::supplies, "sandwich toaster");
         Assert.assertNotNull("toaster supplier", toasterSupplier);
         Assert.assertEquals("Doxins", toasterSupplier.getName());
     }
@@ -88,7 +84,7 @@ public class Exercise5Test extends CompanyDomainForKata
                 .getOrders()
                 .asLazy()
                 .collectDouble(Order::getValue)
-                .select(DoublePredicates.greaterThan(1.5))
+                .select(value -> value > 1.5)
                 .toSortedList();
         Assert.assertEquals(DoubleArrayList.newListWith(1.75d, 372.5), orderValues);
     }
@@ -101,6 +97,6 @@ public class Exercise5Test extends CompanyDomainForKata
          * Get the actual orders (not their double values) where those orders have a value greater than 2.0.
          */
         MutableList<Order> filtered = ListIterate.select(orders, order -> order.getValue() > 2.0);
-        Assert.assertEquals(FastList.newListWith(Iterate.getFirst(this.company.getMostRecentCustomer().getOrders())), filtered);
+        Assert.assertEquals(FastList.newListWith(this.company.getMostRecentCustomer().getOrders().getFirst()), filtered);
     }
 }
