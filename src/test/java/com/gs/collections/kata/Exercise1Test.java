@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,14 +28,7 @@ public class Exercise1Test extends CompanyDomainForKata
     @Test
     public void getCustomerNames()
     {
-        Function<Customer, String> nameFunction = new Function<Customer, String>()
-        {
-            @Override
-            public String valueOf(Customer customer)
-            {
-                return customer.getName();
-            }
-        };
+        Function<Customer, String> nameFunction = Customer::getName;
 
         /**
          * Get the name of each of the company's customers.
@@ -51,9 +44,7 @@ public class Exercise1Test extends CompanyDomainForKata
     public void getCustomerCities()
     {
         /**
-         * Get the city for each of the company's customers. Use an anonymous inner class. Use the IDE to help you as
-         * much as possible. Ctrl+space will help you implement an anonymous inner class. Implementing an interface is
-         * ctrl+i in IntelliJ. Eclipse's ctrl+1 is auto-fix and works to implement interfaces.
+         * Get the city for each of the company's customers.
          */
         MutableList<Customer> customers = this.company.getCustomers();
         MutableList<String> customerCities = null;
@@ -66,7 +57,7 @@ public class Exercise1Test extends CompanyDomainForKata
     public void getLondonCustomers()
     {
         /**
-         * Which customers come from London? Get a collection of those which do. Use an anonymous inner class.
+         * Which customers come from London? Get a collection of those which do.
          */
         MutableList<Customer> customers = this.company.getCustomers();
         MutableList<Customer> customersFromLondon = null;

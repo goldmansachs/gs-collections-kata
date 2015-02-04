@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,14 +47,14 @@ public abstract class CompanyDomainForKata
         fredOrder.addLineItem(new LineItem("shed", 50.0));
 
         /**
-         * TODO 8: Refactor Order and its API so this repetition is not necessary.
+         * TODO 7: Refactor Order and its API so this repetition is not necessary.
          */
-        // TODO 8: Add 3 cups at 1.5 each to the order
+        // TODO 7: Add 3 cups at 1.5 each to the order
         fredOrder.addLineItem(new LineItem("cup", 1.5));
         fredOrder.addLineItem(new LineItem("cup", 1.5));
         fredOrder.addLineItem(new LineItem("cup", 1.5));
 
-        // TODO 8: Add 3 saucers at 1.0 each to the order
+        // TODO 7: Add 3 saucers at 1.0 each to the order
         fredOrder.addLineItem(new LineItem("saucer", 1.0));
         fredOrder.addLineItem(new LineItem("saucer", 1.0));
         fredOrder.addLineItem(new LineItem("saucer", 1.0));
@@ -70,13 +70,13 @@ public abstract class CompanyDomainForKata
         maryOrder.addLineItem(new LineItem("cat", 150.0));
         maryOrder.addLineItem(new LineItem("big shed", 500.0));
 
-        // TODO 8: Add 4 cups at 1.50 each to the order
+        // TODO 7: Add 4 cups at 1.50 each to the order
         maryOrder.addLineItem(new LineItem("cup", 1.5));
         maryOrder.addLineItem(new LineItem("cup", 1.5));
         maryOrder.addLineItem(new LineItem("cup", 1.5));
         maryOrder.addLineItem(new LineItem("cup", 1.5));
 
-        // TODO 8: Add 4 saucers at 1.50 each to the order
+        // TODO 7: Add 4 saucers at 1.50 each to the order
         maryOrder.addLineItem(new LineItem("saucer", 1.5));
         maryOrder.addLineItem(new LineItem("saucer", 1.5));
         maryOrder.addLineItem(new LineItem("saucer", 1.5));
@@ -92,7 +92,7 @@ public abstract class CompanyDomainForKata
         Order billOrder1 = new Order();
         billOrder1.addLineItem(new LineItem("shed", 50.0));
 
-        // TODO 8: Add 43 gnomes at 7.50 each to the order
+        // TODO 7: Add 43 gnomes at 7.50 each to the order
         for (int i = 0; i < 43; i++)
         {
             billOrder1.addLineItem(new LineItem("gnome", 7.50));

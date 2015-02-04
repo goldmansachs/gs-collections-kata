@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,10 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.list.MutableList;
+import com.gs.collections.api.set.MutableSet;
+import com.gs.collections.impl.list.mutable.FastList;
+import com.gs.collections.impl.set.mutable.UnifiedSet;
 import com.gs.collections.impl.test.Verify;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,81 +27,40 @@ import org.junit.Test;
 public class Exercise3Test extends CompanyDomainForKata
 {
     /**
-     * Set up a {@link Predicate} that tests to see if a {@link Customer}'s city is "London"
-     */
-    private static final Predicate<Customer> CUSTOMER_FROM_LONDON = null;
-
-    /**
-     * Do any customers come from London? Use the Predicate {@link #CUSTOMER_FROM_LONDON}.
+     * Improve {@link Company#getOrders()} without breaking this test.
      */
     @Test
-    public void doAnyCustomersLiveInLondon()
+    public void improveGetOrders()
     {
-        boolean anyCustomersFromLondon = false;
-        Assert.assertTrue(anyCustomersFromLondon);
+        // Delete this line - it's a reminder
+        Assert.fail("Improve getOrders() without breaking this test");
+        Verify.assertSize(5, this.company.getOrders());
     }
 
     /**
-     * Do all customers come from London? Use the Predicate {@link #CUSTOMER_FROM_LONDON}.
+     * Get all items that have been ordered by anybody.
      */
     @Test
-    public void doAllCustomersLiveInLondon()
+    public void findItemNames()
     {
-        boolean allCustomersFromLondon = true;
-        Assert.assertFalse(allCustomersFromLondon);
+        MutableList<LineItem> allOrderedLineItems = null;
+        MutableSet<String> actualItemNames = null;
+
+        Verify.assertInstanceOf(MutableSet.class, actualItemNames);
+        Verify.assertInstanceOf(String.class, actualItemNames.getFirst());
+
+        MutableSet<String> expectedItemNames = UnifiedSet.newSetWith(
+                "shed", "big shed", "bowl", "cat", "cup", "chair", "dog",
+                "goldfish", "gnome", "saucer", "sofa", "table");
+        Assert.assertEquals(expectedItemNames, actualItemNames);
     }
 
-    /**
-     * How many customers come from London? Use the Predicate {@link #CUSTOMER_FROM_LONDON}.
-     */
     @Test
-    public void howManyCustomersLiveInLondon()
+    public void findCustomerNames()
     {
-        int numberOfCustomerFromLondon = 0;
-        Assert.assertEquals("Should be 2 London customers", 2, numberOfCustomerFromLondon);
-    }
+        MutableList<String> names = null;
 
-    /**
-     * Which customers come from London? Get a collection of those which do. Use the Predicate {@link
-     * #CUSTOMER_FROM_LONDON}.
-     */
-    @Test
-    public void getLondonCustomers()
-    {
-        MutableList<Customer> customersFromLondon = null;
-        Verify.assertSize("Should be 2 London customers", 2, customersFromLondon);
-    }
-
-    /**
-     * Which customers do not come from London? Get a collection of those which don't. Use the Predicate {@link
-     * #CUSTOMER_FROM_LONDON}.
-     */
-    @Test
-    public void getCustomersWhoDontLiveInLondon()
-    {
-        MutableList<Customer> customersNotFromLondon = null;
-        Verify.assertSize("customers not from London", 1, customersNotFromLondon);
-    }
-
-    /**
-     * Implement {@link Company#getCustomerNamed(String)} and get this test to pass.
-     */
-    @Test
-    public void findMary()
-    {
-        Customer mary = this.company.getCustomerNamed("Mary");
-        Assert.assertEquals("customer's name should be Mary", "Mary", mary.getName());
-    }
-
-    /**
-     * Implement {@link Company#getCustomerNamed(String)} and get this test to pass.
-     */
-    @Test
-    public void findPete()
-    {
-        Customer pete = this.company.getCustomerNamed("Pete");
-        Assert.assertNull(
-                "Should be null as there is no customer called Pete",
-                pete);
+        MutableList<String> expectedNames = FastList.newListWith("Fred", "Mary", "Bill");
+        Assert.assertEquals(expectedNames, names);
     }
 }

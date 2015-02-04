@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,51 +16,85 @@
 
 package com.gs.collections.kata;
 
+import java.util.List;
+
+import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.list.MutableList;
-import com.gs.collections.api.set.MutableSet;
 import com.gs.collections.impl.list.mutable.FastList;
-import com.gs.collections.impl.set.mutable.UnifiedSet;
-import com.gs.collections.impl.test.Verify;
+import com.gs.collections.impl.utility.ArrayIterate;
+import com.gs.collections.impl.utility.Iterate;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class Exercise4Test extends CompanyDomainForKata
 {
     /**
-     * Improve {@link Company#getOrders()} without breaking this test.
+     * Solve this without changing the return type of {@link Company#getSuppliers()}. Find the appropriate method on
+     * {@link ArrayIterate}.
      */
     @Test
-    public void improveGetOrders()
+    public void findSupplierNames()
     {
-        // Delete this line - it's a reminder
-        Assert.fail("Improve getOrders() without breaking this test");
-        Verify.assertSize(5, this.company.getOrders());
+        MutableList<String> supplierNames = null;
+
+        MutableList<String> expectedSupplierNames = FastList.newListWith(
+                "Shedtastic",
+                "Splendid Crocks",
+                "Annoying Pets",
+                "Gnomes 'R' Us",
+                "Furniture Hamlet",
+                "SFD",
+                "Doxins");
+        Assert.assertEquals(expectedSupplierNames, supplierNames);
     }
 
     /**
-     * Get all items that have been ordered by anybody.
+     * Create a {@link Predicate} for Suppliers that supply more than 2 items. Find the number of suppliers that
+     * satisfy that Predicate.
      */
     @Test
-    public void findItemNames()
+    public void countSuppliersWithMoreThanTwoItems()
     {
-        MutableList<LineItem> allOrderedLineItems = null;
-        MutableSet<String> actualItemNames = null;
+        Predicate<Supplier> moreThanTwoItems = null;
+        int suppliersWithMoreThanTwoItems = 0;
+        Assert.assertEquals("suppliers with more than 2 items", 5, suppliersWithMoreThanTwoItems);
+    }
 
-        Verify.assertInstanceOf(MutableSet.class, actualItemNames);
-        Verify.assertInstanceOf(String.class, actualItemNames.getFirst());
+    /**
+     * Try to solve this without changing the return type of {@link Supplier#getItemNames()}.
+     */
+    @Test
+    public void whoSuppliesSandwichToaster()
+    {
+        // Create a Predicate that will check to see if a Supplier supplies a "sandwich toaster".
+        Predicate<Supplier> suppliesToaster = null;
 
-        MutableSet<String> expectedItemNames = UnifiedSet.newSetWith(
-                "shed", "big shed", "bowl", "cat", "cup", "chair", "dog",
-                "goldfish", "gnome", "saucer", "sofa", "table");
-        Assert.assertEquals(expectedItemNames, actualItemNames);
+        // Find one supplier that supplies toasters.
+        Supplier toasterSupplier = null;
+        Assert.assertNotNull("toaster supplier", toasterSupplier);
+        Assert.assertEquals("Doxins", toasterSupplier.getName());
     }
 
     @Test
-    public void findCustomerNames()
+    public void filterOrderValues()
     {
-        MutableList<String> names = null;
+        List<Order> orders = this.company.getMostRecentCustomer().getOrders();
+        /**
+         * Get the order values that are greater than 1.5.
+         */
+        MutableList<Double> orderValues = null;
+        MutableList<Double> filtered = null;
+        Assert.assertEquals(FastList.newListWith(372.5, 1.75), filtered);
+    }
 
-        MutableList<String> expectedNames = FastList.newListWith("Fred", "Mary", "Bill");
-        Assert.assertEquals(expectedNames, names);
+    @Test
+    public void filterOrders()
+    {
+        List<Order> orders = this.company.getMostRecentCustomer().getOrders();
+        /**
+         * Get the actual orders (not their double values) where those orders have a value greater than 2.0.
+         */
+        MutableList<Order> filtered = null;
+        Assert.assertEquals(FastList.newListWith(Iterate.getFirst(this.company.getMostRecentCustomer().getOrders())), filtered);
     }
 }

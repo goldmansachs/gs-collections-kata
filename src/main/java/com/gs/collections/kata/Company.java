@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class Company
 
     public MutableList<Order> getOrders()
     {
-        Assert.fail("Refactor this code to use GS Collections as part of Exercise 4");
+        Assert.fail("Refactor this code to use GS Collections as part of Exercise 3");
         MutableList<Order> orders = FastList.newList();
         for (Customer customer : this.customers)
         {
@@ -89,7 +89,7 @@ public class Company
         /**
          * Use a {@link Predicate} to find a {@link Customer} with the name given.
          */
-        Assert.fail("Implement this method as part of Exercise 3");
+        Assert.fail("Implement this method as part of Exercise 2");
         return null;
     }
 }

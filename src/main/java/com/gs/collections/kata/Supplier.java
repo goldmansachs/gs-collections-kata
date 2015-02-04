@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,25 +23,9 @@ import com.gs.collections.api.block.function.Function;
  */
 public class Supplier
 {
-    public static final Function<Supplier, String> TO_NAME =
-            new Function<Supplier, String>()
-            {
-                @Override
-                public String valueOf(Supplier supplier)
-                {
-                    return supplier.name;
-                }
-            };
+    public static final Function<Supplier, String> TO_NAME = Supplier::getName;
 
-    public static final Function<Supplier, Integer> TO_NUMBER_OF_ITEMS =
-            new Function<Supplier, Integer>()
-            {
-                @Override
-                public Integer valueOf(Supplier supplier)
-                {
-                    return supplier.itemNames.length;
-                }
-            };
+    public static final Function<Supplier, Integer> TO_NUMBER_OF_ITEMS = supplier -> supplier.getItemNames().length;
 
     private final String name;
     private final String[] itemNames;

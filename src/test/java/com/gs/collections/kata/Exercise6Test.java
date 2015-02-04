@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,48 +16,75 @@
 
 package com.gs.collections.kata;
 
-import java.util.List;
-
+import com.gs.collections.api.RichIterable;
+import com.gs.collections.api.block.procedure.Procedure;
 import com.gs.collections.api.list.MutableList;
-import com.gs.collections.impl.block.factory.Predicates;
-import com.gs.collections.impl.list.mutable.FastList;
+import com.gs.collections.impl.block.factory.Procedures;
 import com.gs.collections.impl.test.Verify;
-import com.gs.collections.impl.utility.Iterate;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class Exercise6Test extends CompanyDomainForKata
 {
+    /**
+     * Get a list of the customers' total order values, sorted. Check out the implementation of {@link
+     * Customer#getTotalOrderValue()} and {@link Order#getValue()} .
+     */
     @Test
-    public void filterOrderValues()
+    public void sortedTotalOrderValue()
     {
-        List<Order> orders = this.company.getMostRecentCustomer().getOrders();
-        /**
-         * Same exercise but don't use static utility - refactor the type of orders and {@link Customer#getOrders()}
-         * instead.
-         * Get the order values that are greater than 1.5.
-         */
-        MutableList<Double> orderValues = null;
-        MutableList<Double> filtered = orderValues.select(Predicates.greaterThan(1.5));
-        Assert.assertEquals(FastList.newListWith(372.5, 1.75), filtered);
-        Verify.assertInstanceOf(MutableList.class, this.company.getMostRecentCustomer().getOrders());
-        this.company.getMostRecentCustomer().getOrders().add(null);
-        Verify.assertContains("Don't return a copy from Customer.getOrders(). The field should be a MutableList.", null, this.company.getMostRecentCustomer().getOrders());
+        MutableList<Double> sortedTotalValues = null;
+
+        // Don't forget the handy utility methods getFirst() and getLast()...
+        Assert.assertEquals("Highest total order value", Double.valueOf(857.0), sortedTotalValues.getLast());
+        Assert.assertEquals("Lowest total order value", Double.valueOf(71.0), sortedTotalValues.getFirst());
     }
 
+    /**
+     * Find the max total order value across all customers.
+     */
     @Test
-    public void filterOrders()
+    public void maximumTotalOrderValue()
     {
-        List<Order> orders = this.company.getMostRecentCustomer().getOrders();
-        /**
-         * Same exercise but don't use static utility - refactor the type of orders and {@link Customer#getOrders()}
-         * instead.
-         * Get the actual orders (not their double values) where those orders have a value greater than 2.0.
-         */
-        MutableList<Order> filtered = null;
-        Assert.assertEquals(FastList.newListWith(Iterate.getFirst(this.company.getMostRecentCustomer().getOrders())), filtered);
-        Verify.assertInstanceOf(MutableList.class, this.company.getMostRecentCustomer().getOrders());
-        this.company.getMostRecentCustomer().getOrders().add(null);
-        Verify.assertContains("Don't return a copy from Customer.getOrders(). The field should be a MutableList.", null, this.company.getMostRecentCustomer().getOrders());
+        Double maximumTotalOrderValue = null;
+        Assert.assertEquals("max value", Double.valueOf(857.0), maximumTotalOrderValue);
+    }
+
+    /**
+     * Find the customer with the highest total order value.
+     */
+    @Test
+    public void customerWithMaxTotalOrderValue()
+    {
+        Customer customerWithMaxTotalOrderValue = null;
+        Assert.assertEquals(this.company.getCustomerNamed("Mary"), customerWithMaxTotalOrderValue);
+    }
+
+    /**
+     * Create some code to get the company's supplier names as a tilde delimited string.
+     */
+    @Test
+    public void supplierNamesAsTildeDelimitedString()
+    {
+        String tildeSeparatedNames = null;
+        Assert.assertEquals(
+                "tilde separated names",
+                "Shedtastic~Splendid Crocks~Annoying Pets~Gnomes 'R' Us~Furniture Hamlet~SFD~Doxins",
+                tildeSeparatedNames);
+    }
+
+    /**
+     * Deliver all orders going to customers from London.
+     * <p>
+     * Hint: Use {@link RichIterable#forEach(Procedure)}. To solve the ambiguity error, use {@link Procedures#cast(Procedure)}}.
+     *
+     * @see Order#deliver()
+     */
+    @Test
+    public void deliverOrdersToLondon()
+    {
+        Verify.assertAllSatisfy(this.company.getCustomerNamed("Fred").getOrders(), Order::isDelivered);
+        Verify.assertNoneSatisfy(this.company.getCustomerNamed("Mary").getOrders(), Order::isDelivered);
+        Verify.assertAllSatisfy(this.company.getCustomerNamed("Bill").getOrders(), Order::isDelivered);
     }
 }

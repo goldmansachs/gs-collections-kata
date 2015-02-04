@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,80 +16,110 @@
 
 package com.gs.collections.kata;
 
-import java.util.List;
+import java.util.Collections;
 
-import com.gs.collections.api.block.procedure.Procedure;
+import com.gs.collections.api.RichIterable;
+import com.gs.collections.api.bag.sorted.MutableSortedBag;
+import com.gs.collections.api.block.function.Function;
+import com.gs.collections.api.block.function.Function0;
+import com.gs.collections.api.block.function.Function2;
+import com.gs.collections.api.list.MutableList;
 import com.gs.collections.api.map.MutableMap;
 import com.gs.collections.api.multimap.list.MutableListMultimap;
+import com.gs.collections.impl.bag.sorted.mutable.TreeBag;
 import com.gs.collections.impl.list.mutable.FastList;
-import com.gs.collections.impl.map.mutable.UnifiedMap;
 import com.gs.collections.impl.test.Verify;
-import com.gs.collections.impl.utility.ArrayIterate;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class Exercise8Test extends CompanyDomainForKata
 {
     /**
-     * Create a multimap where the keys are the names of cities and the values are the customers from those cities.
+     * Extra credit. Aggregate the total order values by city.
+     *
+     * @see RichIterable#aggregateBy(Function, Function0, Function2)
      */
     @Test
-    public void customersByCity()
+    public void totalOrderValuesByCity()
     {
-        // Notice that the second generic type is Customer, not List<Customer>
-        MutableListMultimap<String, Customer> multimap = null;
+        Function0<Double> zeroValueFactory = () -> 0.0;
+        Function2<Double, Customer, Double> aggregator = (result, customer) -> result + customer.getTotalOrderValue();
 
-        Assert.assertEquals(FastList.newListWith(this.company.getCustomerNamed("Mary")), multimap.get("Liphook"));
+        MutableMap<String, Double> map = null;
+        Assert.assertEquals(2, map.size());
+        Assert.assertEquals(446.25, map.get("London"), 0.0);
+        Assert.assertEquals(857.0, map.get("Liphook"), 0.0);
+    }
+
+    /**
+     * Extra credit. Aggregate the total order values by item.
+     * Hint: Look at {@link RichIterable#aggregateBy(Function, Function0, Function2)} and remember
+     * how to use {@link RichIterable#flatCollect(Function)} to get an iterable of all items.
+     */
+    @Test
+    public void totalOrderValuesByItem()
+    {
+        Function0<Double> zeroValueFactory = () -> 0.0;
+        Function2<Double, LineItem, Double> aggregator = (result, lineItem) -> result + lineItem.getValue();
+
+        MutableMap<String, Double> map = null;
+        Verify.assertSize(12, map);
+        Assert.assertEquals(100.0, map.get("shed"), 0.0);
+        Assert.assertEquals(10.5, map.get("cup"), 0.0);
+    }
+
+    /**
+     * Extra credit. Find all customers' line item values greater than 7.5 and sort them by highest to lowest price.
+     */
+    @Test
+    public void sortedOrders()
+    {
+        MutableSortedBag<Double> orderedPrices = null;
+
+        MutableSortedBag<Double> expectedPrices = TreeBag.newBagWith(
+                Collections.reverseOrder(), 500.0, 150.0, 120.0, 75.0, 50.0, 50.0, 12.5);
+        Verify.assertSortedBagsEqual(expectedPrices, orderedPrices);
+    }
+
+    /**
+     * Extra credit. Figure out which customers ordered saucers (in any of their orders).
+     */
+    @Test
+    public void whoOrderedSaucers()
+    {
+        MutableList<Customer> customersWithSaucers = null;
+        Verify.assertSize("customers with saucers", 2, customersWithSaucers);
+    }
+
+    /**
+     * Extra credit. Look into the {@link MutableList#toMap(Function, Function)} method.
+     */
+    @Test
+    public void ordersByCustomerUsingAsMap()
+    {
+        MutableMap<String, MutableList<Order>> customerNameToOrders =
+                this.company.getCustomers().toMap(null, null);
+
+        Assert.assertNotNull("customer name to orders", customerNameToOrders);
+        Verify.assertSize("customer names", 3, customerNameToOrders);
+        MutableList<Order> ordersForBill = customerNameToOrders.get("Bill");
+        Verify.assertSize("Bill orders", 3, ordersForBill);
+    }
+
+    /**
+     * Extra credit. Create a multimap where the values are customers and the key is the price of
+     * the most expensive item that the customer ordered.
+     */
+    @Test
+    public void mostExpensiveItem()
+    {
+        MutableListMultimap<Double, Customer> multimap = null;
+        Assert.assertEquals(3, multimap.size());
+        Assert.assertEquals(2, multimap.keysView().size());
         Assert.assertEquals(
                 FastList.newListWith(
                         this.company.getCustomerNamed("Fred"),
                         this.company.getCustomerNamed("Bill")),
-                multimap.get("London"));
-    }
-
-    @Test
-    public void mapOfItemsToSuppliers()
-    {
-        /**
-         * Change itemsToSuppliers to a MutableMultimap<String, Supplier>
-         */
-        final MutableMap<String, List<Supplier>> itemsToSuppliers = UnifiedMap.newMap();
-
-        ArrayIterate.forEach(this.company.getSuppliers(), new Procedure<Supplier>()
-        {
-            @Override
-            public void value(final Supplier supplier)
-            {
-                ArrayIterate.forEach(supplier.getItemNames(), new Procedure<String>()
-                {
-                    @Override
-                    public void value(String itemName)
-                    {
-                        Assert.fail("Refactor this as part of Exercise 6");
-
-                        List<Supplier> suppliersForItem;
-                        if (itemsToSuppliers.containsKey(itemName))
-                        {
-                            suppliersForItem = itemsToSuppliers.get(itemName);
-                        }
-                        else
-                        {
-                            suppliersForItem = FastList.newList();
-                            itemsToSuppliers.put(itemName, suppliersForItem);
-                        }
-
-                        suppliersForItem.add(supplier);
-                    }
-                });
-            }
-        });
-        Verify.assertIterableSize("should be 2 suppliers for sofa", 2, itemsToSuppliers.get("sofa"));
-    }
-
-    @Test
-    public void reminder()
-    {
-        Assert.fail("Refactor setUpCustomersAndOrders() in the super class to not have so much repetition.");
-        // Delete this whole method when you're done. It's just a reminder.
+                multimap.get(50.0));
     }
 }

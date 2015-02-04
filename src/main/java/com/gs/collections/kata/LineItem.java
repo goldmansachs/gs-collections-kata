@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,14 +23,7 @@ import com.gs.collections.api.block.function.Function;
  */
 public class LineItem
 {
-    public static final Function<LineItem, String> TO_NAME = new Function<LineItem, String>()
-    {
-        @Override
-        public String valueOf(LineItem lineItem)
-        {
-            return lineItem.name;
-        }
-    };
+    public static final Function<LineItem, String> TO_NAME = LineItem::getName;
 
     private String name;
     private final double value;

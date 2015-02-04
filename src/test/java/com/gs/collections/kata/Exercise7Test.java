@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,12 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.list.MutableList;
-import com.gs.collections.impl.block.factory.Predicates;
+import java.util.List;
+
+import com.gs.collections.api.map.MutableMap;
+import com.gs.collections.api.multimap.list.MutableListMultimap;
+import com.gs.collections.impl.list.mutable.FastList;
+import com.gs.collections.impl.map.mutable.UnifiedMap;
 import com.gs.collections.impl.test.Verify;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,62 +29,56 @@ import org.junit.Test;
 public class Exercise7Test extends CompanyDomainForKata
 {
     /**
-     * Get a list of the customers' total order values, sorted. Check out the implementation of {@link
-     * Customer#getTotalOrderValue()} and {@link Order#getValue()} .
+     * Create a multimap where the keys are the names of cities and the values are the customers from those cities.
      */
     @Test
-    public void sortedTotalOrderValue()
+    public void customersByCity()
     {
-        MutableList<Double> sortedTotalValues = null;
+        // Notice that the second generic type is Customer, not List<Customer>
+        MutableListMultimap<String, Customer> multimap = null;
 
-        // Don't forget the handy utility methods getFirst() and getLast()...
-        Assert.assertEquals("Highest total order value", Double.valueOf(857.0), sortedTotalValues.getLast());
-        Assert.assertEquals("Lowest total order value", Double.valueOf(71.0), sortedTotalValues.getFirst());
-    }
-
-    /**
-     * Find the max total order value across all customers.
-     */
-    @Test
-    public void maximumTotalOrderValue()
-    {
-        Double maximumTotalOrderValue = null;
-        Assert.assertEquals("max value", Double.valueOf(857.0), maximumTotalOrderValue);
-    }
-
-    /**
-     * Find the customer with the highest total order value.
-     */
-    @Test
-    public void customerWithMaxTotalOrderValue()
-    {
-        Customer customerWithMaxTotalOrderValue = null;
-        Assert.assertEquals(this.company.getCustomerNamed("Mary"), customerWithMaxTotalOrderValue);
-    }
-
-    /**
-     * Create some code to get the company's supplier names as a tilde delimited string.
-     */
-    @Test
-    public void supplierNamesAsTildeDelimitedString()
-    {
-        String tildeSeparatedNames = null;
+        Assert.assertEquals(FastList.newListWith(this.company.getCustomerNamed("Mary")), multimap.get("Liphook"));
         Assert.assertEquals(
-                "tilde separated names",
-                "Shedtastic~Splendid Crocks~Annoying Pets~Gnomes 'R' Us~Furniture Hamlet~SFD~Doxins",
-                tildeSeparatedNames);
+                FastList.newListWith(
+                        this.company.getCustomerNamed("Fred"),
+                        this.company.getCustomerNamed("Bill")),
+                multimap.get("London"));
     }
 
-    /**
-     * Deliver all orders going to customers from London.
-     *
-     * @see Order#deliver()
-     */
     @Test
-    public void deliverOrdersToLondon()
+    public void mapOfItemsToSuppliers()
     {
-        Verify.assertAllSatisfy(this.company.getCustomerNamed("Fred").getOrders(), Order.IS_DELIVERED);
-        Verify.assertAllSatisfy(this.company.getCustomerNamed("Mary").getOrders(), Predicates.not(Order.IS_DELIVERED));
-        Verify.assertAllSatisfy(this.company.getCustomerNamed("Bill").getOrders(), Order.IS_DELIVERED);
+        Assert.fail("Refactor this as part of Exercise 7");
+        /**
+         * Change itemsToSuppliers to a MutableMultimap<String, Supplier>
+         */
+        final MutableMap<String, List<Supplier>> itemsToSuppliers = UnifiedMap.newMap();
+
+        for (Supplier supplier : this.company.getSuppliers())
+        {
+            for (String itemName : supplier.getItemNames())
+            {
+                List<Supplier> suppliersForItem;
+                if (itemsToSuppliers.containsKey(itemName))
+                {
+                    suppliersForItem = itemsToSuppliers.get(itemName);
+                }
+                else
+                {
+                    suppliersForItem = FastList.newList();
+                    itemsToSuppliers.put(itemName, suppliersForItem);
+                }
+
+                suppliersForItem.add(supplier);
+            }
+        }
+        Verify.assertIterableSize("should be 2 suppliers for sofa", 2, itemsToSuppliers.get("sofa"));
+    }
+
+    @Test
+    public void reminder()
+    {
+        Assert.fail("Refactor setUpCustomersAndOrders() in the super class to not have so much repetition.");
+        // Delete this whole method when you're done. It's just a reminder.
     }
 }

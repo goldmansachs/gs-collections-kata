@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,32 +30,19 @@ import org.junit.Assert;
  */
 public class Customer
 {
-    public static final Function<Customer, String> TO_NAME = new Function<Customer, String>()
-    {
-        @Override
-        public String valueOf(Customer customer)
-        {
-            Assert.fail("Replace with the implementation of the Function.");
-            return null;
-        }
+    public static final Function<Customer, String> TO_NAME = customer -> {
+        Assert.fail("Replace with the implementation of the Function.");
+        return null;
     };
 
     public static final Function<Customer, String> TO_CITY = null;
 
-    public static final Function<Customer, Double> TO_TOTAL_ORDER_VALUE =
-            new Function<Customer, Double>()
-            {
-                @Override
-                public Double valueOf(Customer customer)
-                {
-                    return customer.getTotalOrderValue();
-                }
-            };
+    public static final Function<Customer, Double> TO_TOTAL_ORDER_VALUE = Customer::getTotalOrderValue;
 
     private final String name;
     private final String city;
 
-    private final List<Order> orders = new ArrayList<Order>();
+    private final List<Order> orders = new ArrayList<>();
 
     public Customer(String name, String city)
     {
@@ -85,14 +72,7 @@ public class Customer
 
     public double getTotalOrderValue()
     {
-        MutableList<Double> orderValues = ListIterate.collect(this.orders, new Function<Order, Double>()
-        {
-            @Override
-            public Double valueOf(Order order)
-            {
-                return order.getValue();
-            }
-        });
+        MutableList<Double> orderValues = ListIterate.collect(this.orders, Order::getValue);
         return orderValues.injectInto(0.0, AddFunction.DOUBLE_TO_DOUBLE);
     }
 }
