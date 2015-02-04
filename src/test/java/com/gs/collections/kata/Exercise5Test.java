@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,18 +36,18 @@ public class Exercise5Test extends CompanyDomainForKata
     public void findSupplierNames()
     {
         List<String> supplierNames = Arrays.asList(this.company.getSuppliers())
-            .stream()
-            .map(Supplier::getName)
-            .collect(Collectors.<String>toList());
+                .stream()
+                .map(Supplier::getName)
+                .collect(Collectors.<String>toList());
 
         List<String> expectedSupplierNames = Arrays.asList(
-            "Shedtastic",
-            "Splendid Crocks",
-            "Annoying Pets",
-            "Gnomes 'R' Us",
-            "Furniture Hamlet",
-            "SFD",
-            "Doxins");
+                "Shedtastic",
+                "Splendid Crocks",
+                "Annoying Pets",
+                "Gnomes 'R' Us",
+                "Furniture Hamlet",
+                "SFD",
+                "Doxins");
         Assert.assertEquals(expectedSupplierNames, supplierNames);
     }
 
@@ -60,9 +60,9 @@ public class Exercise5Test extends CompanyDomainForKata
     {
         Predicate<Supplier> moreThanTwoItems = supplier -> supplier.getItemNames().length > 2;
         int suppliersWithMoreThanTwoItems = Arrays.asList(this.company.getSuppliers())
-            .stream()
-            .filter(moreThanTwoItems)
-            .collect(toList()).size();
+                .stream()
+                .filter(moreThanTwoItems)
+                .collect(toList()).size();
         Assert.assertEquals("suppliers with more than 2 items", 5, suppliersWithMoreThanTwoItems);
     }
 
@@ -89,8 +89,8 @@ public class Exercise5Test extends CompanyDomainForKata
          * Get the order values that are greater than 1.5.
          */
         DoubleStream filtered = orders.stream()
-            .mapToDouble(Order::getValue)
-            .filter(orderValue -> orderValue > 1.5);
+                .mapToDouble(Order::getValue)
+                .filter(orderValue -> orderValue > 1.5);
         Assert.assertTrue(filtered.allMatch(value -> {
             long longValue = Double.doubleToLongBits(value);
             return longValue == Double.doubleToLongBits(372.5) || longValue == Double.doubleToLongBits(1.75);
@@ -105,8 +105,8 @@ public class Exercise5Test extends CompanyDomainForKata
          * Get the actual orders (not their double values) where those orders have a value greater than 2.0.
          */
         List<Order> filtered = orders.stream()
-            .filter(order -> order.getValue() > 2.0)
-            .collect(toList());
+                .filter(order -> order.getValue() > 2.0)
+                .collect(toList());
         Assert.assertEquals(Arrays.asList(this.company.getMostRecentCustomer().getOrders().stream().findFirst().get()), filtered);
     }
 }

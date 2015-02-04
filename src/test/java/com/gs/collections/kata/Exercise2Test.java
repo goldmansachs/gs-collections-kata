@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,8 @@ public class Exercise2Test extends CompanyDomainForKata
          * constant on {@link Customer}.
          */
         List<String> customerNames = this.company.getCustomers().stream()
-            .map(Customer::getName)
-            .collect(toList());
+                .map(Customer::getName)
+                .collect(toList());
 
         List<String> expectedNames = Arrays.asList("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, customerNames);
@@ -49,8 +49,8 @@ public class Exercise2Test extends CompanyDomainForKata
          * constant on {@link Customer}.
          */
         List<String> customerCities = this.company.getCustomers().stream()
-            .map(Customer::getCity)
-            .collect(toList());
+                .map(Customer::getCity)
+                .collect(toList());
 
         List<String> expectedCities = Arrays.asList("London", "Liphook", "London");
         Assert.assertEquals(expectedCities, customerCities);
@@ -60,8 +60,8 @@ public class Exercise2Test extends CompanyDomainForKata
     public void getLondonCustomers()
     {
         List<Customer> customersFromLondon = this.company.getCustomers().stream()
-            .filter(customer -> "London".equals(customer.getCity()))
-            .collect(toList());
+                .filter(customer -> "London".equals(customer.getCity()))
+                .collect(toList());
         Assert.assertEquals("Should be 2 London customers", 2, customersFromLondon.size());
     }
 }

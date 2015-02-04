@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,13 +21,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 public class Exercise4Test extends CompanyDomainForKata
 {
@@ -48,21 +44,21 @@ public class Exercise4Test extends CompanyDomainForKata
     public void findItemNames()
     {
         List<LineItem> allOrderedLineItems =
-            this.company.getCustomers()
-                .stream()
-                .flatMap((Customer customer) -> customer.getOrders().stream())
-                .flatMap((Order order) -> order.getLineItems().stream())
-                .collect(Collectors.<LineItem>toList());
+                this.company.getCustomers()
+                        .stream()
+                        .flatMap((Customer customer) -> customer.getOrders().stream())
+                        .flatMap((Order order) -> order.getLineItems().stream())
+                        .collect(Collectors.<LineItem>toList());
         Set<String> actualItemNames = allOrderedLineItems.stream()
-            .map(LineItem::getName)
-            .collect(Collectors.<String>toSet());
+                .map(LineItem::getName)
+                .collect(Collectors.<String>toSet());
 
         Assert.assertTrue(actualItemNames instanceof Set);
         Assert.assertTrue(actualItemNames.stream().findFirst().get() instanceof String);
 
         Set<String> expectedItemNames = new HashSet(Arrays.asList(
-            "big shed", "bowl", "cat", "cup", "chair", "dog",
-            "goldfish", "gnome", "saucer", "shed", "sofa", "table"));
+                "big shed", "bowl", "cat", "cup", "chair", "dog",
+                "goldfish", "gnome", "saucer", "shed", "sofa", "table"));
         Assert.assertEquals(expectedItemNames, actualItemNames);
     }
 
@@ -70,8 +66,8 @@ public class Exercise4Test extends CompanyDomainForKata
     public void findCustomerNames()
     {
         List<String> names = this.company.getCustomers().stream()
-            .map(Customer::getName)
-            .collect(Collectors.<String>toList());
+                .map(Customer::getName)
+                .collect(Collectors.<String>toList());
 
         List<String> expectedNames = Arrays.asList("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, names);

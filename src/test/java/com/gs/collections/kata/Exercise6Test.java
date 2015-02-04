@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ import java.util.stream.DoubleStream;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import static java.util.stream.Collectors.toList;
 
 public class Exercise6Test extends CompanyDomainForKata
 {

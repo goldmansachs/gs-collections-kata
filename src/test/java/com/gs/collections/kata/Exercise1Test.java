@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ public class Exercise1Test extends CompanyDomainForKata
     @Test
     public void getCustomerNames()
     {
-        Function<Customer, String> nameFunction = customer -> customer.getName();
+        Function<Customer, String> nameFunction = Customer::getName;
 
         /**
          * Get the name of each of the company's customers.
@@ -51,13 +51,11 @@ public class Exercise1Test extends CompanyDomainForKata
     public void getCustomerCities()
     {
         /**
-         * Get the city for each of the company's customers. Use an anonymous inner class. Use the IDE to help you as
-         * much as possible. Ctrl+space will help you implement an anonymous inner class. Implementing an interface is
-         * ctrl+i in IntelliJ. Eclipse's ctrl+1 is auto-fix and works to implement interfaces.
+         * Get the city for each of the company's customers.
          */
         List<String> customerCities = this.company.getCustomers().stream()
-            .map(Customer::getCity)
-            .collect(Collectors.<String>toList());
+                .map(Customer::getCity)
+                .collect(Collectors.<String>toList());
 
         List<String> expectedCities = Arrays.asList("London", "Liphook", "London");
         Assert.assertEquals(expectedCities, customerCities);
@@ -67,11 +65,11 @@ public class Exercise1Test extends CompanyDomainForKata
     public void getLondonCustomers()
     {
         /**
-         * Which customers come from London? Get a collection of those which do. Use an anonymous inner class.
+         * Which customers come from London? Get a collection of those which do.
          */
         List<Customer> customersFromLondon = this.company.getCustomers().stream()
-            .filter(customer -> "London".equals(customer.getCity()))
-            .collect(toList());
+                .filter(customer -> "London".equals(customer.getCity()))
+                .collect(toList());
         Assert.assertEquals("Should be 2 London customers", 2, customersFromLondon.size());
     }
 }

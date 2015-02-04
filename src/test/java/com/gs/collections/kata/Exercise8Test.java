@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@
 package com.gs.collections.kata;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,15 +36,14 @@ public class Exercise8Test extends CompanyDomainForKata
     public void customersByCity()
     {
         // Implemented groupBy using a Map on the super class for all tests.
-        Map<String, List<Customer>> multimap =
-            this.company.getCustomers()
+        Map<String, List<Customer>> multimap = this.company.getCustomers()
                 .stream()
                 .collect(groupingBy(Customer::getCity));
 
         Assert.assertEquals(HashBag.newBagWith(this.company.getCustomerNamed("Mary")), HashBag.newBag(multimap.get("Liphook")));
         Assert.assertEquals(
-            HashBag.newBagWith(this.company.getCustomerNamed("Fred"), this.company.getCustomerNamed("Bill")),
-            HashBag.newBag(multimap.get("London")));
+                HashBag.newBagWith(this.company.getCustomerNamed("Fred"), this.company.getCustomerNamed("Bill")),
+                HashBag.newBag(multimap.get("London")));
     }
 
     @Test
@@ -54,25 +51,24 @@ public class Exercise8Test extends CompanyDomainForKata
     {
         final Map<String, List<Supplier>> itemsToSuppliers = new HashMap<>();
 
-        Arrays.asList(this.company.getSuppliers()).forEach(supplier -> {
-            Arrays.asList(supplier.getItemNames()).forEach(itemName ->
+        for (Supplier supplier : this.company.getSuppliers())
+        {
+            for (String itemName : supplier.getItemNames())
+            {
+                List<Supplier> suppliersForItem;
+                if (itemsToSuppliers.containsKey(itemName))
                 {
-                    List<Supplier> suppliersForItem;
-                    if (itemsToSuppliers.containsKey(itemName))
-                    {
-                        suppliersForItem = itemsToSuppliers.get(itemName);
-                    }
-                    else
-                    {
-                        suppliersForItem = new ArrayList<>();
-                        itemsToSuppliers.put(itemName, suppliersForItem);
-                    }
-
-                    suppliersForItem.add(supplier);
+                    suppliersForItem = itemsToSuppliers.get(itemName);
                 }
-            );
+                else
+                {
+                    suppliersForItem = new ArrayList<>();
+                    itemsToSuppliers.put(itemName, suppliersForItem);
+                }
+
+                suppliersForItem.add(supplier);
+            }
         }
-        );
         Assert.assertEquals("should be 2 suppliers for sofa", 2, itemsToSuppliers.get("sofa").size());
     }
 }

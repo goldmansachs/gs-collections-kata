@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package com.gs.collections.kata;
 
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,6 +26,25 @@ import static java.util.stream.Collectors.toList;
 
 public class Exercise3Test extends CompanyDomainForKata
 {
+    /**
+     * Set up a {@link Predicate} that tests to see if a {@link Customer}'s city is "London"
+     */
+    private static final Predicate<Customer> CUSTOMER_FROM_LONDON = customer -> customer.getCity().equals("London");
+
+    @Test
+    public void customerFromLondonPredicate()
+    {
+        String predicateClass = CUSTOMER_FROM_LONDON.getClass().getSimpleName();
+        Assert.assertTrue(
+                "Solution should use a lambda but used " + predicateClass,
+                predicateClass.startsWith("Exercise3Test$$Lambda"));
+
+        Customer customerFromLondon = new Customer("test customer", "London");
+
+        Assert.assertTrue(
+                "CUSTOMER_FROM_LONDON should accept Customers where city is London",
+                CUSTOMER_FROM_LONDON.test(customerFromLondon));
+    }
 
     /**
      * Do any customers come from London?
@@ -40,7 +58,7 @@ public class Exercise3Test extends CompanyDomainForKata
     }
 
     /**
-     * Do all customers come from London? Use the Predicate.
+     * Do all customers come from London?
      */
     @Test
     public void doAllCustomersLiveInLondon()
@@ -51,14 +69,14 @@ public class Exercise3Test extends CompanyDomainForKata
     }
 
     /**
-     * How many customers come from London? Use the Predicate.
+     * How many customers come from London?
      */
     @Test
     public void howManyCustomersLiveInLondon()
     {
-        int numberOfCustomerFromLondon = this.company.getCustomers().stream()
-            .filter(customer -> "London".equals(customer.getCity()))
-            .collect(toList()).size();
+        long numberOfCustomerFromLondon = this.company.getCustomers().stream()
+                .filter(customer -> "London".equals(customer.getCity()))
+                .count();
         Assert.assertEquals("Should be 2 London customers", 2, numberOfCustomerFromLondon);
     }
 
@@ -69,9 +87,9 @@ public class Exercise3Test extends CompanyDomainForKata
     public void getLondonCustomers()
     {
         List<Customer> customersFromLondon = this.company.getCustomers()
-            .stream()
-            .filter(customer -> "London".equals(customer.getCity()))
-            .collect(toList());
+                .stream()
+                .filter(customer -> "London".equals(customer.getCity()))
+                .collect(toList());
         Assert.assertEquals("Should be 2 London customers", 2, customersFromLondon.size());
     }
 
@@ -82,9 +100,9 @@ public class Exercise3Test extends CompanyDomainForKata
     public void getCustomersWhoDontLiveInLondon()
     {
         List<Customer> customersNotFromLondon = this.company.getCustomers()
-            .stream()
-            .filter(customer -> !"London".equals(customer.getCity()))
-            .collect(toList());
+                .stream()
+                .filter(customer -> !"London".equals(customer.getCity()))
+                .collect(toList());
         Assert.assertEquals("customers not from London", 1, customersNotFromLondon.size());
     }
 
@@ -105,8 +123,6 @@ public class Exercise3Test extends CompanyDomainForKata
     public void findPete()
     {
         Customer pete = this.company.getCustomerNamed("Pete");
-        Assert.assertNull(
-            "Should be null as there is no customer called Pete",
-            pete);
+        Assert.assertNull("Should be null as there is no customer called Pete", pete);
     }
 }

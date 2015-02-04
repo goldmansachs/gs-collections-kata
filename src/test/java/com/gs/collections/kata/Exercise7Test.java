@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,10 +37,10 @@ public class Exercise7Test extends CompanyDomainForKata
     public void sortedTotalOrderValue()
     {
         List<Double> sortedTotalValues = this.company.getCustomers()
-            .stream()
-            .map(Customer::getTotalOrderValue)
-            .sorted(Comparator.<Double>naturalOrder())
-            .collect(Collectors.<Double>toList());
+                .stream()
+                .map(Customer::getTotalOrderValue)
+                .sorted(Comparator.<Double>naturalOrder())
+                .collect(Collectors.<Double>toList());
 
         // Don't forget the handy utility methods getFirst() and getLast()...
         Assert.assertEquals("Highest total order value", Double.valueOf(857.0), sortedTotalValues.get(sortedTotalValues.size() - 1));
@@ -69,10 +69,10 @@ public class Exercise7Test extends CompanyDomainForKata
         Customer mary = this.company.getCustomerNamed("Mary");
         Assert.assertEquals(mary, customerWithMaxTotalOrderValue1);
         Customer customerWithMaxTotalOrderValue2 =
-            this.company.getCustomers().stream().reduce(
-                null,
-                (left, right) ->
-                    (left != null && left.getTotalOrderValue() >= right.getTotalOrderValue()) ? left : right);
+                this.company.getCustomers().stream().reduce(
+                        null,
+                        (left, right) ->
+                                (left != null && left.getTotalOrderValue() >= right.getTotalOrderValue()) ? left : right);
         Assert.assertEquals(mary, customerWithMaxTotalOrderValue2);
     }
 
@@ -83,14 +83,14 @@ public class Exercise7Test extends CompanyDomainForKata
     public void supplierNamesAsTildeDelimitedString()
     {
         String tildeSeparatedNames =
-            Arrays.asList(this.company.getSuppliers())
-                .stream()
-                .map(Supplier::getName)
-                .reduce(null, (left, right) -> (left == null ? "" : left + "~") + right);
+                Arrays.asList(this.company.getSuppliers())
+                        .stream()
+                        .map(Supplier::getName)
+                        .reduce(null, (left, right) -> (left == null ? "" : left + "~") + right);
         Assert.assertEquals(
-            "tilde separated names",
-            "Shedtastic~Splendid Crocks~Annoying Pets~Gnomes 'R' Us~Furniture Hamlet~SFD~Doxins",
-            tildeSeparatedNames);
+                "tilde separated names",
+                "Shedtastic~Splendid Crocks~Annoying Pets~Gnomes 'R' Us~Furniture Hamlet~SFD~Doxins",
+                tildeSeparatedNames);
     }
 
     /**
@@ -102,10 +102,10 @@ public class Exercise7Test extends CompanyDomainForKata
     public void deliverOrdersToLondon()
     {
         this.company.getCustomers()
-            .stream()
-            .filter(customer -> "London".equals(customer.getCity()))
-            .flatMap(customer -> customer.getOrders().stream())
-            .forEach(Order::deliver);
+                .stream()
+                .filter(customer -> "London".equals(customer.getCity()))
+                .flatMap(customer -> customer.getOrders().stream())
+                .forEach(Order::deliver);
         Assert.assertTrue(this.company.getCustomerNamed("Fred").getOrders().stream().allMatch(Order::isDelivered));
         Assert.assertTrue(this.company.getCustomerNamed("Mary").getOrders().stream().allMatch(((Predicate<Order>) Order::isDelivered).negate()));
         Assert.assertTrue(this.company.getCustomerNamed("Bill").getOrders().stream().allMatch(Order::isDelivered));

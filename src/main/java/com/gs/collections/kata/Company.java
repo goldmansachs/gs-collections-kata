@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package com.gs.collections.kata;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * A company has a {@link ArrayList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
@@ -55,8 +54,8 @@ public class Company
     public List<Order> getOrders()
     {
         return this.customers.stream()
-            .flatMap(customer -> customer.getOrders().stream())
-            .collect(Collectors.<Order>toList());
+                .flatMap(customer -> customer.getOrders().stream())
+                .collect(Collectors.<Order>toList());
     }
 
     public Customer getMostRecentCustomer()
@@ -86,9 +85,9 @@ public class Company
          * Use a {@link Predicate} to find a {@link Customer} with the name given.
          */
         return this.getCustomers()
-            .stream()
-            .filter(customer -> name.equals(customer.getName()))
-            .findFirst()
-            .orElse((Customer) null);
+                .stream()
+                .filter(customer -> name.equals(customer.getName()))
+                .findFirst()
+                .orElse((Customer) null);
     }
 }
