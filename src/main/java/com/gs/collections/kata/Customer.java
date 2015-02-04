@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package com.gs.collections.kata;
 
+import com.gs.collections.api.block.function.Function;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.list.mutable.FastList;
 
@@ -27,6 +28,8 @@ public class Customer
     private final String name;
     private final String city;
     private final MutableList<Order> orders = FastList.newList();
+
+    public static final Function<Customer, String> TO_CITY = Customer::getCity;
 
     public Customer(String name, String city)
     {

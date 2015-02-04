@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,23 @@
 
 package com.gs.collections.kata;
 
+import com.gs.collections.api.RichIterable;
 import com.gs.collections.api.block.procedure.Procedure;
 import com.gs.collections.api.list.primitive.DoubleList;
-import com.gs.collections.impl.block.factory.Predicates;
+import com.gs.collections.impl.block.factory.Procedures;
 import com.gs.collections.impl.test.Verify;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class Exercise7Test extends CompanyDomainForKata {
+public class Exercise7Test extends CompanyDomainForKata
+{
     /**
      * Get a list of the customers' total order values, sorted. Check out the implementation of {@link
      * Customer#getTotalOrderValue()} and {@link Order#getValue()} .
      */
     @Test
-    public void sortedTotalOrderValue() {
+    public void sortedTotalOrderValue()
+    {
         DoubleList sortedTotalValues =
                 this.company.getCustomers().collectDouble(Customer::getTotalOrderValue).sortThis();
 
@@ -42,7 +45,8 @@ public class Exercise7Test extends CompanyDomainForKata {
      * Find the max total order value across all customers.
      */
     @Test
-    public void maximumTotalOrderValue() {
+    public void maximumTotalOrderValue()
+    {
         double maximumTotalOrderValue = this.company.getCustomers().asLazy().collectDouble(Customer::getTotalOrderValue).max();
         Assert.assertEquals("max value", 857.0d, maximumTotalOrderValue, 0.0d);
     }
@@ -51,7 +55,8 @@ public class Exercise7Test extends CompanyDomainForKata {
      * Find the customer with the highest total order value.
      */
     @Test
-    public void customerWithMaxTotalOrderValue() {
+    public void customerWithMaxTotalOrderValue()
+    {
         Customer customerWithMaxTotalOrderValue = this.company.getCustomers().maxBy(Customer::getTotalOrderValue);
         Assert.assertEquals(this.company.getCustomerNamed("Mary"), customerWithMaxTotalOrderValue);
     }
@@ -60,7 +65,8 @@ public class Exercise7Test extends CompanyDomainForKata {
      * Create some code to get the company's supplier names as a tilde delimited string.
      */
     @Test
-    public void supplierNamesAsTildeDelimitedString() {
+    public void supplierNamesAsTildeDelimitedString()
+    {
         String tildeSeparatedNames = this.company.getSuppliers().collect(Supplier::getName).makeString("~");
         Assert.assertEquals(
                 "tilde separated names",
@@ -70,19 +76,21 @@ public class Exercise7Test extends CompanyDomainForKata {
 
     /**
      * Deliver all orders going to customers from London.
+     * <p>
+     * Hint: Use {@link RichIterable#forEach(Procedure)}. To solve the ambiguity error, use {@link Procedures#cast(Procedure)}}.
      *
      * @see Order#deliver()
      */
     @Test
-    public void deliverOrdersToLondon() {
-        Procedure<Order> deliver = Order::deliver;
+    public void deliverOrdersToLondon()
+    {
         this.company.getCustomers()
                 .asLazy()
                 .selectWith(Customer::livesIn, "London")
                 .flatCollect(Customer::getOrders)
-                .forEach(deliver);
+                .forEach(Procedures.cast(Order::deliver));
         Verify.assertAllSatisfy(this.company.getCustomerNamed("Fred").getOrders(), Order::isDelivered);
-        Verify.assertAllSatisfy(this.company.getCustomerNamed("Mary").getOrders(), Predicates.<Order>not(Order::isDelivered));
+        Verify.assertNoneSatisfy(this.company.getCustomerNamed("Mary").getOrders(), Order::isDelivered);
         Verify.assertAllSatisfy(this.company.getCustomerNamed("Bill").getOrders(), Order::isDelivered);
     }
 }

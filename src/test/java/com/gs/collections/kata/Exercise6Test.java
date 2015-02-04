@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,11 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.api.list.primitive.DoubleList;
 import com.gs.collections.impl.block.factory.primitive.DoublePredicates;
 import com.gs.collections.impl.list.mutable.FastList;
 import com.gs.collections.impl.list.mutable.primitive.DoubleArrayList;
-import com.gs.collections.impl.utility.Iterate;
 import org.junit.Assert;
 import org.junit.Test;
 

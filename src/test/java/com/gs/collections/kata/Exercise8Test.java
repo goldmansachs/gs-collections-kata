@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.multimap.Multimap;
+import com.gs.collections.api.multimap.list.ListMultimap;
 import com.gs.collections.api.multimap.list.MutableListMultimap;
 import com.gs.collections.impl.list.fixed.ArrayAdapter;
 import com.gs.collections.impl.list.mutable.FastList;
@@ -24,12 +24,14 @@ import com.gs.collections.impl.test.Verify;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class Exercise8Test extends CompanyDomainForKata {
+public class Exercise8Test extends CompanyDomainForKata
+{
     /**
      * Create a multimap where the keys are the names of cities and the values are the customers from those cities.
      */
     @Test
-    public void customersByCity() {
+    public void customersByCity()
+    {
         // Notice that the second generic type is Customer, not List<Customer>
         MutableListMultimap<String, Customer> multimap = this.company.getCustomers().groupBy(Customer::getCity);
 
@@ -42,11 +44,12 @@ public class Exercise8Test extends CompanyDomainForKata {
     }
 
     @Test
-    public void mapOfItemsToSuppliers() {
+    public void mapOfItemsToSuppliers()
+    {
         /**
          * Change itemsToSuppliers to a MutableMultimap<String, Supplier>
          */
-        final Multimap<String, Supplier> itemsToSuppliers =
+        ListMultimap<String, Supplier> itemsToSuppliers =
                 this.company.getSuppliers().groupByEach((Supplier supplier) -> ArrayAdapter.adapt(supplier.getItemNames()));
         Verify.assertIterableSize("should be 2 suppliers for sofa", 2, itemsToSuppliers.get("sofa"));
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 package com.gs.collections.kata;
 
+import java.util.List;
+
 import com.gs.collections.api.bag.Bag;
 import com.gs.collections.api.bag.sorted.MutableSortedBag;
 import com.gs.collections.impl.bag.sorted.mutable.TreeBag;
 import com.gs.collections.impl.block.factory.Comparators;
 
-import java.util.List;
-
 /**
  * Has a number, a {@link Customer}, a {@link List} of {@link LineItem}s, and a boolean that states whether or not the order
- * has been delivered.  There is a class variable that contains the next order number.
+ * has been delivered. There is a class variable that contains the next order number.
  */
 public class Order
 {

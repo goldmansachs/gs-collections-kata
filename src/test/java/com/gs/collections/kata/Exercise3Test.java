@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package com.gs.collections.kata;
 
+import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.impl.test.Verify;
 import org.junit.Assert;
@@ -23,6 +24,26 @@ import org.junit.Test;
 
 public class Exercise3Test extends CompanyDomainForKata
 {
+    /**
+     * Set up a {@link Predicate} that tests to see if a {@link Customer}'s city is "London"
+     */
+    private static final Predicate<Customer> CUSTOMER_FROM_LONDON = customer -> customer.getCity().equals("London");
+
+    @Test
+    public void customerFromLondonPredicate()
+    {
+        String predicateClass = CUSTOMER_FROM_LONDON.getClass().getSimpleName();
+        Assert.assertTrue(
+                "Solution should use Predicates.attributeEquals() or a lambda but used " + predicateClass,
+                "AttributePredicate".equals(predicateClass) || predicateClass.startsWith("Exercise3Test$$Lambda"));
+
+        Customer customerFromLondon = new Customer("test customer", "London");
+
+        Assert.assertTrue(
+                "CUSTOMER_FROM_LONDON should accept Customers where city is London",
+                CUSTOMER_FROM_LONDON.accept(customerFromLondon));
+    }
+
     /**
      * Do any customers come from London?
      */

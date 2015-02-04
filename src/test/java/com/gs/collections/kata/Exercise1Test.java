@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,32 +28,26 @@ public class Exercise1Test extends CompanyDomainForKata
     @Test
     public void getCustomerNames()
     {
-        Function<Customer, String> nameFunction = customer -> customer.getName();
+        Function<Customer, String> nameFunction = Customer::getName;
 
         /**
          * Get the name of each of the company's customers.
          */
         MutableList<Customer> customers = this.company.getCustomers();
-        MutableList<String> customerNames1 = customers.collect(nameFunction);
-        MutableList<String> customerNames2 = customers.collect(customer -> customer.getName());
-        MutableList<String> customerNames3 = customers.collect(Customer::getName);
+        MutableList<String> customerNames = customers.collect(nameFunction);
 
         MutableList<String> expectedNames = FastList.newListWith("Fred", "Mary", "Bill");
-        Assert.assertEquals(expectedNames, customerNames1);
-        Assert.assertEquals(expectedNames, customerNames2);
-        Assert.assertEquals(expectedNames, customerNames3);
+        Assert.assertEquals(expectedNames, customerNames);
     }
 
     @Test
     public void getCustomerCities()
     {
         /**
-         * Get the city for each of the company's customers. Use an anonymous inner class. Use the IDE to help you as
-         * much as possible. Ctrl+space will help you implement an anonymous inner class. Implementing an interface is
-         * ctrl+i in IntelliJ. Eclipse's ctrl+1 is auto-fix and works to implement interfaces.
+         * Get the city for each of the company's customers.
          */
         MutableList<Customer> customers = this.company.getCustomers();
-        MutableList<String> customerCities = customers.collect(Customer::getCity);
+        MutableList<String> customerCities = customers.collect(Customer.TO_CITY);
 
         MutableList<String> expectedCities = FastList.newListWith("London", "Liphook", "London");
         Assert.assertEquals(expectedCities, customerCities);
@@ -63,9 +57,10 @@ public class Exercise1Test extends CompanyDomainForKata
     public void getLondonCustomers()
     {
         /**
-         * Which customers come from London? Get a collection of those which do. Use an anonymous inner class.
+         * Which customers come from London? Get a collection of those which do.
          */
         MutableList<Customer> customers = this.company.getCustomers();
+//        MutableList<Customer> customersFromLondon = customers.selectWith(Customer.LIVES_IN, "London");
         MutableList<Customer> customersFromLondon = customers.selectWith(Customer::livesIn, "London");
         Verify.assertSize("Should be 2 London customers", 2, customersFromLondon);
     }

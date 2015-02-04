@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.LazyIterable;
 import com.gs.collections.api.list.MutableList;
 import com.gs.collections.api.set.MutableSet;
 import com.gs.collections.impl.list.mutable.FastList;
@@ -43,16 +42,15 @@ public class Exercise4Test extends CompanyDomainForKata
     @Test
     public void findItemNames()
     {
-        LazyIterable<LineItem> allOrderedLineItems =
-            this.company.getCustomers().asLazy().flatCollect(Customer::getOrders).flatCollect(Order::getLineItems);
-        MutableSet<String> actualItemNames = allOrderedLineItems.collect(LineItem::getName).toSet();
+        MutableSet<String> actualItemNames =
+                this.company.getCustomers().asLazy().flatCollect(Customer::getOrders).flatCollect(Order::getLineItems).collect(LineItem::getName).toSet();
 
         Verify.assertInstanceOf(MutableSet.class, actualItemNames);
         Verify.assertInstanceOf(String.class, actualItemNames.getFirst());
 
         MutableSet<String> expectedItemNames = UnifiedSet.newSetWith(
-            "shed", "big shed", "bowl", "cat", "cup", "chair", "dog",
-            "goldfish", "gnome", "saucer", "sofa", "table");
+                "shed", "big shed", "bowl", "cat", "cup", "chair", "dog",
+                "goldfish", "gnome", "saucer", "sofa", "table");
         Assert.assertEquals(expectedItemNames, actualItemNames);
     }
 

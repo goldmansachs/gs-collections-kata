@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package com.gs.collections.kata;
 
+import java.util.List;
+
 import com.gs.collections.api.block.predicate.Predicate;
 import com.gs.collections.api.list.ListIterable;
 import com.gs.collections.api.list.MutableList;
@@ -25,8 +27,6 @@ import com.gs.collections.impl.list.mutable.primitive.DoubleArrayList;
 import com.gs.collections.impl.utility.ListIterate;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.List;
 
 public class Exercise5Test extends CompanyDomainForKata
 {
