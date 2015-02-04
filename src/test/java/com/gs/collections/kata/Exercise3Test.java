@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,26 @@ public class Exercise3Test extends CompanyDomainForKata
      */
     private static final Predicate<Customer> CUSTOMER_FROM_LONDON =
             Predicates.attributeEqual(Customer.TO_CITY, "London");
+
+    @Test
+    public void customerFromLondonPredicate()
+    {
+        String predicateClass = CUSTOMER_FROM_LONDON.getClass().getSimpleName();
+        Assert.assertTrue(
+                "Solution should use Predicates.attributeEquals() or a lambda but used " + predicateClass,
+                "AttributePredicate".equals(predicateClass) || predicateClass.startsWith("Exercise3Test$$Lambda"));
+
+        Customer customerFromLondon = new Customer("test customer", "London");
+
+        Assert.assertEquals(
+                "Implement Customer.TO_CITY",
+                "London",
+                Customer.TO_CITY.valueOf(customerFromLondon));
+
+        Assert.assertTrue(
+                "CUSTOMER_FROM_LONDON should accept Customers where city is London",
+                CUSTOMER_FROM_LONDON.accept(customerFromLondon));
+    }
 
     /**
      * Do any customers come from London? Use the Predicate {@link #CUSTOMER_FROM_LONDON}.

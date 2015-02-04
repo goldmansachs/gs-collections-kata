@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,9 @@
 
 package com.gs.collections.kata;
 
+import java.util.Collections;
+
+import com.gs.collections.api.RichIterable;
 import com.gs.collections.api.bag.sorted.MutableSortedBag;
 import com.gs.collections.api.block.function.Function;
 import com.gs.collections.api.block.function.Function0;
@@ -32,12 +35,12 @@ import com.gs.collections.impl.test.Verify;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Collections;
-
 public class Exercise9Test extends CompanyDomainForKata
 {
     /**
-     * Extra credit. Aggregate the total order values by city.  Hint: Look at RichIterable.aggregateBy.
+     * Extra credit. Aggregate the total order values by city.
+     *
+     * @see RichIterable#aggregateBy(Function, Function0, Function2)
      */
     @Test
     public void totalOrderValuesByCity()
@@ -65,8 +68,9 @@ public class Exercise9Test extends CompanyDomainForKata
     }
 
     /**
-     * Extra credit. Aggregate the total order values by item.  Hint: Look at RichIterable.aggregateBy and remember
-     * how to use flatCollect to get an iterable of all items.
+     * Extra credit. Aggregate the total order values by item.
+     * Hint: Look at {@link RichIterable#aggregateBy(Function, Function0, Function2)} and remember
+     * how to use {@link RichIterable#flatCollect(Function)} to get an iterable of all items.
      */
     @Test
     public void totalOrderValuesByItem()
@@ -86,11 +90,9 @@ public class Exercise9Test extends CompanyDomainForKata
                 return result + lineItem.getValue();
             }
         };
-        MutableMap<String, Double> map =
-                this.company
-                        .getOrders()
-                        .flatCollect(Order.TO_LINE_ITEMS)
-                        .aggregateBy(LineItem.TO_NAME, zeroValueFactory, aggregator);
+        MutableMap<String, Double> map = this.company.getOrders()
+                .flatCollect(Order.TO_LINE_ITEMS)
+                .aggregateBy(LineItem.TO_NAME, zeroValueFactory, aggregator);
         Verify.assertSize(12, map);
         Assert.assertEquals(100.0, map.get("shed"), 0.0);
         Assert.assertEquals(10.5, map.get("cup"), 0.0);
@@ -102,19 +104,20 @@ public class Exercise9Test extends CompanyDomainForKata
     @Test
     public void sortedOrders()
     {
-        MutableSortedBag<Double> orderedPrices =
-                this.company.getOrders()
-                        .asLazy()
-                        .flatCollect(Order.TO_LINE_ITEMS)
-                        .collectDouble(LineItem.TO_VALUE)
-                        .select(DoublePredicates.greaterThan(7.5))
-                        .collect(new DoubleToObjectFunction<Double>() {
-                            @Override
-                            public Double valueOf(double doubleParameter) {
-                                return doubleParameter;
-                            }
-                        })
-                        .into(TreeBag.<Double>newBag(Collections.reverseOrder()));
+        MutableSortedBag<Double> orderedPrices = this.company.getOrders()
+                .asLazy()
+                .flatCollect(Order.TO_LINE_ITEMS)
+                .collectDouble(LineItem.TO_VALUE)
+                .select(DoublePredicates.greaterThan(7.5))
+                .collect(new DoubleToObjectFunction<Double>()
+                {
+                    @Override
+                    public Double valueOf(double doubleParameter)
+                    {
+                        return doubleParameter;
+                    }
+                })
+                .into(TreeBag.<Double>newBag(Collections.reverseOrder()));
         MutableSortedBag<Double> expectedPrices = TreeBag.newBagWith(
                 Collections.reverseOrder(), 500.0, 150.0, 120.0, 75.0, 50.0, 50.0, 12.5);
         Verify.assertSortedBagsEqual(expectedPrices, orderedPrices);
@@ -126,9 +129,8 @@ public class Exercise9Test extends CompanyDomainForKata
     @Test
     public void whoOrderedSaucers()
     {
-        MutableList<Customer> customersWithSaucers = this.company.getCustomers().select(Predicates.attributeAnySatisfy(
-                Customer.TO_ORDERS,
-                Predicates.attributeAnySatisfy(
+        MutableList<Customer> customersWithSaucers = this.company.getCustomers()
+                .select(Predicates.attributeAnySatisfy(Customer.TO_ORDERS, Predicates.attributeAnySatisfy(
                         Order.TO_LINE_ITEMS,
                         Predicates.attributeEqual(LineItem.TO_NAME, "saucer"))));
         Verify.assertSize("customers with saucers", 2, customersWithSaucers);

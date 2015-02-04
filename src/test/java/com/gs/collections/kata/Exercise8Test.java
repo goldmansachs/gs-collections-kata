@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,12 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.block.procedure.Procedure;
+import com.gs.collections.api.block.function.Function;
 import com.gs.collections.api.list.MutableList;
-import com.gs.collections.api.multimap.MutableMultimap;
 import com.gs.collections.api.multimap.list.MutableListMultimap;
 import com.gs.collections.impl.list.fixed.ArrayAdapter;
 import com.gs.collections.impl.list.mutable.FastList;
-import com.gs.collections.impl.multimap.list.FastListMultimap;
 import com.gs.collections.impl.test.Verify;
-import com.gs.collections.impl.utility.ArrayIterate;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -54,21 +51,12 @@ public class Exercise8Test extends CompanyDomainForKata
         /**
          * Change itemsToSuppliers to a MutableMultimap<String, Supplier>
          */
-        final MutableMultimap<String, Supplier> itemsToSuppliers = FastListMultimap.newMultimap();
-
-        ArrayIterate.forEach(this.company.getSuppliers(), new Procedure<Supplier>()
+        MutableListMultimap<String, Supplier> itemsToSuppliers = ArrayAdapter.adapt(this.company.getSuppliers()).groupByEach(new Function<Supplier, MutableList<String>>()
         {
             @Override
-            public void value(final Supplier supplier)
+            public MutableList<String> valueOf(Supplier supplier)
             {
-                ArrayIterate.forEach(supplier.getItemNames(), new Procedure<String>()
-                {
-                    @Override
-                    public void value(String itemName)
-                    {
-                        itemsToSuppliers.put(itemName, supplier);
-                    }
-                });
+                return ArrayAdapter.adapt(supplier.getItemNames());
             }
         });
         Verify.assertIterableSize("should be 2 suppliers for sofa", 2, itemsToSuppliers.get("sofa"));

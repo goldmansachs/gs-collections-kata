@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Goldman Sachs.
+ * Copyright 2015 Goldman Sachs.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,12 @@
 
 package com.gs.collections.kata;
 
-import com.gs.collections.api.list.MutableList;
+import com.gs.collections.api.RichIterable;
+import com.gs.collections.api.block.procedure.Procedure;
 import com.gs.collections.api.list.primitive.DoubleList;
 import com.gs.collections.impl.block.factory.Functions;
 import com.gs.collections.impl.block.factory.Predicates;
+import com.gs.collections.impl.block.factory.Procedures;
 import com.gs.collections.impl.test.Verify;
 import com.gs.collections.impl.utility.ArrayIterate;
 import org.junit.Assert;
@@ -80,6 +82,8 @@ public class Exercise7Test extends CompanyDomainForKata
 
     /**
      * Deliver all orders going to customers from London.
+     *
+     * Hint: Use {@link RichIterable#forEach(Procedure)}. To solve the ambiguity error, use {@link Procedures#cast(Procedure)}}.
      *
      * @see Order#deliver()
      */
